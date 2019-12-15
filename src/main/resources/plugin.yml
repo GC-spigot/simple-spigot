@@ -1,0 +1,6 @@
+name: SimpleSpigot
+version: ${project.version}
+main: me.javadebug.simplespigot.SimpleSpigot
+api-version: 1.13
+authors: [JavaDebug]
+description: A simple spigot library
