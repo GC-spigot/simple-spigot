@@ -2,6 +2,7 @@ package me.javadebug.simplespigot.plugin;
 
 import me.javadebug.simplespigot.registry.Registry;
 import me.javadebug.simplespigot.service.ClassReflector;
+import org.bukkit.event.Listener;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -18,4 +19,6 @@ public interface SimplePlugin {
     <T> CompletableFuture<T> runSyncCallback(Supplier<T> supplier);
 
     <T extends Registry> void registerRegistries(Consumer<ClassReflector<T>> consumer, Class<T>... registries);
+
+    void registerListeners(Listener... listeners);
 }
