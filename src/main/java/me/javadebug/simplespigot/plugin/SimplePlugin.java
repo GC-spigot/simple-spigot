@@ -2,6 +2,7 @@ package me.javadebug.simplespigot.plugin;
 
 import me.javadebug.simplespigot.registry.Registry;
 import me.javadebug.simplespigot.service.ClassReflector;
+import me.javadebug.simplespigot.storage.StorageFactory;
 import org.bukkit.event.Listener;
 
 import java.util.concurrent.CompletableFuture;
@@ -21,4 +22,6 @@ public interface SimplePlugin {
     <T extends Registry> void registerRegistries(Consumer<ClassReflector<T>> consumer, Class<T>... registries);
 
     void registerListeners(Listener... listeners);
+
+    StorageFactory getStorageFactory();
 }
