@@ -1,16 +1,16 @@
-package me.javadebug.simplespigot.storage.test;
+package me.javadebug.simplespigot.test.storage;
 
 import com.eatthepath.uuid.FastUUID;
 import com.google.gson.JsonObject;
 import me.javadebug.simplespigot.plugin.SimplePlugin;
-import me.javadebug.simplespigot.storage.Storage;
-import me.javadebug.simplespigot.storage.StorageType;
+import me.javadebug.simplespigot.storage.storage.BasicStorage;
+import me.javadebug.simplespigot.storage.storage.StorageType;
 
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class TestStorage extends Storage<TestObject> {
+public class TestStorage extends BasicStorage<TestObject> {
 
     public TestStorage(SimplePlugin plugin) {
         super(plugin, StorageType.FLAT);

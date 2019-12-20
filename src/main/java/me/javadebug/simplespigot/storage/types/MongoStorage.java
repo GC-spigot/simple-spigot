@@ -14,4 +14,9 @@ public class MongoStorage<T> implements StorageInterface<T> {
     public T save(JsonObject jsonObject) {
         return null;
     }
+
+    @Override
+    public void close() {
+
+    }
 }

@@ -1,4 +1,4 @@
-package me.javadebug.simplespigot.storage;
+package me.javadebug.simplespigot.storage.storage;
 
 public enum StorageType {
 

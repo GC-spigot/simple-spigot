@@ -1,4 +1,4 @@
-package me.javadebug.simplespigot.storage.test;
+package me.javadebug.simplespigot.test.storage;
 
 import java.util.UUID;
 

@@ -7,4 +7,6 @@ public interface StorageInterface<T> {
     JsonObject load(String identifier);
 
     T save(JsonObject jsonObject);
+
+    void close();
 }
