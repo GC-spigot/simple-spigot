@@ -1,9 +1,17 @@
 package me.javadebug.simplespigot.storage.types;
 
 import com.google.gson.JsonObject;
-import me.javadebug.simplespigot.storage.StorageInterface;
+import me.javadebug.simplespigot.storage.Backend;
+import me.javadebug.simplespigot.storage.storage.load.Deserializer;
+import me.javadebug.simplespigot.storage.storage.load.Serializer;
 
-public class FlatStorage<T> implements StorageInterface<T> {
+import java.nio.file.Path;
+
+public class FlatStorage<T> extends Backend<T> {
+
+    public FlatStorage(Path path, Deserializer<T> deserializer, Serializer<T> serializer) {
+        super(deserializer, serializer);
+    }
 
     @Override
     public JsonObject load(String identifier) {
@@ -11,8 +19,7 @@ public class FlatStorage<T> implements StorageInterface<T> {
     }
 
     @Override
-    public T save(JsonObject jsonObject) {
-        return null;
+    public void save(JsonObject jsonObject) {
     }
 
     @Override

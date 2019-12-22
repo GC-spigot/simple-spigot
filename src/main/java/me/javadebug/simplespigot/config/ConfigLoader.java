@@ -22,8 +22,9 @@ public class ConfigLoader {
             this.config = config;
         }
 
-        public static void newReader(Config config, Consumer<Reader> reader) {
-            reader.accept(new Reader(config));
+        public Reader readWrap(Consumer<Reader> reader) {
+            reader.accept(this);
+            return this;
         }
 
         public String getCurrentPath() {

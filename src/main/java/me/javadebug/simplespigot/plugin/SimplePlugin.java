@@ -20,7 +20,7 @@ public interface SimplePlugin {
 
     <T> CompletableFuture<T> syncCallback(Supplier<T> supplier);
 
-    <T extends Registry> void registerRegistries(Consumer<ClassReflector<T>> consumer, Class<T>... registries);
+    void registerRegistries(Consumer<ClassReflector<?>> consumer, Class<? extends Registry>... registries);
 
     void registerListeners(Listener... listeners);
 

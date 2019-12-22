@@ -43,8 +43,8 @@ public abstract class SpigotPlugin extends JavaPlugin implements SimplePlugin {
 
     @Override
     @SafeVarargs
-    public final <T extends Registry> void registerRegistries(Consumer<ClassReflector<T>> consumer, Class<T>... registries) {
-        for (Class<T> registryClass : registries) {
+    public final void registerRegistries(Consumer<ClassReflector<?>> consumer, Class<? extends Registry>... registries) {
+        for (Class<? extends Registry> registryClass : registries) {
             consumer.accept(new ClassReflector<>(registryClass));
         }
     }
