@@ -14,4 +14,9 @@ public class FlatStorage<T> implements StorageInterface<T> {
     public T save(JsonObject jsonObject) {
         return null;
     }
+
+    @Override
+    public void close() {
+
+    }
 }

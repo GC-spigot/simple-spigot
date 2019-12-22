@@ -27,7 +27,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SimplePlugin {
     }
 
     @Override
-    public <T> CompletableFuture<T> runAsyncCallback(Supplier<T> supplier) {
+    public <T> CompletableFuture<T> asyncCallback(Supplier<T> supplier) {
         return CompletableFuture.supplyAsync(supplier, this::runAsync);
     }
 
@@ -37,7 +37,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SimplePlugin {
     }
 
     @Override
-    public <T> CompletableFuture<T> runSyncCallback(Supplier<T> supplier) {
+    public <T> CompletableFuture<T> syncCallback(Supplier<T> supplier) {
         return CompletableFuture.supplyAsync(supplier, this::runSync);
     }
 

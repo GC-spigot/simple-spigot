@@ -22,11 +22,11 @@ public class FutureCache<K, V> {
     }
 
     public CompletableFuture<Optional<V>> get(K key) {
-        return this.plugin.runAsyncCallback(() -> Optional.ofNullable(this.subCache.getIfPresent(key)));
+        return this.plugin.asyncCallback(() -> Optional.ofNullable(this.subCache.getIfPresent(key)));
     }
 
     public CompletableFuture<V> get(K key, Function<K, V> entryIfAbsent) {
-        return this.plugin.runAsyncCallback(() -> {
+        return this.plugin.asyncCallback(() -> {
             V value = this.subCache.getIfPresent(key);
             if (value == null) {
                 this.subCache.put(key, entryIfAbsent.apply(key));

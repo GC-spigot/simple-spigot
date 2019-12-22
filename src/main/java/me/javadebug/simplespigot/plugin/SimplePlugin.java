@@ -14,11 +14,11 @@ public interface SimplePlugin {
 
     void runAsync(Runnable runnable);
 
-    <T> CompletableFuture<T> runAsyncCallback(Supplier<T> supplier);
+    <T> CompletableFuture<T> asyncCallback(Supplier<T> supplier);
 
     void runSync(Runnable runnable);
 
-    <T> CompletableFuture<T> runSyncCallback(Supplier<T> supplier);
+    <T> CompletableFuture<T> syncCallback(Supplier<T> supplier);
 
     <T extends Registry> void registerRegistries(Consumer<ClassReflector<T>> consumer, Class<T>... registries);
 
