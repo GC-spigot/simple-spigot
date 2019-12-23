@@ -34,7 +34,7 @@ public class Config {
     }
 
     public String string(String key) {
-        return String.valueOf(this.get(key));
+        return (String) this.get(key);
     }
 
     public boolean bool(String key) {
@@ -84,7 +84,7 @@ public class Config {
             this.valueMap = Maps.newHashMap();
             isReload = false;
         }
-        for (String key : this.configuration.getKeys(false)) {
+        for (String key : this.configuration.getKeys(true)) {
             if (isReload && this.enduringKeys.contains(key)) {
                 continue;
             }
@@ -99,7 +99,7 @@ public class Config {
     private void createIfAbsent() {
         if (!this.file.exists()) {
             this.plugin.getDataFolder().mkdirs();
-            this.plugin.saveResource(this.file.getName(), false);
+            this.plugin.saveResource(this.file.getPath().replace(this.plugin.getDataFolder().getPath() + "/", ""), false);
         }
     }
 }

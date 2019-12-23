@@ -13,13 +13,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public abstract class SpigotPlugin extends JavaPlugin implements SimplePlugin {
-    private final StorageFactory storageFactory;
-    private final StorageSettings storageSettings;
-
-    public SpigotPlugin() {
-        this.storageFactory = new StorageFactory(this);
-        this.storageSettings = new StorageSettings();
-    }
+    private final StorageFactory storageFactory = new StorageFactory(this);
+    private final StorageSettings storageSettings = new StorageSettings();
 
     @Override
     public void runAsync(Runnable runnable) {
@@ -42,10 +37,9 @@ public abstract class SpigotPlugin extends JavaPlugin implements SimplePlugin {
     }
 
     @Override
-    @SafeVarargs
-    public final void registerRegistries(Consumer<ClassReflector<?>> consumer, Class<? extends Registry>... registries) {
-        for (Class<? extends Registry> registryClass : registries) {
-            consumer.accept(new ClassReflector<>(registryClass));
+    public void registerRegistries(Registry... registries) {
+        for (Registry registry : registries) {
+            registry.register();
         }
     }
 

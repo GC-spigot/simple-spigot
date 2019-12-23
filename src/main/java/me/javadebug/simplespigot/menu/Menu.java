@@ -30,6 +30,11 @@ public abstract class Menu implements InventoryHolder {
 
     public abstract void redraw();
 
+    @Override
+    public Inventory getInventory() {
+        return this.inventory;
+    }
+
     public void show() {
         if (this.menuState.isRaw()) {
             this.inventory = Bukkit.createInventory(this, this.rows * 9, this.title);

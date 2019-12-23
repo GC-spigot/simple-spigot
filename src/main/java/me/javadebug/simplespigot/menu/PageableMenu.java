@@ -8,14 +8,14 @@ import org.bukkit.entity.Player;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class DynamicPageableMenu<T> extends Menu {
+public abstract class PageableMenu<T> extends Menu {
     private final T[] elements;
     private final Integer[] elementSlots;
     private Map<Integer, Set<Integer>> cachedPageIndexes = Maps.newHashMap();
 
     protected int page;
 
-    public DynamicPageableMenu(Player player, String title, int rows, T[] elements, Integer[] elementSlots) {
+    public PageableMenu(Player player, String title, int rows, T[] elements, Integer[] elementSlots) {
         super(player, title, rows);
         this.elements = elements;
         this.elementSlots = elementSlots;

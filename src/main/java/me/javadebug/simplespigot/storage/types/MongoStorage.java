@@ -5,20 +5,16 @@ import me.javadebug.simplespigot.storage.Backend;
 import me.javadebug.simplespigot.storage.storage.load.Deserializer;
 import me.javadebug.simplespigot.storage.storage.load.Serializer;
 
-public class MongoStorage<T> extends Backend<T> {
-
-    public MongoStorage(Deserializer<T> deserializer, Serializer<T> serializer) {
-        super(deserializer, serializer);
-    }
+public class MongoStorage<T> implements Backend<T> {
 
     @Override
-    public JsonObject load(String identifier) {
+    public JsonObject load(String id) {
         return null;
     }
 
     @Override
-    public void save(JsonObject jsonObject) {
-        ;
+    public void save(String id, JsonObject json) {
+
     }
 
     @Override
