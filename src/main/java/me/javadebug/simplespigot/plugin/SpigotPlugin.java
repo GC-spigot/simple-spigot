@@ -1,7 +1,9 @@
 package me.javadebug.simplespigot.plugin;
 
+import me.javadebug.simplespigot.command.CommandBase;
+import me.javadebug.simplespigot.command.command.Command;
+import me.javadebug.simplespigot.command.command.SimpleCommand;
 import me.javadebug.simplespigot.registry.Registry;
-import me.javadebug.simplespigot.service.ClassReflector;
 import me.javadebug.simplespigot.storage.StorageFactory;
 import me.javadebug.simplespigot.storage.StorageSettings;
 import org.bukkit.Bukkit;
@@ -9,12 +11,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public abstract class SpigotPlugin extends JavaPlugin implements SimplePlugin {
     private final StorageFactory storageFactory = new StorageFactory(this);
     private final StorageSettings storageSettings = new StorageSettings();
+    private final CommandBase commandBase = new CommandBase(this);
 
     @Override
     public void runAsync(Runnable runnable) {
@@ -47,6 +49,13 @@ public abstract class SpigotPlugin extends JavaPlugin implements SimplePlugin {
     public void registerListeners(Listener... listeners) {
         for (Listener listener : listeners) {
             Bukkit.getPluginManager().registerEvents(listener, this);
+        }
+    }
+
+    @Override
+    public void registerCommands(SimpleCommand... commands) {
+        for (SimpleCommand command : commands) {
+            this.commandBase.registerCommand(command);
         }
     }
 

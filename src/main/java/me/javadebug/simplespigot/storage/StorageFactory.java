@@ -15,14 +15,14 @@ public class StorageFactory {
         this.plugin = plugin;
     }
 
-    public <T> Backend<T> create(StorageType storageType, String tableName, Path flatPath) {
+    public Backend create(StorageType storageType, String tableName, Path flatPath) {
         switch (storageType) {
             case MYSQL:
-                return new MySqlStorage<T>(this.plugin, tableName);
+                return new MySqlStorage(this.plugin, tableName);
             case MONGODB:
-                return new MongoStorage<T>();
+                return new MongoStorage();
             default:
-                return new FlatStorage<T>(flatPath);
+                return new FlatStorage(flatPath);
         }
     }
 }

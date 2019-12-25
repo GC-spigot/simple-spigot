@@ -1,6 +1,5 @@
 package me.javadebug.simplespigot.storage.types.mysql;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
@@ -13,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.function.UnaryOperator;
 
-public class MySqlStorage<T> implements Backend<T> {
+public class MySqlStorage implements Backend {
     private final StorageSettings storageSettings; // getters can return null values
     private final MySqlConnectionFactory connectionFactory;
 

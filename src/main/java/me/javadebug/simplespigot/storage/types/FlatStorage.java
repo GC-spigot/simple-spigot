@@ -14,7 +14,7 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class FlatStorage<T> implements Backend<T> {
+public class FlatStorage implements Backend {
     private final Path path;
 
     public FlatStorage(Path subPath) {

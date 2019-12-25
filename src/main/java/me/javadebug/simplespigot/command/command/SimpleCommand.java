@@ -19,7 +19,6 @@ public abstract class SimpleCommand extends Command {
         return this.command;
     }
 
-
     protected void setSubCommands(SubCommand... subCommands) {
         this.subCommands.addAll(Arrays.asList(subCommands));
     }

@@ -2,7 +2,7 @@ package me.javadebug.simplespigot.storage;
 
 import com.google.gson.JsonObject;
 
-public interface Backend<T> {
+public interface Backend {
 
     JsonObject load(String id);
 

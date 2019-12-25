@@ -1,5 +1,7 @@
 package me.javadebug.simplespigot.storage.storage;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import me.javadebug.simplespigot.plugin.SimplePlugin;
 import me.javadebug.simplespigot.storage.Backend;
@@ -12,7 +14,7 @@ import java.util.function.UnaryOperator;
 public abstract class Storage<T> {
     private final SimplePlugin plugin;
 
-    private Backend<T> backend;
+    private Backend backend;
 
     public Storage(SimplePlugin plugin) {
         this.plugin = plugin;
@@ -24,11 +26,11 @@ public abstract class Storage<T> {
 
     public T load(String id) {
         JsonObject json = this.backend.load(id);
-        return json == null ? null : this.deserializer().apply(json);
+        return json == null ? null : this.deserializer().apply(json, new Gson());
     }
 
     public T save(String id, T object) {
-        this.backend.save(id, this.serializer().apply(object, new JsonObject()));
+        this.backend.save(id, this.serializer().apply(object, new JsonObject(), new GsonBuilder().setPrettyPrinting().create()));
         return object;
     }
 
