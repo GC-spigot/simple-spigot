@@ -1,8 +1,11 @@
 package me.javadebug.simplespigot.menu.item;
 
+import me.javadebug.simplespigot.config.Config;
 import me.javadebug.simplespigot.item.SpigotItem;
 import me.javadebug.simplespigot.menu.item.click.ClickAction;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.function.UnaryOperator;
 
 public class MenuItem {
     private final ItemStack itemStack;
@@ -41,7 +44,8 @@ public class MenuItem {
         return new Builder(menuItem);
     }
 
-    public static class Builder extends SpigotItem.Builder {
+    public static class Builder {
+        private ItemStack itemStack;
         private int slot;
         private int row;
         private ClickAction clickAction;
@@ -55,6 +59,16 @@ public class MenuItem {
             this.clickAction = menuItem.getClickAction();
         }
 
+        public Builder item(UnaryOperator<SpigotItem.Builder> itemBuilder) {
+            this.itemStack = itemBuilder.apply(new SpigotItem.Builder()).build();
+            return this;
+        }
+
+        public Builder item(Config config, String path) {
+            this.itemStack = SpigotItem.toItem(config, path);
+            return this;
+        }
+
         public Builder slot(int slot) {
             this.slot = slot;
             return this;
@@ -66,7 +80,8 @@ public class MenuItem {
         }
 
         public Builder rawSlot(int slot) {
-
+            this.row = ((int) (slot / 9)) + 1;
+            this.slot = -9 * this.row + 10 + slot;
             return this;
         }
 
@@ -81,8 +96,8 @@ public class MenuItem {
             return this;
         }
 
-        public MenuItem compose() {
-            return new MenuItem(super.build(), this.row, this.slot, this.clickAction);
+        public MenuItem build() {
+            return new MenuItem(this.itemStack, this.row, this.slot, this.clickAction);
         }
     }
 }

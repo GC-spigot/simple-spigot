@@ -14,10 +14,10 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class FlatStorage implements Backend {
+public class FlatBackend implements Backend {
     private final Path path;
 
-    public FlatStorage(Path subPath) {
+    public FlatBackend(Path subPath) {
         this.path = this.createPath(subPath);
     }
 

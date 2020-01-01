@@ -2,9 +2,9 @@ package me.javadebug.simplespigot.storage;
 
 import me.javadebug.simplespigot.plugin.SimplePlugin;
 import me.javadebug.simplespigot.storage.storage.StorageType;
-import me.javadebug.simplespigot.storage.types.FlatStorage;
-import me.javadebug.simplespigot.storage.types.MongoStorage;
-import me.javadebug.simplespigot.storage.types.mysql.MySqlStorage;
+import me.javadebug.simplespigot.storage.types.FlatBackend;
+import me.javadebug.simplespigot.storage.types.MongoBackend;
+import me.javadebug.simplespigot.storage.types.mysql.MySqlBackend;
 
 import java.nio.file.Path;
 
@@ -18,11 +18,11 @@ public class StorageFactory {
     public Backend create(StorageType storageType, String tableName, Path flatPath) {
         switch (storageType) {
             case MYSQL:
-                return new MySqlStorage(this.plugin, tableName);
+                return new MySqlBackend(this.plugin, tableName);
             case MONGODB:
-                return new MongoStorage();
+                return new MongoBackend();
             default:
-                return new FlatStorage(flatPath);
+                return new FlatBackend(flatPath);
         }
     }
 }

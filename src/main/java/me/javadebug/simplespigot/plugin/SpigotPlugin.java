@@ -68,4 +68,8 @@ public abstract class SpigotPlugin extends JavaPlugin implements SimplePlugin {
     public StorageSettings getStorageSettings() {
         return this.storageSettings;
     }
+
+    public CommandBase getCommandBase() {
+        return this.commandBase;
+    }
 }

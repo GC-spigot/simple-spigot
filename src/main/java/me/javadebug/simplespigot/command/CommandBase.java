@@ -1,5 +1,7 @@
 package me.javadebug.simplespigot.command;
 
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
 import me.javadebug.simplespigot.command.argument.ArgumentHandler;
 import me.javadebug.simplespigot.command.argument.ArgumentType;
@@ -51,7 +53,7 @@ public class CommandBase implements CommandExecutor {
         String commandName = command.getName();
         for (SimpleCommand simpleCommand : this.commands) {
             if (!simpleCommand.getCommand().equalsIgnoreCase(commandName)) {
-                return true;
+                continue;
             }
             if (simpleCommand.getPermission() != null && !sender.hasPermission(simpleCommand.getPermission())) {
                 Text.sendMessage(sender, this.noPermissionMessage);

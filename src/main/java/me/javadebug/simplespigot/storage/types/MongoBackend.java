@@ -5,7 +5,7 @@ import me.javadebug.simplespigot.storage.Backend;
 import me.javadebug.simplespigot.storage.storage.load.Deserializer;
 import me.javadebug.simplespigot.storage.storage.load.Serializer;
 
-public class MongoStorage implements Backend {
+public class MongoBackend implements Backend {
 
     @Override
     public JsonObject load(String id) {

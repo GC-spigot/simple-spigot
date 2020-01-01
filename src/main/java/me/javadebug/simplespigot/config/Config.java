@@ -1,7 +1,9 @@
 package me.javadebug.simplespigot.config;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import me.javadebug.simplespigot.text.Text;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -34,7 +36,7 @@ public class Config {
     }
 
     public String string(String key) {
-        return (String) this.get(key);
+        return Text.modify((String) this.get(key));
     }
 
     public boolean bool(String key) {
@@ -52,12 +54,12 @@ public class Config {
     }
 
     public int integer(String key) {
-        return Integer.parseInt(this.get(key));
+        return this.get(key);
     }
 
-    @SuppressWarnings("unchecked")
     public List<String> list(String key) {
-        return (List<String>) this.get(key);
+        List<String> list = this.get(key);
+        return list == null ? Lists.newArrayList() : list;
     }
 
     public Set<String> keys(String key, boolean deep) {

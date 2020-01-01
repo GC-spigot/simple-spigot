@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.function.UnaryOperator;
 
-public class MySqlStorage implements Backend {
+public class MySqlBackend implements Backend {
     private final StorageSettings storageSettings; // getters can return null values
     private final MySqlConnectionFactory connectionFactory;
 
@@ -23,7 +23,7 @@ public class MySqlStorage implements Backend {
     private static final String INSERT = "INSERT INTO '{location}' (id, json) VALUES(?, ?)";
     private static final String SELECT = "SELECT id, json FROM {location} WHERE id=?";
 
-    public MySqlStorage(SimplePlugin plugin, String tableName) {
+    public MySqlBackend(SimplePlugin plugin, String tableName) {
         this.storageSettings = plugin.getStorageSettings();
         this.connectionFactory = new MySqlConnectionFactory(this.storageSettings);
         this.processor = query -> query.replace("{location}", tableName + this.storageSettings.getPrefix());

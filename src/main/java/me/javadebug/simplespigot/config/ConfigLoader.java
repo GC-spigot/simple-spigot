@@ -62,6 +62,7 @@ public class ConfigLoader {
                 this.currentPath += ("." + path);
             }
             for (String key : this.config.keys(path, deep)) {
+                this.currentPath = path.isEmpty() ? key : path.concat(".").concat(key);
                 consumer.accept(key);
             }
             return this;

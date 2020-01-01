@@ -16,6 +16,7 @@ public abstract class Menu implements InventoryHolder {
     protected final Player player;
     private Inventory inventory;
     private MenuState menuState;
+    private Runnable closeAction;
     private Map<Integer, MenuItem> menuItems = Maps.newHashMap();
 
     private final String title;
@@ -48,6 +49,18 @@ public abstract class Menu implements InventoryHolder {
         this.player.closeInventory();
     }
 
+    public MenuItem getMenuItem(int rawSlot) {
+        return this.menuItems.get(rawSlot);
+    }
+
+    public Runnable getCloseAction() {
+        return this.closeAction;
+    }
+
+    public void setCloseAction(Runnable closeAction) {
+        this.closeAction = closeAction;
+    }
+
     public void flush() {
         for (int slot : this.menuItems.keySet()) {
            this.inventory.setItem(slot, null);
@@ -78,13 +91,13 @@ public abstract class Menu implements InventoryHolder {
     }
 
     public void item(MenuItem menuItem) {
-        int slot = this.gridToSlot(menuItem.getRow(), menuItem.getSlot());
+        int slot = this.gridToSlot(menuItem.getSlot(), menuItem.getRow());
         this.menuItems.put(slot, menuItem);
         this.inventory.setItem(slot, menuItem.getItemStack());
     }
 
     public void item(UnaryOperator<MenuItem.Builder> builder) {
-        this.item(builder.apply(MenuItem.builder()).compose());
+        this.item(builder.apply(MenuItem.builder()).build());
     }
 
     public void items(UnaryOperator<MenuItem.Builder>... builders) {

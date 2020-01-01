@@ -30,7 +30,7 @@ public abstract class Storage<T> {
     }
 
     public T save(String id, T object) {
-        this.backend.save(id, this.serializer().apply(object, new JsonObject(), new GsonBuilder().setPrettyPrinting().create()));
+        this.backend.save(id, this.serializer().apply(object, new JsonObject(), new Gson()));
         return object;
     }
 

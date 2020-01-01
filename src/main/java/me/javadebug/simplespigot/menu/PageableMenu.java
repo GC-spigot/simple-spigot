@@ -30,6 +30,10 @@ public abstract class PageableMenu<T> extends Menu {
         this.cachedPageIndexes.clear();
     }
 
+    public int getPage() {
+        return this.page;
+    }
+
     public void drawPageableItems() {
         this.cachedPageIndexes.computeIfAbsent(this.page, key -> {
             int slotAmount = this.elementSlots.size();
@@ -44,7 +48,7 @@ public abstract class PageableMenu<T> extends Menu {
         });
         int slotIndex = 0;
         for (int index : this.cachedPageIndexes.get(this.page)) {
-            this.item(MenuItem.builderOf(this.pageableItem(this.elements.get(index))).rawSlot(this.elementSlots.get(slotIndex)).compose());
+            this.item(MenuItem.builderOf(this.pageableItem(this.elements.get(index))).rawSlot(this.elementSlots.get(slotIndex)).build());
             slotIndex++;
         }
     }
