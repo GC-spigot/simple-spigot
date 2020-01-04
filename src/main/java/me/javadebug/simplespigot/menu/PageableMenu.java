@@ -3,6 +3,7 @@ package me.javadebug.simplespigot.menu;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import me.javadebug.simplespigot.menu.item.MenuItem;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public abstract class PageableMenu<T> extends Menu {
     private final List<Integer> elementSlots;
     private Map<Integer, Set<Integer>> cachedPageIndexes = Maps.newHashMap();
 
-    protected int page;
+    protected int page = 1;
 
     public PageableMenu(Player player, String title, int rows, List<T> elements, List<Integer> elementSlots) {
         super(player, title, rows);

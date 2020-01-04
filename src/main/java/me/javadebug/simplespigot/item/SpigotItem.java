@@ -27,7 +27,6 @@ public class SpigotItem {
 
     public static ItemStack toItem(Config config, String path, UnaryOperator<Replacer> replacer) {
         UnaryOperator<String> pathBuilder = string -> String.format("%s.%s", path, string);
-
         ItemStack itemStack = MultiMaterial.itemFrom(config.get(pathBuilder.apply("material")));
         if (itemStack == null) {
             return null;
@@ -36,10 +35,10 @@ public class SpigotItem {
                 .itemStack(itemStack)
                 .name(Text.modify(config.string(pathBuilder.apply("name")), replacer))
                 .lore(Text.modify(config.list(pathBuilder.apply("lore")), replacer));
-        for (String flag : config.list(pathBuilder.apply("item-flags"))) {
+        for (String flag : config.stringList(pathBuilder.apply("item-flags"))) {
             builder.flag(flag);
         }
-        for (String enchant : config.list(pathBuilder.apply("enchants"))) {
+        for (String enchant : config.stringList(pathBuilder.apply("enchants"))) {
             builder.enchant(enchant);
         }
         return builder.build();

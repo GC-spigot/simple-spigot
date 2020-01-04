@@ -52,14 +52,14 @@ public class ConfigLoader {
         }
 
         public ItemStack getItem(String path, UnaryOperator<Replacer> replacer) {
-            return SpigotItem.toItem(this.config, this.currentPath + "." + path, replacer);
+            return SpigotItem.toItem(this.config, path.isEmpty() ? this.currentPath : this.currentPath.concat(".").concat(path), replacer);
         }
 
         public Reader keyLoop(String path, boolean deep, Consumer<String> consumer) {
             if (this.currentPath.isEmpty()) {
                 this.currentPath = path;
-            } else {
-                this.currentPath += ("." + path);
+            } else if (!path.isEmpty()) {
+                this.currentPath += (".".concat(path));
             }
             for (String key : this.config.keys(path, deep)) {
                 this.currentPath = path.isEmpty() ? key : path.concat(".").concat(key);

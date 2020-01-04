@@ -36,6 +36,10 @@ public class MenuItem {
         return this.clickAction;
     }
 
+    public static MenuItem of(ItemStack itemStack) {
+        return new MenuItem(itemStack, 1, 1, (menuItem, clickType) -> {});
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -54,6 +58,7 @@ public class MenuItem {
         }
 
         public Builder(MenuItem menuItem) {
+            this.itemStack = menuItem.getItemStack();
             this.slot = menuItem.getSlot();
             this.row = menuItem.getRow();
             this.clickAction = menuItem.getClickAction();

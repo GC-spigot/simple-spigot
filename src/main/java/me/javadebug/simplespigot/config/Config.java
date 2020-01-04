@@ -57,8 +57,13 @@ public class Config {
         return this.get(key);
     }
 
-    public List<String> list(String key) {
+    public List<String> stringList(String key) {
         List<String> list = this.get(key);
+        return list == null ? Lists.newArrayList() : list;
+    }
+
+    public <T> List<T> list(String key) {
+        List<T> list = this.get(key);
         return list == null ? Lists.newArrayList() : list;
     }
 
