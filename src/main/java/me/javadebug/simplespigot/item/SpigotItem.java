@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import me.javadebug.simplespigot.config.Config;
-import me.javadebug.simplespigot.text.Replacer;
+import me.javadebug.simplespigot.text.Replace;
 import me.javadebug.simplespigot.text.Text;
 import me.javadebug.simplespigot.version.MultiMaterial;
 import org.bukkit.Material;
@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
 public class SpigotItem {
@@ -25,16 +26,16 @@ public class SpigotItem {
         return new Builder();
     }
 
-    public static ItemStack toItem(Config config, String path, UnaryOperator<Replacer> replacer) {
+    public static ItemStack toItem(Config config, String path, Replace replace) {
         UnaryOperator<String> pathBuilder = string -> String.format("%s.%s", path, string);
         ItemStack itemStack = MultiMaterial.itemFrom(config.get(pathBuilder.apply("material")));
         if (itemStack == null) {
             return null;
         }
-        Builder builder = builder()
-                .itemStack(itemStack)
-                .name(Text.modify(config.string(pathBuilder.apply("name")), replacer))
-                .lore(Text.modify(config.list(pathBuilder.apply("lore")), replacer));
+        Builder builder = builder().itemStack(itemStack).amount(1);
+        validatePath(config, pathBuilder.apply("name"), localPath -> builder.name(Text.modify(config.string(pathBuilder.apply("name")), replace)));
+        validatePath(config, pathBuilder.apply("lore"), localPath -> builder.lore(Text.modify(config.list(localPath), replace)));
+        validatePath(config, pathBuilder.apply("amount"), localPath -> builder.amount(config.integer(localPath)));
         for (String flag : config.stringList(pathBuilder.apply("item-flags"))) {
             builder.flag(flag);
         }
@@ -46,6 +47,12 @@ public class SpigotItem {
 
     public static ItemStack toItem(Config config, String path) {
         return toItem(config, path, null);
+    }
+
+    private static void validatePath(Config config, String path, Consumer<String> localPath) {
+        if (config.get(path) != null) {
+            localPath.accept(path);
+        }
     }
 
     public static class Builder {

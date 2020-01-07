@@ -61,6 +61,14 @@ public abstract class Menu implements InventoryHolder {
         this.closeAction = closeAction;
     }
 
+    public String getTitle() {
+        return this.title;
+    }
+
+    public int getRows() {
+        return this.rows;
+    }
+
     public void flush() {
         for (int slot : this.menuItems.keySet()) {
            this.inventory.setItem(slot, null);
@@ -69,7 +77,10 @@ public abstract class Menu implements InventoryHolder {
     }
 
     public void flush(int x, int y) {
-        int slot = this.gridToSlot(x, y);
+        this.flush(this.gridToSlot(x, y));
+    }
+
+    public void flush(int slot) {
         this.menuItems.computeIfPresent(slot, (key, value) -> {
             this.menuItems.remove(slot);
             this.inventory.setItem(slot, null);

@@ -1,7 +1,6 @@
 package me.javadebug.simplespigot.storage.storage;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import me.javadebug.simplespigot.plugin.SimplePlugin;
 import me.javadebug.simplespigot.storage.Backend;

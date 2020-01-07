@@ -3,7 +3,6 @@ package me.javadebug.simplespigot.menu;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import me.javadebug.simplespigot.menu.item.MenuItem;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -38,7 +37,7 @@ public abstract class PageableMenu<T> extends Menu {
     public void drawPageableItems() {
         this.cachedPageIndexes.computeIfAbsent(this.page, key -> {
             int slotAmount = this.elementSlots.size();
-            Set<Integer> indexes = Sets.newHashSetWithExpectedSize(slotAmount);
+            Set<Integer> indexes = Sets.newLinkedHashSetWithExpectedSize(slotAmount);
             for (int slot = 0; slot < slotAmount; slot++) {
                 int index = (this.page - 1) * slotAmount + slot;
                 if (index < this.elements.size()) {
@@ -47,6 +46,9 @@ public abstract class PageableMenu<T> extends Menu {
             }
             return indexes;
         });
+        for (int slot : this.elementSlots) {
+            this.flush(slot);
+        }
         int slotIndex = 0;
         for (int index : this.cachedPageIndexes.get(this.page)) {
             this.item(MenuItem.builderOf(this.pageableItem(this.elements.get(index))).rawSlot(this.elementSlots.get(slotIndex)).build());
@@ -55,6 +57,9 @@ public abstract class PageableMenu<T> extends Menu {
     }
 
     public void nextPage(Runnable runnable) {
+        if (this.page * this.elementSlots.size() >= this.elements.size()) {
+            return;
+        }
         this.page++;
         runnable.run();
     }

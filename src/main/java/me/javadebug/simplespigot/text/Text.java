@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
 public class Text {
@@ -29,21 +28,21 @@ public class Text {
         return modify(string, null, args);
     }
 
-    public static String modify(String string, UnaryOperator<Replacer> replacerFunction, Object... args) {
-        return string == null ? null : renderColorCodes(String.format(replacerFunction == null ? string : replacerFunction.apply(new Replacer()).applyTo(string), args));
+    public static String modify(String string, Replace replace, Object... args) {
+        return string == null ? null : renderColorCodes(String.format(replace == null ? string : replace.apply(new Replacer()).applyTo(string), args));
     }
 
     public static List<String> modify(List<String> list) {
         return modify(list, null);
     }
 
-    public static List<String> modify(List<String> list, UnaryOperator<Replacer> replacerFunction) {
+    public static List<String> modify(List<String> list, Replace replace) {
         if (list == null) {
             return null;
         }
         List<String> middleList = Lists.newArrayList();
         for (String string : list) {
-            middleList.add(modify(string, replacerFunction));
+            middleList.add(modify(string, replace));
         }
         return middleList;
     }

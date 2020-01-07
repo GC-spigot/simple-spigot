@@ -1,12 +1,11 @@
 package me.javadebug.simplespigot.config;
 
 import me.javadebug.simplespigot.item.SpigotItem;
-import me.javadebug.simplespigot.text.Replacer;
+import me.javadebug.simplespigot.text.Replace;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.UnaryOperator;
 
 public class ConfigLoader {
 
@@ -51,8 +50,8 @@ public class ConfigLoader {
             return this.getItem(path, null);
         }
 
-        public ItemStack getItem(String path, UnaryOperator<Replacer> replacer) {
-            return SpigotItem.toItem(this.config, path.isEmpty() ? this.currentPath : this.currentPath.concat(".").concat(path), replacer);
+        public ItemStack getItem(String path, Replace replace) {
+            return SpigotItem.toItem(this.config, path.isEmpty() ? this.currentPath : this.currentPath.concat(".").concat(path), replace);
         }
 
         public Reader keyLoop(String path, boolean deep, Consumer<String> consumer) {
