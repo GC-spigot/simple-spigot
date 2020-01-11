@@ -20,7 +20,10 @@ public class Text {
 
     public static void sendMessage(Collection<CommandSender> recipient, String message) {
         for (CommandSender commandSender : recipient) {
-            commandSender.sendMessage(message);
+            String[] lines = message.split("\n");
+            for (String line : lines) {
+                sendMessage(commandSender, line);
+            }
         }
     }
 
