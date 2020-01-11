@@ -35,6 +35,11 @@ public class FutureCache<K, V> {
         });
     }
 
+    public Optional<V> getSync(K key) {
+        V value = this.subCache.getIfPresent(key);
+        return value == null ? Optional.empty() : Optional.of(value);
+    }
+
     public V set(K key, V value) {
         this.plugin.runAsync(() -> this.subCache.put(key, value));
         return value;
