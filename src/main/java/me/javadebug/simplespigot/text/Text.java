@@ -24,25 +24,25 @@ public class Text {
         }
     }
 
-    public static String modify(String string, Object... args) {
-        return modify(string, null, args);
+    public static String modify(String string) {
+        return modify(string, null);
     }
 
-    public static String modify(String string, Replace replace, Object... args) {
-        return string == null ? null : renderColorCodes(String.format(replace == null ? string : replace.apply(new Replacer()).applyTo(string), args));
+    public static String modify(String string, Replace replacer) {
+        return string == null ? null : renderColorCodes(replacer == null ? string : replacer.apply(new Replacer()).applyTo(string));
     }
 
     public static List<String> modify(List<String> list) {
         return modify(list, null);
     }
 
-    public static List<String> modify(List<String> list, Replace replace) {
+    public static List<String> modify(List<String> list, Replace replacer) {
         if (list == null) {
             return null;
         }
         List<String> middleList = Lists.newArrayList();
         for (String string : list) {
-            middleList.add(modify(string, replace));
+            middleList.add(modify(string, replacer));
         }
         return middleList;
     }

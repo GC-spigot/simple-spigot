@@ -3,6 +3,7 @@ package me.javadebug.simplespigot.menu.item;
 import me.javadebug.simplespigot.config.Config;
 import me.javadebug.simplespigot.item.SpigotItem;
 import me.javadebug.simplespigot.menu.item.click.ClickAction;
+import me.javadebug.simplespigot.text.Replace;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.function.UnaryOperator;
@@ -74,6 +75,11 @@ public class MenuItem {
             return this;
         }
 
+        public Builder item(Config config, String path, Replace replace) {
+            this.itemStack = SpigotItem.toItem(config, path, replace);
+            return this;
+        }
+
         public Builder slot(int slot) {
             this.slot = slot;
             return this;
@@ -85,7 +91,7 @@ public class MenuItem {
         }
 
         public Builder rawSlot(int slot) {
-            this.row = ((int) (slot / 9)) + 1;
+            this.row = slot / 9 + 1;
             this.slot = -9 * this.row + 10 + slot;
             return this;
         }

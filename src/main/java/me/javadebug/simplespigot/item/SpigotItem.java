@@ -149,7 +149,7 @@ public class SpigotItem {
             if (this.name != null) {
                 itemMeta.setDisplayName(this.name);
             }
-            if (!this.lore.isEmpty() && !this.lore.get(0).isEmpty()) {
+            if (!this.lore.isEmpty() && (!this.lore.get(0).isEmpty() || this.lore.size() >= 2)) {
                 itemMeta.setLore(this.lore);
             }
             if (!this.itemFlags.isEmpty()) {

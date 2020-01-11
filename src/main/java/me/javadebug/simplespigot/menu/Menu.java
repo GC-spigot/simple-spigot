@@ -6,9 +6,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
@@ -18,6 +21,7 @@ public abstract class Menu implements InventoryHolder {
     private MenuState menuState;
     private Runnable closeAction;
     private Map<Integer, MenuItem> menuItems = Maps.newHashMap();
+    private BukkitTask updater;
 
     private final String title;
     private final int rows;
@@ -67,6 +71,17 @@ public abstract class Menu implements InventoryHolder {
 
     public int getRows() {
         return this.rows;
+    }
+
+    // TODO work in progress
+    public void addUpdater(Plugin plugin, int interval, Predicate<MenuItem> condition) {
+        this.updater = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+            if (this.inventory.getHolder().equals(this)) {
+                this.redraw();
+            } else {
+                this.updater.cancel();
+            }
+        }, 0, interval);
     }
 
     public void flush() {
