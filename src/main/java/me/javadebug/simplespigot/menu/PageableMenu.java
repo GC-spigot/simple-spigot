@@ -1,10 +1,12 @@
 package me.javadebug.simplespigot.menu;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import me.javadebug.simplespigot.menu.item.MenuItem;
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,9 +18,9 @@ public abstract class PageableMenu<T> extends Menu {
 
     protected int page = 1;
 
-    public PageableMenu(Player player, String title, int rows, List<T> elements, List<Integer> elementSlots) {
+    public PageableMenu(Player player, String title, int rows, Collection<T> elements, List<Integer> elementSlots) {
         super(player, title, rows);
-        this.elements = elements;
+        this.elements = Lists.newArrayList(elements);
         this.elementSlots = elementSlots;
     }
 

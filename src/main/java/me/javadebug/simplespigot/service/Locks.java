@@ -21,6 +21,7 @@ public class Locks {
     }
 
     public static <T> T supplySafety(Lock lock, Supplier<T> supplier) {
+        lock.lock();
         try {
             return supplier.get();
         } finally {
@@ -29,6 +30,7 @@ public class Locks {
     }
 
     public static void safety(Lock lock, Runnable runnable) {
+        lock.lock();
         try {
             runnable.run();
         } finally {

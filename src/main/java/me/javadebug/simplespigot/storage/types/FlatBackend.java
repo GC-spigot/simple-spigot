@@ -36,11 +36,13 @@ public class FlatBackend implements Backend {
     @Override
     @SneakyThrows
     public void save(String id, JsonObject json) {
-        Path userPath = this.path.resolve(id + ".json");
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        Writer writer = Files.newBufferedWriter(userPath);
-        gson.toJson(json, Files.newBufferedWriter(userPath));
-        writer.close();
+        if (Files.exists(this.path)) {
+            Path userPath = this.path.resolve(id + ".json");
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            Writer writer = Files.newBufferedWriter(userPath);
+            gson.toJson(json, writer);
+            writer.close();
+        }
     }
 
     @Override
