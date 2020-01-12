@@ -39,7 +39,7 @@ public class FlatBackend implements Backend {
         Path userPath = this.path.resolve(id + ".json");
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Writer writer = Files.newBufferedWriter(userPath);
-        gson.toJson(json, writer);
+        gson.toJson(json, Files.newBufferedWriter(userPath));
         writer.close();
     }
 

@@ -1,7 +1,5 @@
 package me.javadebug.simplespigot.command;
 
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
 import me.javadebug.simplespigot.command.argument.ArgumentHandler;
 import me.javadebug.simplespigot.command.argument.ArgumentType;
@@ -19,21 +17,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 
 public class CommandBase implements CommandExecutor {
     private final JavaPlugin plugin;
-    private final String noPermissionMessage;
-    private Set<SimpleCommand> commands = Sets.newHashSet();
+    private Set<SimpleCommand<? extends CommandSender>> commands = Sets.newHashSet();
 
     public CommandBase(JavaPlugin plugin) {
         this.plugin = plugin;
-        this.noPermissionMessage = "No permission";
         this.registerArgumentTypes();
     }
 
-    public void registerCommand(SimpleCommand command) {
+    public void registerCommand(SimpleCommand<? super CommandSender> command) {
         PluginCommand pluginCommand = this.plugin.getCommand(command.getCommand());
         if (pluginCommand == null) {
             Bukkit.getLogger().log(Level.WARNING, "Failed to load the command " + command.getCommand());
@@ -49,14 +44,14 @@ public class CommandBase implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
+    public synchronized boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         String commandName = command.getName();
-        for (SimpleCommand simpleCommand : this.commands) {
+        for (SimpleCommand<? extends CommandSender> simpleCommand : this.commands) {
             if (!simpleCommand.getCommand().equalsIgnoreCase(commandName)) {
                 continue;
             }
             if (simpleCommand.getPermission() != null && !sender.hasPermission(simpleCommand.getPermission())) {
-                Text.sendMessage(sender, this.noPermissionMessage);
+                Text.sendMessage(sender, simpleCommand.getNoPermissionLang(sender));
                 return true;
             }
             if (!simpleCommand.isConsole() && sender instanceof ConsoleCommandSender) {
@@ -64,34 +59,29 @@ public class CommandBase implements CommandExecutor {
                 return true;
             }
             if (args.length == 0) {
-                simpleCommand.onExecute(sender, args);
+                simpleCommand.middleMan(sender, args);
                 return true;
             }
-            SubCommand subResult = null;
-            for (SubCommand subCommand : simpleCommand.getSubCommands()) {
+            SubCommand<? extends CommandSender> subResult = null;
+            for (SubCommand<? extends CommandSender> subCommand : simpleCommand.getSubCommands()) {
                 if (subCommand.getArgumentsSize() == args.length && subCommand.isMatch(args)) {
                     subResult = subCommand;
                     break;
                 }
             }
             if (subResult == null) {
-                simpleCommand.onExecute(sender, args);
+                simpleCommand.middleMan(sender, args);
                 return true;
             }
             if (subResult.getPermission() != null && !sender.hasPermission(subResult.getPermission())) {
-                Text.sendMessage(sender, this.noPermissionMessage);
+                Text.sendMessage(sender, subResult.getNoPermissionLang(sender));
                 return true;
             }
             if (!subResult.isConsole() && sender instanceof ConsoleCommandSender) {
                 sender.sendMessage("The console can not execute this command.");
                 return true;
             }
-            if (subResult.isAsync()) {
-                AtomicReference<SubCommand> atomicSubResult = new AtomicReference<>(subResult);
-                Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> atomicSubResult.get().onExecute(sender, args));
-            } else {
-                subResult.onExecute(sender, args);
-            }
+            subResult.middleMan(sender, args);
         }
         return false;
     }

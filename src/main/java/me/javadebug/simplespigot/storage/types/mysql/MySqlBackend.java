@@ -1,5 +1,6 @@
 package me.javadebug.simplespigot.storage.types.mysql;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
@@ -18,15 +19,16 @@ public class MySqlBackend implements Backend {
 
     private final UnaryOperator<String> processor;
 
-    private static final String CREATE_TABLE = "CREATE TABLE '{location}' ( id VARCHAR(36) NOT NULL,  json MEDIUMBLOB NOT NULL, PRIMARY KEY (id)";
-    private static final String DELETE = "DELETE FROM '{location}' WHERE id=?";
-    private static final String INSERT = "INSERT INTO '{location}' (id, json) VALUES(?, ?)";
-    private static final String SELECT = "SELECT id, json FROM {location} WHERE id=?";
+    private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS '%where%' ( id VARCHAR(36) NOT NULL,  json MEDIUMBLOB NOT NULL, PRIMARY KEY (id)";
+    private static final String DELETE = "DELETE FROM '%where%' WHERE id=?";
+    private static final String INSERT = "INSERT INTO '%where%' (id, json) VALUES(?, ?)";
+    private static final String SELECT = "SELECT id, json FROM %where% WHERE id=?";
 
     public MySqlBackend(SimplePlugin plugin, String tableName) {
         this.storageSettings = plugin.getStorageSettings();
         this.connectionFactory = new MySqlConnectionFactory(this.storageSettings);
-        this.processor = query -> query.replace("{location}", tableName + this.storageSettings.getPrefix());
+        this.processor = query -> query.replace("%where%", tableName + this.storageSettings.getPrefix());
+        this.createTable();
     }
 
     @Override
@@ -50,13 +52,27 @@ public class MySqlBackend implements Backend {
         try (Connection connection = this.connectionFactory.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(this.processor.apply(DELETE))) {
                 statement.setString(1, id);
+                statement.execute();
             }
         }
-
+        try (Connection connection = this.connectionFactory.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(this.processor.apply(INSERT))) {
+                statement.setString(1, id);
+                statement.setString(2, new Gson().toJson(json));
+                statement.execute();
+            }
+        }
     }
 
     @Override
     public void close() {
         this.connectionFactory.close();
+    }
+
+    @SneakyThrows
+    private void createTable() {
+        try (Connection connection = this.connectionFactory.getConnection()) {
+            connection.createStatement().execute(this.processor.apply(CREATE_TABLE));
+        }
     }
 }

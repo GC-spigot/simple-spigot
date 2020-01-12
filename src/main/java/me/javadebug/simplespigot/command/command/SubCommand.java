@@ -4,28 +4,23 @@ import com.google.common.collect.Lists;
 import me.javadebug.simplespigot.command.argument.Argument;
 import me.javadebug.simplespigot.command.argument.ArgumentHandler;
 import me.javadebug.simplespigot.plugin.SimplePlugin;
+import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-public abstract class SubCommand extends Command {
-    private final boolean isAsync;
+public abstract class SubCommand<T extends CommandSender> extends Command<T> {
     private final List<Argument<?>> arguments = Lists.newArrayList();
 
-    public SubCommand(SimplePlugin plugin, String permission, boolean isConsole, boolean isAsync) {
+    public SubCommand(SimplePlugin plugin, String permission, boolean isConsole) {
         super(plugin, permission, isConsole);
-        this.isAsync = isAsync;
     }
 
     public void addArgument(String flatArgument) {
         this.arguments.add(new Argument<>(null, flatArgument));
     }
 
-    protected <T> void addArgument(Class<?> clazz, String argument) {
-        this.arguments.add(new Argument<T>(ArgumentHandler.getArgumentType(clazz), argument));
-    }
-
-    public boolean isAsync() {
-        return this.isAsync;
+    protected <U> void addArgument(Class<U> clazz, String argument) {
+        this.arguments.add(new Argument<U>(ArgumentHandler.getArgumentType(clazz), argument));
     }
 
     public int getArgumentsSize() {
@@ -33,8 +28,8 @@ public abstract class SubCommand extends Command {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T parseArgument(String[] args, int index) {
-        return ((Argument<T>) this.arguments.get(index)).getType().parse(args[index]);
+    public <U> U parseArgument(String[] args, int index) {
+        return ((Argument<U>) this.arguments.get(index)).getType().parse(args[index]);
     }
 
     public boolean isMatch(String[] arguments) {
