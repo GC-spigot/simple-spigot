@@ -1,12 +1,13 @@
 package me.javadebug.simplespigot.storage.storage;
 
 import me.javadebug.simplespigot.plugin.SimplePlugin;
+import me.javadebug.simplespigot.storage.Backend;
+
+import java.util.function.Function;
 
 public abstract class DynamicStorage<T> extends Storage<T> {
 
-    // This class is not done, but will be used to achieve more advanced storage
-
-    public DynamicStorage(SimplePlugin plugin) {
-        super(plugin);
+    public DynamicStorage(SimplePlugin plugin, Function<Storage<T>, Backend> backend) {
+        super(plugin, backend);
     }
 }
