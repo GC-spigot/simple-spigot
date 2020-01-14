@@ -1,9 +1,8 @@
 package me.javadebug.simplespigot.plugin;
 
-import me.javadebug.simplespigot.command.command.Command;
 import me.javadebug.simplespigot.command.command.SimpleCommand;
 import me.javadebug.simplespigot.registry.Registry;
-import me.javadebug.simplespigot.storage.StorageFactory;
+import me.javadebug.simplespigot.storage.BackendFactory;
 import me.javadebug.simplespigot.storage.StorageSettings;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -27,7 +26,7 @@ public interface SimplePlugin extends Plugin {
 
     void registerCommands(SimpleCommand... commands);
 
-    StorageFactory getStorageFactory();
+    BackendFactory getStorageFactory();
 
     StorageSettings getStorageSettings();
 }
