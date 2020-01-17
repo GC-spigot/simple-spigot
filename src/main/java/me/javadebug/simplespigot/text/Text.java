@@ -2,11 +2,13 @@ package me.javadebug.simplespigot.text;
 
 import com.google.common.collect.Lists;
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 public class Text {
@@ -16,7 +18,13 @@ public class Text {
     private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + SECTION_CHAR + "[0-9A-FK-OR]");
 
     public static void sendMessage(CommandSender recipient, String message) {
-        recipient.sendMessage(modify(recipient instanceof Player ? PlaceholderAPI.setPlaceholders((Player) recipient, message) : message));
+        Supplier<String> processor = () -> {
+            if (recipient instanceof Player && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+                return PlaceholderAPI.setPlaceholders((Player) recipient, message);
+            }
+            return message;
+        };
+        recipient.sendMessage(modify(processor.get()));
     }
 
     public static void sendMessage(Collection<CommandSender> recipient, String message) {
