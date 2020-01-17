@@ -1,6 +1,6 @@
 package me.javadebug.simplespigot.pipeline;
 
-public interface Handler<T, R> {
+public interface Step<T, R> {
 
     R process(T type);
 }
