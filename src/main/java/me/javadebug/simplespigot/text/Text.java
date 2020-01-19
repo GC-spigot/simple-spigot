@@ -4,7 +4,10 @@ import com.google.common.collect.Lists;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collection;
 import java.util.List;
@@ -57,6 +60,18 @@ public class Text {
             middleList.add(modify(string, replacer));
         }
         return middleList;
+    }
+
+    public static ItemStack modify(ItemStack itemStack, Replace replacer) {
+        ItemStack mutableItem = itemStack.clone();
+        ItemMeta itemMeta = mutableItem.getItemMeta();
+        if (itemMeta == null) {
+            return mutableItem;
+        }
+        itemMeta.setDisplayName(modify(itemMeta.getDisplayName(), replacer));
+        itemMeta.setLore(modify(itemMeta.getLore(), replacer));
+        mutableItem.setItemMeta(itemMeta);
+        return mutableItem;
     }
 
     public static String decolorize(String string) {

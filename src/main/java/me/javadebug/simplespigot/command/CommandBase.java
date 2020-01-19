@@ -50,7 +50,7 @@ public class CommandBase implements CommandExecutor {
             if (!simpleCommand.getCommand().equalsIgnoreCase(commandName)) {
                 continue;
             }
-            if (simpleCommand.getPermission() != null && !sender.hasPermission(simpleCommand.getPermission())) {
+            if (simpleCommand.getPermission() != null && !simpleCommand.getPermission().isEmpty() && !sender.hasPermission(simpleCommand.getPermission())) {
                 Text.sendMessage(sender, simpleCommand.getNoPermissionLang(sender));
                 return true;
             }
@@ -73,7 +73,7 @@ public class CommandBase implements CommandExecutor {
                 simpleCommand.middleMan(sender, args);
                 return true;
             }
-            if (!subResult.doesInheritPermission() && subResult.getPermission() != null && !sender.hasPermission(subResult.getPermission())) {
+            if (!subResult.doesInheritPermission() && subResult.getPermission() != null && !sender.hasPermission(subResult.getPermission()) && !simpleCommand.getPermission().isEmpty()) {
                 Text.sendMessage(sender, subResult.getNoPermissionLang(sender));
                 return true;
             }
