@@ -16,6 +16,18 @@ public abstract class SimpleCommand<T extends CommandSender> extends Command<T> 
         this.command = command;
     }
 
+    public SimpleCommand(SimplePlugin plugin, String command, boolean isConsole) {
+        this(plugin, command, "", isConsole);
+    }
+
+    public SimpleCommand(SimplePlugin plugin, String command, String permission) {
+        this(plugin, command, permission, true);
+    }
+
+    public SimpleCommand(SimplePlugin plugin, String command) {
+        this(plugin, command, true);
+    }
+
     public String getCommand() {
         return this.command;
     }

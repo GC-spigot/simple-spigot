@@ -73,7 +73,7 @@ public class CommandBase implements CommandExecutor {
                 simpleCommand.middleMan(sender, args);
                 return true;
             }
-            if (subResult.getPermission() != null && !sender.hasPermission(subResult.getPermission())) {
+            if (!subResult.doesInheritPermission() && subResult.getPermission() != null && !sender.hasPermission(subResult.getPermission())) {
                 Text.sendMessage(sender, subResult.getNoPermissionLang(sender));
                 return true;
             }
