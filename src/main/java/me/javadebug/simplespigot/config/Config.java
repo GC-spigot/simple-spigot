@@ -40,7 +40,7 @@ public class Config {
     }
 
     public boolean bool(String key) {
-        return Boolean.parseBoolean(this.get(key));
+        return Boolean.parseBoolean(this.get(key, "false"));
     }
 
     public boolean conditionalBool(String key, Runnable falseRun, Runnable trueRun) {
@@ -54,7 +54,7 @@ public class Config {
     }
 
     public int integer(String key) {
-        return this.get(key);
+        return this.get(key, -1);
     }
 
     public List<String> stringList(String key) {
@@ -82,6 +82,15 @@ public class Config {
             return (T) this.valueMap.get(key);
         } else {
             return null;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T get(String key, T def) {
+        if (this.valueMap.containsKey(key)) {
+            return (T) this.valueMap.get(key);
+        } else {
+            return def;
         }
     }
 

@@ -12,6 +12,10 @@ public class Locks {
         return new ReentrantLock();
     }
 
+    public static ReentrantLock newReentrantLock(boolean fair) {
+        return new ReentrantLock(fair);
+    }
+
     public static ReentrantReadWriteLock newReadWriteLock() {
         return new ReentrantReadWriteLock();
     }
