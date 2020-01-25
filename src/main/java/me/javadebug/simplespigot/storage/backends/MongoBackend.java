@@ -1,9 +1,7 @@
-package me.javadebug.simplespigot.storage.types;
+package me.javadebug.simplespigot.storage.backends;
 
 import com.google.gson.JsonObject;
 import me.javadebug.simplespigot.storage.Backend;
-import me.javadebug.simplespigot.storage.storage.load.Deserializer;
-import me.javadebug.simplespigot.storage.storage.load.Serializer;
 
 public class MongoBackend implements Backend {
 

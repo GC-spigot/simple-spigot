@@ -76,7 +76,7 @@ public abstract class Menu implements InventoryHolder {
     // TODO work in progress
     public void addUpdater(Plugin plugin, int interval, Predicate<MenuItem> condition) {
         this.updater = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-            if (this.inventory.getHolder().equals(this)) {
+            if (this.inventory.getHolder() != null && this.inventory.getHolder().equals(this.player.getOpenInventory().getTopInventory().getHolder())) {
                 this.redraw();
             } else {
                 this.updater.cancel();

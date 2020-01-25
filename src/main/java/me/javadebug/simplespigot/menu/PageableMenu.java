@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import me.javadebug.simplespigot.menu.item.MenuItem;
+import me.javadebug.simplespigot.service.MutablePair;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
@@ -18,13 +19,15 @@ public abstract class PageableMenu<T> extends Menu {
 
     protected int page = 1;
 
-    public PageableMenu(Player player, String title, int rows, Collection<T> elements, List<Integer> elementSlots) {
+    public PageableMenu(Player player, String title, int rows) {
         super(player, title, rows);
-        this.elements = Lists.newArrayList(elements);
-        this.elementSlots = elementSlots;
+        this.elements = Lists.newArrayList(this.elementSlots().getKey());
+        this.elementSlots = this.elementSlots().getValue();
     }
 
     public abstract MenuItem pageableItem(T object);
+
+    public abstract MutablePair<Collection<T>, List<Integer>> elementSlots();
 
     @Override
     public void close() {

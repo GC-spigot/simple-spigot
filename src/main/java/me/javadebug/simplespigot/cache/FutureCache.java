@@ -1,5 +1,6 @@
 package me.javadebug.simplespigot.cache;
 
+import com.google.common.base.Joiner;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import me.javadebug.simplespigot.plugin.SimplePlugin;
@@ -36,12 +37,11 @@ public class FutureCache<K, V> {
     }
 
     public Optional<V> getSync(K key) {
-        V value = this.subCache.getIfPresent(key);
-        return value == null ? Optional.empty() : Optional.of(value);
+        return Optional.ofNullable(this.subCache.getIfPresent(key));
     }
 
     public V set(K key, V value) {
-        this.plugin.runAsync(() -> this.subCache.put(key, value));
+        this.subCache.put(key, value);
         return value;
     }
 

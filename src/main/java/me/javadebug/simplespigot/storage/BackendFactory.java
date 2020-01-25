@@ -2,9 +2,9 @@ package me.javadebug.simplespigot.storage;
 
 import com.google.common.collect.Maps;
 import me.javadebug.simplespigot.plugin.SimplePlugin;
-import me.javadebug.simplespigot.storage.types.FlatBackend;
-import me.javadebug.simplespigot.storage.types.MongoBackend;
-import me.javadebug.simplespigot.storage.types.mysql.MySqlBackend;
+import me.javadebug.simplespigot.storage.backends.FlatBackend;
+import me.javadebug.simplespigot.storage.backends.MongoBackend;
+import me.javadebug.simplespigot.storage.backends.mysql.MySqlBackend;
 
 import java.nio.file.Path;
 import java.util.Map;

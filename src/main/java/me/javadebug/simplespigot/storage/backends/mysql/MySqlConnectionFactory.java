@@ -1,4 +1,4 @@
-package me.javadebug.simplespigot.storage.types.mysql;
+package me.javadebug.simplespigot.storage.backends.mysql;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

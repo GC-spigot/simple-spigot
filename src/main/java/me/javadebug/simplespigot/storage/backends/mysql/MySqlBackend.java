@@ -1,4 +1,4 @@
-package me.javadebug.simplespigot.storage.types.mysql;
+package me.javadebug.simplespigot.storage.backends.mysql;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

@@ -1,4 +1,4 @@
-package me.javadebug.simplespigot.storage.types;
+package me.javadebug.simplespigot.storage.backends;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -6,8 +6,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
 import me.javadebug.simplespigot.storage.Backend;
-import me.javadebug.simplespigot.storage.storage.load.Deserializer;
-import me.javadebug.simplespigot.storage.storage.load.Serializer;
 
 import java.io.FileReader;
 import java.io.Writer;

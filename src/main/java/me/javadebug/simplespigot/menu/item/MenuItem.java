@@ -41,6 +41,10 @@ public class MenuItem {
         return new MenuItem(itemStack, 1, 1, (menuItem, clickType) -> {});
     }
 
+    public static Builder builderOf(ItemStack itemStack) {
+        return new Builder(new MenuItem(itemStack, 1, 1, (menuItem, clickType) -> {}));
+    }
+
     public static Builder builder() {
         return new Builder();
     }

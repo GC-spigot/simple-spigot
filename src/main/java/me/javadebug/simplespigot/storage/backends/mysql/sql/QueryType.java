@@ -1,4 +1,4 @@
-package me.javadebug.simplespigot.storage.types.mysql.sql;
+package me.javadebug.simplespigot.storage.backends.mysql.sql;
 
 public enum QueryType {
 
