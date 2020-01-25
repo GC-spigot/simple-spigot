@@ -13,16 +13,14 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class PageableMenu<T> extends Menu {
-    private final List<T> elements;
-    private final List<Integer> elementSlots;
+    private List<T> elements;
+    private List<Integer> elementSlots;
     private Map<Integer, Set<Integer>> cachedPageIndexes = Maps.newHashMap();
 
     protected int page = 1;
 
     public PageableMenu(Player player, String title, int rows) {
         super(player, title, rows);
-        this.elements = Lists.newArrayList(this.elementSlots().getKey());
-        this.elementSlots = this.elementSlots().getValue();
     }
 
     public abstract MenuItem pageableItem(T object);
@@ -40,6 +38,8 @@ public abstract class PageableMenu<T> extends Menu {
     }
 
     public void drawPageableItems() {
+        this.elements = Lists.newArrayList(this.elementSlots().getKey());
+        this.elementSlots = this.elementSlots().getValue();
         this.cachedPageIndexes.computeIfAbsent(this.page, key -> {
             int slotAmount = this.elementSlots.size();
             Set<Integer> indexes = Sets.newLinkedHashSetWithExpectedSize(slotAmount);
