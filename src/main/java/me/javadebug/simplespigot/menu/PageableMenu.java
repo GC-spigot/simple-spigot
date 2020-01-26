@@ -38,6 +38,10 @@ public abstract class PageableMenu<T> extends Menu {
     }
 
     public void drawPageableItems() {
+        this.drawPageableItems(() -> {});
+    }
+
+    public void drawPageableItems(Runnable runBeforeSet) {
         if (this.elements == null || this.elementSlots == null) {
             this.elements = Lists.newArrayList(this.elementalValues().getKey());
             this.elementSlots = Lists.newArrayList(this.elementalValues().getValue());
@@ -53,6 +57,10 @@ public abstract class PageableMenu<T> extends Menu {
             }
             return indexes;
         });
+        for (int slot : this.elementSlots) {
+            this.flush(slot);
+        }
+        runBeforeSet.run();
         int slotIndex = 0;
         for (int index : this.cachedPageIndexes.get(this.page)) {
             this.item(MenuItem.builderOf(this.pageableItem(this.elements.get(index))).rawSlot(this.elementSlots.get(slotIndex)).build());
@@ -61,7 +69,7 @@ public abstract class PageableMenu<T> extends Menu {
     }
 
     public void nextPage(Runnable runnable) {
-        if (this.page * this.elementSlots.size() >= this.elements.size()) {
+        if (this.elements.size() < this.elementSlots.size() * this.page + 1) {
             return;
         }
         this.page++;
@@ -71,5 +79,11 @@ public abstract class PageableMenu<T> extends Menu {
     public void previousPage(Runnable runnable) {
         this.page--;
         runnable.run();
+    }
+
+    public void refreshPageableItems() {
+        this.elements = Lists.newArrayList(this.elementalValues().getKey());
+        this.cachedPageIndexes.clear();
+        this.redraw();
     }
 }
