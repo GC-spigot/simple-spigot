@@ -25,7 +25,7 @@ public abstract class PageableMenu<T> extends Menu {
 
     public abstract MenuItem pageableItem(T object);
 
-    public abstract MutablePair<Collection<T>, List<Integer>> elementSlots();
+    public abstract MutablePair<Collection<T>, Collection<Integer>> elementalValues();
 
     @Override
     public void close() {
@@ -38,8 +38,10 @@ public abstract class PageableMenu<T> extends Menu {
     }
 
     public void drawPageableItems() {
-        this.elements = Lists.newArrayList(this.elementSlots().getKey());
-        this.elementSlots = this.elementSlots().getValue();
+        if (this.elements == null || this.elementSlots == null) {
+            this.elements = Lists.newArrayList(this.elementalValues().getKey());
+            this.elementSlots = Lists.newArrayList(this.elementalValues().getValue());
+        }
         this.cachedPageIndexes.computeIfAbsent(this.page, key -> {
             int slotAmount = this.elementSlots.size();
             Set<Integer> indexes = Sets.newLinkedHashSetWithExpectedSize(slotAmount);
@@ -51,9 +53,6 @@ public abstract class PageableMenu<T> extends Menu {
             }
             return indexes;
         });
-        for (int slot : this.elementSlots) {
-            this.flush(slot);
-        }
         int slotIndex = 0;
         for (int index : this.cachedPageIndexes.get(this.page)) {
             this.item(MenuItem.builderOf(this.pageableItem(this.elements.get(index))).rawSlot(this.elementSlots.get(slotIndex)).build());
