@@ -4,8 +4,8 @@
 ```xml
 <repositories>
     <repository>
-	<id>coming.soon</id>
-	<url>https://coming.soon</url>
+	<id>raw-git</id>
+	<url>https://rawgit.com/Hyfe-JavaDebug/artifacts/master</url>
     </repository>
 </repositories>
 <dependencies>
