@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import me.javadebug.simplespigot.menu.item.MenuItem;
-import me.javadebug.simplespigot.service.MutablePair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
@@ -25,7 +25,7 @@ public abstract class PageableMenu<T> extends Menu {
 
     public abstract MenuItem pageableItem(T object);
 
-    public abstract MutablePair<Collection<T>, Collection<Integer>> elementalValues();
+    public abstract ImmutablePair<Collection<T>, Collection<Integer>> elementalValues();
 
     @Override
     public void close() {

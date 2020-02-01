@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import me.javadebug.simplespigot.config.Config;
+import me.javadebug.simplespigot.nbt.type.NbtItem;
 import me.javadebug.simplespigot.text.Replace;
 import me.javadebug.simplespigot.text.Text;
 import me.javadebug.simplespigot.version.MultiMaterial;
@@ -59,7 +60,7 @@ public class SpigotItem {
         private ItemStack itemStack = new ItemStack(Material.DIRT);
         private Material material;
         private byte data;
-        private int amount;
+        private int amount = 1;
         private String name;
         private List<String> lore = Lists.newArrayList();
         private Set<ItemFlag> itemFlags = Sets.newHashSet();
@@ -74,6 +75,11 @@ public class SpigotItem {
         public Builder item(Material material, int data) {
             this.material = material;
             this.data = (byte) data;
+            return this;
+        }
+
+        public Builder item(Material material) {
+            this.material = material;
             return this;
         }
 
@@ -136,6 +142,10 @@ public class SpigotItem {
         }
 
         public ItemStack build() {
+            return this.build(null);
+        }
+
+        public ItemStack build(UnaryOperator<NbtItem> function) {
             if (this.material != null) {
                 this.itemStack = new ItemStack(this.material, this.amount, this.data);
             }
@@ -163,7 +173,10 @@ public class SpigotItem {
                 itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
             this.itemStack.setItemMeta(itemMeta);
-            return itemStack;
+            if (function == null) {
+                return this.itemStack;
+            }
+            return function.apply(new NbtItem(this.itemStack)).getItem();
         }
     }
 }

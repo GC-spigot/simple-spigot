@@ -1,4 +1,4 @@
-package me.javadebug.simplespigot.service;
+package me.javadebug.simplespigot.collection.tuple;
 
 public class MutablePair<K, V> {
     private K key;
@@ -23,5 +23,9 @@ public class MutablePair<K, V> {
 
     public void setValue(V value) {
         this.value = value;
+    }
+
+    public static <S, U> MutablePair<S, U> of(S key, U value) {
+        return new MutablePair<>(key, value);
     }
 }

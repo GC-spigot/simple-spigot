@@ -57,6 +57,10 @@ public class Config {
         return this.get(key, -1);
     }
 
+    public double doubl(String key) {
+        return Double.parseDouble(this.get(key, "0.0"));
+    }
+
     public List<String> stringList(String key) {
         List<String> list = this.get(key);
         return list == null ? Lists.newArrayList() : list;

@@ -2,10 +2,12 @@ package me.javadebug.simplespigot.plugin;
 
 import me.javadebug.simplespigot.command.CommandBase;
 import me.javadebug.simplespigot.command.command.SimpleCommand;
+import me.javadebug.simplespigot.config.ConfigStore;
 import me.javadebug.simplespigot.registry.Registry;
 import me.javadebug.simplespigot.storage.BackendFactory;
 import me.javadebug.simplespigot.storage.StorageSettings;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,6 +18,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SimplePlugin {
     private final BackendFactory storageFactory = new BackendFactory(this);
     private final StorageSettings storageSettings = new StorageSettings();
     private final CommandBase commandBase = new CommandBase(this);
+    private final ConfigStore configStore = new ConfigStore(this);
 
     @Override
     public void runAsync(Runnable runnable) {
@@ -68,7 +71,13 @@ public abstract class SpigotPlugin extends JavaPlugin implements SimplePlugin {
         return this.storageSettings;
     }
 
+    @Override
     public CommandBase getCommandBase() {
         return this.commandBase;
+    }
+
+    @Override
+    public ConfigStore getConfigStore() {
+        return this.configStore;
     }
 }
