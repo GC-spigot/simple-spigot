@@ -3,10 +3,10 @@
 How to include the library with Maven
 ```xml
 <repositories>
-	<repository>
-		<id>coming.soon</id>
-		<url>https://coming.soon</url>
-	</repository>
+    <repository>
+	<id>coming.soon</id>
+	<url>https://coming.soon</url>
+    </repository>
 </repositories>
 <dependencies>
     <dependency>
