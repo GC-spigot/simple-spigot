@@ -1,4 +1,4 @@
-# simple-spigot
+# simple-spigot (library)
 
 > How do i include the library with Maven?
 ```xml
