@@ -1,6 +1,6 @@
 # simple-spigot
 
-How to include the library with Maven
+> How to include the library with Maven
 ```xml
 <repositories>
     <repository>
