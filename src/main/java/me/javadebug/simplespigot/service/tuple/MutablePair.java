@@ -1,4 +1,4 @@
-package me.javadebug.simplespigot.collection.tuple;
+package me.javadebug.simplespigot.service.tuple;
 
 public class MutablePair<K, V> {
     private K key;
