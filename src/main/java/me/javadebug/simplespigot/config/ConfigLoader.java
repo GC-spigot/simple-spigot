@@ -34,16 +34,20 @@ public class ConfigLoader {
             this.currentPath = currentPath;
         }
 
+        public boolean has(String path) {
+            return this.config.has(this.currentPath.concat(".").concat(path));
+        }
+
         public String string(String path) {
-            return this.config.string(this.currentPath + "." + path);
+            return this.config.string(this.currentPath.concat(".").concat(path));
         }
 
         public int integer(String path) {
-            return this.config.integer(this.currentPath + "." + path);
+            return this.config.integer(this.currentPath.concat(".").concat(path));
         }
 
         public List<String> list(String path) {
-            return this.config.list(this.currentPath + "." + path);
+            return this.config.list(this.currentPath.concat(".").concat(path));
         }
 
         public ItemStack getItem(String path) {

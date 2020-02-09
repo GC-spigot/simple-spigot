@@ -1,5 +1,6 @@
 package me.javadebug.simplespigot.service;
 
+import com.google.common.collect.Sets;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -19,5 +20,9 @@ public class GeneralSpigot {
                 world.dropItemNaturally(location, entry.getValue());
             }
         }
+    }
+
+    public static void giveItem(Player player, ItemStack itemStack) {
+        giveItem(player, Sets.newHashSet(itemStack));
     }
 }

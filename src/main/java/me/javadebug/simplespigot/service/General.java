@@ -2,11 +2,11 @@ package me.javadebug.simplespigot.service;
 
 public class General {
 
-    public static String formatSeconds(int initialSeconds) {
-        int days = initialSeconds / 86400;
-        int hours = initialSeconds % 86400 / 3600;
-        int minutes = initialSeconds % 3600 / 60;
-        int seconds = initialSeconds % 60;
+    public static String formatSeconds(long initialSeconds) {
+        long days = initialSeconds / 86400;
+        long hours = initialSeconds % 86400 / 3600;
+        long minutes = initialSeconds % 3600 / 60;
+        long seconds = initialSeconds % 60;
         if (days < 1) {
             return String.format("%dh %dm %ds", hours, minutes, seconds);
         }

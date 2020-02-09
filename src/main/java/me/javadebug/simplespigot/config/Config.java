@@ -35,6 +35,10 @@ public class Config {
         return this.configuration;
     }
 
+    public boolean has(String key) {
+        return this.configuration.contains(key);
+    }
+
     public String string(String key) {
         return Text.modify((String) this.get(key));
     }

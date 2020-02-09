@@ -1,5 +1,6 @@
 package me.javadebug.simplespigot.version;
 
+import me.javadebug.simplespigot.service.tuple.ImmutablePair;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -1080,6 +1081,21 @@ public enum MultiMaterial {
             }
         }
         return null;
+    }
+
+    public static ImmutablePair<MultiMaterial, Byte> splitString(String string) {
+        String[] split = string.split(":");
+        byte data = split.length > 1 ? Byte.parseByte(split[1]) : 0;
+        MultiMaterial multiMaterial = MultiMaterial.fromString(split[0], data);
+        return new ImmutablePair<>(multiMaterial, data);
+    }
+
+    public static String toSplittableString(Material material, byte data) {
+        return material.toString().toLowerCase().concat(":").concat(Byte.toString(data));
+    }
+
+    public static String toSplittableString(ItemStack itemStack) {
+        return toSplittableString(itemStack.getType(), itemStack.getData().getData());
     }
 
     private enum MaterialVersion {
