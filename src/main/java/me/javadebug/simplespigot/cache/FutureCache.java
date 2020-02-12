@@ -48,4 +48,8 @@ public class FutureCache<K, V> {
     public void invalidate(K key) {
         this.subCache.invalidate(key);
     }
+
+    public void invalidateAll() {
+        this.subCache.invalidateAll();
+    }
 }
