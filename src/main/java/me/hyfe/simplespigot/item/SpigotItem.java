@@ -33,16 +33,12 @@ public class SpigotItem {
         if (itemStack == null) {
             return null;
         }
-        Builder builder = builder().itemStack(itemStack).amount(1);
+        Builder builder = builder().itemStack(itemStack);
         validatePath(config, pathBuilder.apply("name"), localPath -> builder.name(Text.modify(config.string(pathBuilder.apply("name")), replace)));
         validatePath(config, pathBuilder.apply("lore"), localPath -> builder.lore(Text.modify(config.list(localPath), replace)));
         validatePath(config, pathBuilder.apply("amount"), localPath -> builder.amount(config.integer(localPath)));
-        for (String flag : config.stringList(pathBuilder.apply("item-flags"))) {
-            builder.flag(flag);
-        }
-        for (String enchant : config.stringList(pathBuilder.apply("enchants"))) {
-            builder.enchant(enchant);
-        }
+        config.stringList(pathBuilder.apply("item-flags")).forEach(builder::flag);
+        config.stringList(pathBuilder.apply("enchants")).forEach(builder::enchant);
         return builder.build();
     }
 
