@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.javadebug</groupId>
-    <artifactId>SimpleSpigot</artifactId>
+    <groupId>me.hyfe</groupId>
+    <artifactId>simple-spigot</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>SimpleSpigot</name>
+    <name>simple-spigot</name>
 
     <description>A simple spigot library</description>
     <properties>
@@ -101,6 +101,14 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <relocations>
+                        <relocation>
+                            <pattern>com.zaxxer.HikariCP</pattern>
+                            <shadedPattern>me.hyfe.shade.hikari</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
             </plugin>
         </plugins>
         <resources>
