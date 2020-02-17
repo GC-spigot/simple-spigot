@@ -42,12 +42,24 @@ public class ConfigLoader {
             return this.config.string(this.currentPath.concat(".").concat(path));
         }
 
+        public String string() {
+            return this.config.string(this.currentPath);
+        }
+
         public int integer(String path) {
             return this.config.integer(this.currentPath.concat(".").concat(path));
         }
 
+        public int integer() {
+            return this.config.integer(this.currentPath);
+        }
+
         public List<String> list(String path) {
             return this.config.list(this.currentPath.concat(".").concat(path));
+        }
+
+        public List<String> list() {
+            return this.config.list(this.currentPath);
         }
 
         public ItemStack getItem(String path) {

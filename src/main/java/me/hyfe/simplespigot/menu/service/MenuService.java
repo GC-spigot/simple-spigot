@@ -32,7 +32,7 @@ public class MenuService {
         if (StringUtils.isNumeric(id)) {
             return Sets.newHashSet(Integer.parseInt(id));
         }
-        String subParse = config.string(String.format("%s.slots", prefix.concat(id)));
+        String subParse = config.string(String.format("%s.slots", prefix.concat(id))).replace(" ", "");
         if (subParse == null) {
             return slots;
         }
