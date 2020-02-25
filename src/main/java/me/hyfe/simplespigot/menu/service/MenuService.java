@@ -33,10 +33,7 @@ public class MenuService {
             return Sets.newHashSet(Integer.parseInt(id));
         }
         String subParse = config.string(String.format("%s.slots", prefix.concat(id))).replace(" ", "");
-        if (subParse == null) {
-            return slots;
-        }
-        if (subParse.replace(" ", "").equalsIgnoreCase("empty")) {
+        if (subParse.replace(" ", "").equalsIgnoreCase("fill")) {
             for (int slot = 0; slot < menu.getInventory().getSize(); slot++) {
                 ItemStack itemStack = menu.getInventory().getItem(slot);
                 if (itemStack == null || itemStack.getType().equals(Material.AIR)) {

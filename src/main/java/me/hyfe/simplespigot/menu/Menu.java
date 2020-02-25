@@ -72,6 +72,10 @@ public abstract class Menu implements InventoryHolder {
         return this.rows;
     }
 
+    public MenuState getMenuState() {
+        return this.menuState;
+    }
+
     // TODO optimize
     public void addUpdater(Plugin plugin, int interval) {
         this.updater = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
@@ -140,7 +144,7 @@ public abstract class Menu implements InventoryHolder {
         return 9 * (y - 1) + (x - 1);
     }
 
-    private enum MenuState {
+    public enum MenuState {
         RAW, ACTIVE;
 
         public boolean isRaw() {
