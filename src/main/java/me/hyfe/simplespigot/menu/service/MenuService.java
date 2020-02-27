@@ -26,14 +26,33 @@ public class MenuService {
     }
 
     public static Set<Integer> parseSlots(Menu menu, Config config, String prefix, String id) {
-        BiFunction<Menu, String, String> converter = (fMenu, entry) -> entry.equalsIgnoreCase("end") || entry.equalsIgnoreCase("start") ? Integer.toString(entry.equalsIgnoreCase("end") ? menu.getRows() * 9 - 1 : 0) : entry;
-        BiFunction<Menu, Integer, Integer> slotLimiter = (fMenu, slot) -> slot < 0 ? 0 : Math.min(slot, menu.getRows() * 9 - 1);
         Set<Integer> slots = Sets.newHashSet();
         if (StringUtils.isNumeric(id)) {
             return Sets.newHashSet(Integer.parseInt(id));
         }
         String subParse = config.string(String.format("%s.slots", prefix.concat(id))).replace(" ", "");
-        if (subParse.replace(" ", "").equalsIgnoreCase("fill")) {
+        Set<Integer> parsedSlots = parseSlots(menu, subParse);
+        if (parsedSlots != null) {
+            return parsedSlots;
+        }
+        List<String> commaSplit = Splitter.on(",").omitEmptyStrings().splitToList(subParse);
+        if (commaSplit.size() > 0) {
+            for (String toParse : commaSplit) {
+                if (StringUtils.isNumeric(toParse)) {
+                    slots.add(Integer.parseInt(toParse));
+                }
+                slots.addAll(parseSlots(menu, config, toParse));
+            }
+            return slots;
+        }
+        return slots;
+    }
+
+    public static Set<Integer> parseSlots(Menu menu, String toParse) {
+        BiFunction<Menu, String, String> converter = (fMenu, entry) -> entry.equalsIgnoreCase("end") || entry.equalsIgnoreCase("start") ? Integer.toString(entry.equalsIgnoreCase("end") ? menu.getRows() * 9 - 1 : 0) : entry;
+        BiFunction<Menu, Integer, Integer> slotLimiter = (fMenu, slot) -> slot < 0 ? 0 : Math.min(slot, menu.getRows() * 9 - 1);
+        Set<Integer> slots = Sets.newHashSet();
+        if (toParse.replace(" ", "").equalsIgnoreCase("fill")) {
             for (int slot = 0; slot < menu.getInventory().getSize(); slot++) {
                 ItemStack itemStack = menu.getInventory().getItem(slot);
                 if (itemStack == null || itemStack.getType().equals(Material.AIR)) {
@@ -42,7 +61,7 @@ public class MenuService {
             }
             return slots;
         }
-        List<String> dotSplit = Splitter.on("...").omitEmptyStrings().splitToList(subParse);
+        List<String> dotSplit = Splitter.on("...").omitEmptyStrings().splitToList(toParse);
         if (dotSplit.size() == 2) {
             String x = converter.apply(menu, dotSplit.get(0));
             String y = converter.apply(menu, dotSplit.get(1));
@@ -53,15 +72,6 @@ public class MenuService {
                 return slots;
             }
         }
-        List<String> commaSplit = Splitter.on(",").omitEmptyStrings().splitToList(subParse);
-        if (commaSplit.size() > 0) {
-            for (String slot : commaSplit) {
-                if (StringUtils.isNumeric(slot)) {
-                    slots.add(Integer.parseInt(slot));
-                }
-            }
-            return slots;
-        }
-        return slots;
+        return null;
     }
 }
