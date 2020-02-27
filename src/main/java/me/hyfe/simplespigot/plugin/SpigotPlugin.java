@@ -3,6 +3,7 @@ package me.hyfe.simplespigot.plugin;
 import me.hyfe.simplespigot.command.CommandBase;
 import me.hyfe.simplespigot.config.ConfigStore;
 import me.hyfe.simplespigot.registry.Registry;
+import me.hyfe.simplespigot.save.SavingController;
 import me.hyfe.simplespigot.storage.BackendFactory;
 import me.hyfe.simplespigot.storage.StorageSettings;
 import me.hyfe.simplespigot.command.command.SimpleCommand;
@@ -18,6 +19,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SimplePlugin {
     private final StorageSettings storageSettings = new StorageSettings();
     private final CommandBase commandBase = new CommandBase(this);
     private final ConfigStore configStore = new ConfigStore(this);
+    private final SavingController savingController = new SavingController(this);
 
     @Override
     public void runAsync(Runnable runnable) {
@@ -78,5 +80,10 @@ public abstract class SpigotPlugin extends JavaPlugin implements SimplePlugin {
     @Override
     public ConfigStore getConfigStore() {
         return this.configStore;
+    }
+
+    @Override
+    public SavingController getSavingController() {
+        return this.savingController;
     }
 }

@@ -3,6 +3,7 @@ package me.hyfe.simplespigot.plugin;
 import me.hyfe.simplespigot.command.CommandBase;
 import me.hyfe.simplespigot.config.ConfigStore;
 import me.hyfe.simplespigot.registry.Registry;
+import me.hyfe.simplespigot.save.SavingController;
 import me.hyfe.simplespigot.storage.BackendFactory;
 import me.hyfe.simplespigot.storage.StorageSettings;
 import me.hyfe.simplespigot.command.command.SimpleCommand;
@@ -35,4 +36,6 @@ public interface SimplePlugin extends Plugin {
     CommandBase getCommandBase();
 
     ConfigStore getConfigStore();
+
+    SavingController getSavingController();
 }

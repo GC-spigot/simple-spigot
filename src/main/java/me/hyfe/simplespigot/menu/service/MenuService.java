@@ -8,8 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiFunction;
 
 public class MenuService {
@@ -26,7 +25,7 @@ public class MenuService {
     }
 
     public static Set<Integer> parseSlots(Menu menu, Config config, String prefix, String id) {
-        Set<Integer> slots = Sets.newHashSet();
+        Stack<Integer> slots = new Stack<>();
         if (StringUtils.isNumeric(id)) {
             return Sets.newHashSet(Integer.parseInt(id));
         }
@@ -41,17 +40,21 @@ public class MenuService {
                 if (StringUtils.isNumeric(toParse)) {
                     slots.add(Integer.parseInt(toParse));
                 }
-                slots.addAll(parseSlots(menu, config, toParse));
+                Set<Integer> wrappedParsedSlots = parseSlots(menu, toParse);
+                if (wrappedParsedSlots != null) {
+                    slots.addAll(wrappedParsedSlots);
+                    System.out.println(Arrays.toString(wrappedParsedSlots.toArray()));
+                }
             }
-            return slots;
+            return Sets.newLinkedHashSet(slots);
         }
-        return slots;
+        return Sets.newHashSet(slots);
     }
 
     public static Set<Integer> parseSlots(Menu menu, String toParse) {
         BiFunction<Menu, String, String> converter = (fMenu, entry) -> entry.equalsIgnoreCase("end") || entry.equalsIgnoreCase("start") ? Integer.toString(entry.equalsIgnoreCase("end") ? menu.getRows() * 9 - 1 : 0) : entry;
         BiFunction<Menu, Integer, Integer> slotLimiter = (fMenu, slot) -> slot < 0 ? 0 : Math.min(slot, menu.getRows() * 9 - 1);
-        Set<Integer> slots = Sets.newHashSet();
+        Set<Integer> slots = Sets.newLinkedHashSet();
         if (toParse.replace(" ", "").equalsIgnoreCase("fill")) {
             for (int slot = 0; slot < menu.getInventory().getSize(); slot++) {
                 ItemStack itemStack = menu.getInventory().getItem(slot);
