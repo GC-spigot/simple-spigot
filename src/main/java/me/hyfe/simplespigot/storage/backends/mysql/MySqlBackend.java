@@ -1,5 +1,6 @@
 package me.hyfe.simplespigot.storage.backends.mysql;
 
+import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -11,6 +12,7 @@ import me.hyfe.simplespigot.storage.StorageSettings;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Set;
 import java.util.function.UnaryOperator;
 
 public class MySqlBackend implements Backend {
@@ -23,6 +25,7 @@ public class MySqlBackend implements Backend {
     private static final String DELETE = "DELETE FROM '%where%' WHERE id=?";
     private static final String INSERT = "INSERT INTO '%where%' (id, json) VALUES(?, ?)";
     private static final String SELECT = "SELECT id, json FROM %where% WHERE id=?";
+    private static final String SELECT_ALL = "SELECT * FROM %where%";
 
     public MySqlBackend(SimplePlugin plugin, String tableName) {
         this.storageSettings = plugin.getStorageSettings();
@@ -62,6 +65,22 @@ public class MySqlBackend implements Backend {
                 statement.execute();
             }
         }
+    }
+
+    @Override
+    @SneakyThrows
+    public Set<JsonObject> loadAll() {
+        Set<JsonObject> all = Sets.newHashSet();
+        try (Connection connection = this.connectionFactory.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(this.processor.apply(SELECT_ALL))) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        all.add(new JsonParser().parse(resultSet.getString("json")).getAsJsonObject());
+                    }
+                }
+            }
+        }
+        return all;
     }
 
     @Override

@@ -8,9 +8,14 @@ import lombok.SneakyThrows;
 import me.hyfe.simplespigot.storage.Backend;
 
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FlatBackend implements Backend {
     private final Path path;
@@ -41,6 +46,18 @@ public class FlatBackend implements Backend {
             gson.toJson(json, writer);
             writer.close();
         }
+    }
+
+    @Override
+    @SneakyThrows
+    public Set<JsonObject> loadAll() {
+        return Files.walk(this.path)
+                .map(Path::toString)
+                .filter(file -> file.endsWith(".json"))
+                .map(file -> file.replace(".json", ""))
+                .map(this::load)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
     }
 
     @Override

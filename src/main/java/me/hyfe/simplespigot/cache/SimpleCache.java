@@ -3,7 +3,9 @@ package me.hyfe.simplespigot.cache;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
+import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 
 public class SimpleCache<K, V> {
@@ -36,5 +38,13 @@ public class SimpleCache<K, V> {
 
     public void invalidate(K key) {
         this.subCache.invalidate(key);
+    }
+
+    public Set<K> keySet() {
+        return this.subCache.asMap().keySet();
+    }
+
+    public Collection<V> values() {
+        return this.subCache.asMap().values();
     }
 }

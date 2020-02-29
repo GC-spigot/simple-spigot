@@ -1,5 +1,6 @@
 package me.hyfe.simplespigot.storage.storage;
 
+import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -9,6 +10,7 @@ import me.hyfe.simplespigot.storage.BackendFactory;
 import me.hyfe.simplespigot.storage.storage.load.Deserializer;
 import me.hyfe.simplespigot.storage.storage.load.Serializer;
 
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
@@ -47,6 +49,14 @@ public abstract class Storage<T> {
     public T save(String id, T object) {
         this.backend.save(id, this.serializer().apply(object, new JsonObject(), this.serializerGson));
         return object;
+    }
+
+    public Set<T> loadAll() {
+        Set<T> all = Sets.newHashSet();
+        for (JsonObject json : this.backend.loadAll()) {
+            all.add(this.deserializer().apply(json, this.deserializerGson));
+        }
+        return all;
     }
 
     public void closeBack() {

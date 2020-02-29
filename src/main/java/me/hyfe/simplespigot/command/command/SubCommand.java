@@ -36,12 +36,16 @@ public abstract class SubCommand<T extends CommandSender> extends Command<T> {
         return this.inheritPermission;
     }
 
-    public void addFlat(String flatArgument) {
-        this.arguments.add(new Argument<>(null, flatArgument));
+    public void addFlat(String flat) {
+        this.arguments.add(new Argument<>(null, flat));
     }
 
-    public void addFlats(String... flatArguments) {
-        for (String flatArgument : flatArguments) {
+    public void addFlatWithAliases(String flat, String... aliases) {
+        this.arguments.add(new Argument<>(null, flat, aliases));
+    }
+
+    public void addFlats(String... flat) {
+        for (String flatArgument : flat) {
             this.addFlat(flatArgument);
         }
     }
@@ -71,6 +75,12 @@ public abstract class SubCommand<T extends CommandSender> extends Command<T> {
     private boolean isArgumentValid(String[] arguments, int index) {
         Argument<?> argument = this.arguments.get(index);
         if (argument.getType() == null) {
+            String matchTo = arguments[index];
+            for (String alias : argument.getAliases()) {
+                if (matchTo.equalsIgnoreCase(alias)) {
+                    return true;
+                }
+            }
             return arguments[index].equalsIgnoreCase(argument.getArgument());
         }
         return true;
