@@ -18,13 +18,15 @@ import java.util.function.UnaryOperator;
 public class Config {
     private final Plugin plugin;
     private final File file;
+    private final boolean reloadable;
     private YamlConfiguration configuration;
     private Map<String, Object> valueMap;
     private Set<String> enduringKeys;
 
-    public Config(Plugin plugin, UnaryOperator<Path> path, String... enduringKeys) {
+    public Config(Plugin plugin, UnaryOperator<Path> path, boolean reloadable, String... enduringKeys) {
         this.plugin = plugin;
         this.file = path.apply(plugin.getDataFolder().toPath()).toFile();
+        this.reloadable = reloadable;
         this.enduringKeys = Sets.newHashSet(enduringKeys);
         this.createIfAbsent();
         this.reload();
@@ -33,6 +35,10 @@ public class Config {
 
     public YamlConfiguration getConfiguration() {
         return this.configuration;
+    }
+
+    public boolean isReloadable() {
+        return this.reloadable;
     }
 
     public boolean has(String key) {

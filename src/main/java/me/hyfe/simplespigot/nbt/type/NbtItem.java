@@ -10,6 +10,10 @@ import java.util.Objects;
 public class NbtItem extends NbtCompound {
     private ItemStack itemStack;
 
+    public static NbtItem of(ItemStack itemStack) {
+        return new NbtItem(itemStack);
+    }
+
     public NbtItem(ItemStack itemStack) {
         super(null, null);
         this.itemStack = itemStack.clone();

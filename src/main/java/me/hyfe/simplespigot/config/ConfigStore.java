@@ -26,8 +26,8 @@ public class ConfigStore {
         return configMap.get(string);
     }
 
-    public ConfigStore config(String name, BiFunction<Path, String, Path> pathFunc) {
-        this.configMap.put(name, new Config(this.plugin, path -> Paths.get(pathFunc.apply(path, name).toString() + ".yml")));
+    public ConfigStore config(String name, BiFunction<Path, String, Path> pathFunc, boolean reloadable) {
+        this.configMap.put(name, new Config(this.plugin, path -> Paths.get(pathFunc.apply(path, name).toString() + ".yml"), reloadable));
         return this;
     }
 
@@ -36,22 +36,24 @@ public class ConfigStore {
         return this;
     }
 
-    public void reload(String string) {
+    public void forceReload(String string) {
         Config config = this.getConfig(string);
         if (config != null) {
             config.reload();
         }
     }
 
-    public void reload(String... configs) {
+    public void forceReload(String... configs) {
         for (String config : configs) {
-            this.reload(config);
+            this.forceReload(config);
         }
     }
 
-    public void reloadAll() {
+    public void reloadReloadableConfigs() {
         for (Config config : this.configMap.values()) {
-            config.reload();
+            if (config.isReloadable()) {
+                config.reload();
+            }
         }
     }
 }
