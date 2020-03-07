@@ -1,5 +1,4 @@
 *.idea
-*.java
 *.iml
 
 target/
