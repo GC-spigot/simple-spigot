@@ -5,16 +5,16 @@ import com.google.common.collect.Maps;
 import java.util.Map;
 
 public class StorageSettings {
-    private final String address;
-    private final String prefix;
-    private final String database;
-    private final String username;
-    private final String password;
-    private final int maximumPoolSize;
-    private final int minimumIdle;
-    private final int maximumLifetime;
-    private final int connectionTimeout;
-    private final Map<String, String> properties = Maps.newHashMap();
+    private String address;
+    private String prefix;
+    private String database;
+    private String username;
+    private String password;
+    private int maximumPoolSize;
+    private int minimumIdle;
+    private int maximumLifetime;
+    private int connectionTimeout;
+    private Map<String, String> properties = Maps.newHashMap();
 
     public StorageSettings() {
         this.address = "";
@@ -71,5 +71,45 @@ public class StorageSettings {
 
     public Map<String, String> getProperties() {
         return this.properties;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public void setDatabase(String database) {
+        this.database = database;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setMaximumPoolSize(int maximumPoolSize) {
+        this.maximumPoolSize = maximumPoolSize;
+    }
+
+    public void setMinimumIdle(int minimumIdle) {
+        this.minimumIdle = minimumIdle;
+    }
+
+    public void setMaximumLifetime(int maximumLifetime) {
+        this.maximumLifetime = maximumLifetime;
+    }
+
+    public void setConnectionTimeout(int connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+    }
+
+    public void setProperties(Map<String, String> properties) {
+        this.properties = properties;
     }
 }
