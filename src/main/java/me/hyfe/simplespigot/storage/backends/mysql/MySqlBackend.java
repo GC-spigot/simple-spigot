@@ -30,7 +30,7 @@ public class MySqlBackend implements Backend {
     public MySqlBackend(SimplePlugin plugin, String tableName) {
         this.storageSettings = plugin.getStorageSettings();
         this.connectionFactory = new MySqlConnectionFactory(this.storageSettings);
-        this.processor = query -> query.replace("%where%", tableName + this.storageSettings.getPrefix());
+        this.processor = query -> query.replace("%where%", tableName.concat(this.storageSettings.getPrefix()));
         this.createTable();
     }
 

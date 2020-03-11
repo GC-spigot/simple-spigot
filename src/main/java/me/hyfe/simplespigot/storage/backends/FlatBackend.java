@@ -8,19 +8,20 @@ import lombok.SneakyThrows;
 import me.hyfe.simplespigot.storage.Backend;
 
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Set;
+import java.util.Stack;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class FlatBackend implements Backend {
     private final Path path;
+    private final Path subPath;
 
     public FlatBackend(Path subPath) {
+        this.subPath = subPath;
         this.path = this.createPath(subPath);
     }
 
@@ -70,6 +71,7 @@ public class FlatBackend implements Backend {
         if (Files.exists(path) && (Files.isDirectory(path) || Files.isSymbolicLink(path))) {
             return path;
         }
-        return Files.createDirectory(path);
+        path.toFile().mkdirs();
+        return path;
     }
 }

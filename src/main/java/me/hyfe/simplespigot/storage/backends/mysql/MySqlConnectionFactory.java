@@ -43,9 +43,10 @@ public class MySqlConnectionFactory {
         config.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
         this.config.setUsername(this.storageSettings.getUsername());
         this.config.setPassword(this.storageSettings.getPassword());
-        this.config.setPoolName(this.storageSettings.getPrefix() + "hikari");
+        this.config.setPoolName(this.storageSettings.getPrefix().concat("hikari"));
         this.config.setMaximumPoolSize(this.storageSettings.getMaximumPoolSize());
         this.config.setMinimumIdle(this.storageSettings.getMinimumIdle());
+        System.out.println(this.storageSettings.getMinimumIdle());
         this.config.setMaxLifetime(this.storageSettings.getMaximumLifetime());
         this.config.setConnectionTimeout(this.storageSettings.getConnectionTimeout());
         this.addProperty("characterEncoding", "utf8");
