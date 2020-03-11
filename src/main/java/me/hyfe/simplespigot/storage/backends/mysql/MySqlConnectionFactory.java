@@ -4,21 +4,30 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.SneakyThrows;
 import me.hyfe.simplespigot.storage.StorageSettings;
+import org.bukkit.Bukkit;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.logging.Level;
 
 public class MySqlConnectionFactory {
     private final StorageSettings storageSettings;
-    private final HikariDataSource dataSource;
     private final HikariConfig config;
+    private HikariDataSource dataSource;
 
     public MySqlConnectionFactory(StorageSettings storageSettings) {
         this.storageSettings = storageSettings;
         this.config = new HikariConfig();
-        this.dataSource = new HikariDataSource(this.configurate(this.config));
+        try {
+            this.dataSource = new HikariDataSource(this.configurate(this.config));
+        } catch (Exception ex) {
+            Bukkit.getLogger().severe("Could not setup mysql, please check your credentials.");
+        }
+        if (this.getConnection() != null) {
+            Bukkit.getLogger().info("Successfully connected to MySQL.");
+        }
     }
 
     @SneakyThrows
@@ -46,7 +55,6 @@ public class MySqlConnectionFactory {
         this.config.setPoolName(this.storageSettings.getPrefix().concat("hikari"));
         this.config.setMaximumPoolSize(this.storageSettings.getMaximumPoolSize());
         this.config.setMinimumIdle(this.storageSettings.getMinimumIdle());
-        System.out.println(this.storageSettings.getMinimumIdle());
         this.config.setMaxLifetime(this.storageSettings.getMaximumLifetime());
         this.config.setConnectionTimeout(this.storageSettings.getConnectionTimeout());
         this.addProperty("characterEncoding", "utf8");

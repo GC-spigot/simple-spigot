@@ -43,7 +43,6 @@ public class MenuService {
                 Set<Integer> wrappedParsedSlots = parseSlots(menu, toParse);
                 if (wrappedParsedSlots != null) {
                     slots.addAll(wrappedParsedSlots);
-                    System.out.println(Arrays.toString(wrappedParsedSlots.toArray()));
                 }
             }
             return Sets.newLinkedHashSet(slots);
