@@ -1,10 +1,10 @@
 package me.hyfe.simplespigot.storage;
 
 import com.google.common.collect.Maps;
+import me.hyfe.simplespigot.plugin.SimplePlugin;
 import me.hyfe.simplespigot.storage.backends.FlatBackend;
 import me.hyfe.simplespigot.storage.backends.MongoBackend;
 import me.hyfe.simplespigot.storage.backends.mysql.MySqlBackend;
-import me.hyfe.simplespigot.plugin.SimplePlugin;
 
 import java.nio.file.Path;
 import java.util.Map;

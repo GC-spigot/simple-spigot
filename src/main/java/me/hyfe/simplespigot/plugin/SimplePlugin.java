@@ -1,12 +1,12 @@
 package me.hyfe.simplespigot.plugin;
 
 import me.hyfe.simplespigot.command.CommandBase;
+import me.hyfe.simplespigot.command.command.SimpleCommand;
 import me.hyfe.simplespigot.config.ConfigStore;
 import me.hyfe.simplespigot.registry.Registry;
 import me.hyfe.simplespigot.save.SavingController;
 import me.hyfe.simplespigot.storage.BackendFactory;
 import me.hyfe.simplespigot.storage.StorageSettings;
-import me.hyfe.simplespigot.command.command.SimpleCommand;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 

@@ -1,32 +1,39 @@
 package me.hyfe.simplespigot.command.command;
 
 import com.google.common.collect.Lists;
-import me.hyfe.simplespigot.command.command.Command;
-import me.hyfe.simplespigot.plugin.SimplePlugin;
+import com.google.common.collect.Sets;
 import me.hyfe.simplespigot.command.argument.Argument;
 import me.hyfe.simplespigot.command.argument.ArgumentHandler;
+import me.hyfe.simplespigot.plugin.SimplePlugin;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
+import java.util.Set;
 
 public abstract class SubCommand<T extends CommandSender> extends Command<T> {
     private final List<Argument<?>> arguments = Lists.newArrayList();
+    private final boolean endless;
     private boolean inheritPermission;
 
     public SubCommand(SimplePlugin plugin, String permission, boolean isConsole) {
+        this(plugin, permission, isConsole, false);
+    }
+
+    public SubCommand(SimplePlugin plugin, String permission, boolean isConsole, boolean endless) {
         super(plugin, permission, isConsole);
+        this.endless = endless;
     }
 
     public SubCommand(SimplePlugin plugin) {
-        super(plugin, "", true);
+        this(plugin, "", true);
     }
 
     public SubCommand(SimplePlugin plugin, String permission) {
-        super(plugin, permission, true);
+        this(plugin, permission, true);
     }
 
     public SubCommand(SimplePlugin plugin, boolean isConsole) {
-        super(plugin, "", isConsole);
+        this(plugin, "", isConsole);
     }
 
     protected void inheritPermission() {
@@ -73,7 +80,21 @@ public abstract class SubCommand<T extends CommandSender> extends Command<T> {
         return true;
     }
 
+    public String[] getEnd(String[] arguments) {
+        Set<String> newSet = Sets.newLinkedHashSet();
+        for (int i = 0; i < arguments.length; i++) {
+            if (i <= this.arguments.size()) {
+                continue;
+            }
+            newSet.add(arguments[i]);
+        }
+        return newSet.toArray(new String[]{});
+    }
+
     private boolean isArgumentValid(String[] arguments, int index) {
+        if (this.arguments.size() < index && this.endless) {
+            return true;
+        }
         Argument<?> argument = this.arguments.get(index);
         if (argument.getType() == null) {
             String matchTo = arguments[index];
