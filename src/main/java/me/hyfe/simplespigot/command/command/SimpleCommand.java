@@ -12,7 +12,7 @@ import java.util.Set;
 
 public abstract class SimpleCommand<T extends CommandSender> extends Command<T> {
     private final String command;
-    private Set<SubCommand<? extends CommandSender>> subCommands = Sets.newLinkedHashSet();
+    private Set<SubCommand<T>> subCommands = Sets.newLinkedHashSet();
 
     public SimpleCommand(SimplePlugin plugin, String command, String permission, boolean isConsole) {
         super(plugin, permission, isConsole);
@@ -35,11 +35,15 @@ public abstract class SimpleCommand<T extends CommandSender> extends Command<T> 
         return this.command;
     }
 
-    protected void setSubCommands(SubCommand<? extends CommandSender>... subCommands) {
+    public void setSubCommands(Set<SubCommand<T>> subCommands) {
+        this.subCommands = subCommands;
+    }
+
+    protected void setSubCommands(SubCommand<T>... subCommands) {
         this.subCommands.addAll(Arrays.asList(subCommands));
     }
 
-    public Set<SubCommand<? extends CommandSender>> getSubCommands() {
+    public Set<SubCommand<T>> getSubCommands() {
         return this.subCommands;
     }
 

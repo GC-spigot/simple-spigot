@@ -74,7 +74,7 @@ public class ConfigLoader {
             if (this.currentPath.isEmpty()) {
                 this.currentPath = path;
             } else if (!path.isEmpty()) {
-                this.currentPath += (".".concat(path));
+                this.currentPath += ".".concat(path);
             }
             for (String key : this.config.keys(path, deep)) {
                 this.currentPath = path.isEmpty() ? key : path.concat(".").concat(key);

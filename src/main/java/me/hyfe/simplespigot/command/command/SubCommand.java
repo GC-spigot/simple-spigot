@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import java.util.List;
 
 public abstract class SubCommand<T extends CommandSender> extends Command<T> {
-    private final List<Argument<?>> arguments = Lists.newArrayList();
+    private List<Argument<?>> arguments = Lists.newArrayList();
     private boolean inheritPermission;
 
     public SubCommand(SimplePlugin plugin, String permission, boolean isConsole) {
@@ -35,6 +35,10 @@ public abstract class SubCommand<T extends CommandSender> extends Command<T> {
 
     public boolean doesInheritPermission() {
         return this.inheritPermission;
+    }
+
+    public void setArguments(List<Argument<?>> arguments) {
+        this.arguments = arguments;
     }
 
     public void addFlat(String flat) {
