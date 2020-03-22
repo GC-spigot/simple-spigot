@@ -1,8 +1,8 @@
 package me.hyfe.simplespigot.menu.item;
 
+import me.hyfe.simplespigot.config.Config;
 import me.hyfe.simplespigot.item.SpigotItem;
 import me.hyfe.simplespigot.menu.item.click.ClickAction;
-import me.hyfe.simplespigot.config.Config;
 import me.hyfe.simplespigot.text.Replace;
 import org.bukkit.inventory.ItemStack;
 

@@ -2,13 +2,15 @@ package me.hyfe.simplespigot.menu.service;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
-import me.hyfe.simplespigot.menu.Menu;
 import me.hyfe.simplespigot.config.Config;
+import me.hyfe.simplespigot.menu.Menu;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
 import java.util.function.BiFunction;
 
 public class MenuService {

@@ -2,12 +2,12 @@ package me.hyfe.simplespigot.nbt;
 
 import com.google.gson.Gson;
 import lombok.SneakyThrows;
+import me.hyfe.simplespigot.nbt.enums.ClassWrapper;
 import me.hyfe.simplespigot.nbt.enums.ObjectCreator;
 import me.hyfe.simplespigot.nbt.enums.ReflectionMethod;
 import me.hyfe.simplespigot.nbt.type.NbtContainer;
 import me.hyfe.simplespigot.nbt.type.NbtStringList;
 import me.hyfe.simplespigot.version.ServerVersion;
-import me.hyfe.simplespigot.nbt.enums.ClassWrapper;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

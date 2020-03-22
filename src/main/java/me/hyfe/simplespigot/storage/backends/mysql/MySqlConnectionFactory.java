@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.logging.Level;
 
 public class MySqlConnectionFactory {
     private final StorageSettings storageSettings;
