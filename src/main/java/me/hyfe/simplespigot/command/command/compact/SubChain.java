@@ -11,9 +11,9 @@ import java.util.Set;
 import java.util.function.UnaryOperator;
 
 public class SubChain<T extends CommandSender> {
-    private Set<SubCommand<T>> subCommands = Sets.newHashSet();
+    private Set<SubCommand<? extends CommandSender>> subCommands = Sets.newHashSet();
 
-    public Set<SubCommand<T>> getSubCommands() {
+    public Set<SubCommand<? extends CommandSender>> getSubCommands() {
         return this.subCommands;
     }
 

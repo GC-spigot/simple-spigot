@@ -24,8 +24,8 @@ public abstract class CompactCommand<T extends CommandSender> extends SimpleComm
         super(plugin, command);
     }
 
-    public void subChain(UnaryOperator<SubChain<T>> operator) {
-        SubChain<T> subChain = operator.apply(new SubChain<T>());
+    public void subChain(UnaryOperator<SubChain<? extends CommandSender>> operator) {
+        SubChain<? extends CommandSender> subChain = operator.apply(new SubChain<T>());
         this.setSubCommands(subChain.getSubCommands());
     }
 }
