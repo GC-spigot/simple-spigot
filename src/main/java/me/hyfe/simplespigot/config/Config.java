@@ -128,7 +128,6 @@ public class Config {
         this.configuration = YamlConfiguration.loadConfiguration(this.file);
     }
 
-    @SneakyThrows
     private void createIfAbsent(String file) {
         if (!this.file.exists()) {
             this.plugin.getDataFolder().mkdirs();
