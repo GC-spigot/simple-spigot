@@ -128,8 +128,10 @@ public class Config {
 
     private void createIfAbsent() {
         if (!this.file.exists()) {
+            System.out.println(this.plugin.getDataFolder().getPath() + " : " + this.file.getPath());
             this.plugin.getDataFolder().mkdirs();
-            this.plugin.saveResource(this.file.getPath().replace(this.plugin.getDataFolder().getPath() + "/", ""), false);
+            System.out.println(this.file.getPath().replace(this.plugin.getDataFolder().getPath(), ""));
+            this.plugin.saveResource(this.file.getPath().replace(this.plugin.getDataFolder().getPath(), "").replace("/", "").replace("\\", ""), false);
         }
     }
 }
