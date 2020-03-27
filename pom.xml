@@ -53,7 +53,7 @@
         </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>
-            <artifactId>hikaricp</artifactId>
+            <artifactId>HikariCP</artifactId>
             <version>${hikari.version}</version>
             <scope>compile</scope>
         </dependency>
