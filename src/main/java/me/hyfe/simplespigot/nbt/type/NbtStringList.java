@@ -10,9 +10,9 @@ import java.lang.reflect.Constructor;
 import java.util.*;
 
 public class NbtStringList implements List<String> {
+    protected final Object list;
     private final String name;
     private final NbtCompound parent;
-    protected final Object list;
 
     public NbtStringList(NbtCompound owner, String name, Object list) {
         parent = owner;

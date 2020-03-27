@@ -41,75 +41,75 @@ public class StorageSettings {
         return this.prefix;
     }
 
-    public String getDatabase() {
-        return this.database;
-    }
-
-    public String getUsername() {
-        return this.username;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public int getMaximumPoolSize() {
-        return this.maximumPoolSize;
-    }
-
-    public int getMinimumIdle() {
-        return this.minimumIdle;
-    }
-
-    public int getMaximumLifetime() {
-        return this.maximumLifetime;
-    }
-
-    public int getConnectionTimeout() {
-        return this.connectionTimeout;
-    }
-
-    public Map<String, String> getProperties() {
-        return this.properties;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public void setPrefix(String prefix) {
         this.prefix = prefix;
+    }
+
+    public String getDatabase() {
+        return this.database;
     }
 
     public void setDatabase(String database) {
         this.database = database;
     }
 
+    public String getUsername() {
+        return this.username;
+    }
+
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return this.password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
+    public int getMaximumPoolSize() {
+        return this.maximumPoolSize;
+    }
+
     public void setMaximumPoolSize(int maximumPoolSize) {
         this.maximumPoolSize = maximumPoolSize;
+    }
+
+    public int getMinimumIdle() {
+        return this.minimumIdle;
     }
 
     public void setMinimumIdle(int minimumIdle) {
         this.minimumIdle = minimumIdle;
     }
 
+    public int getMaximumLifetime() {
+        return this.maximumLifetime;
+    }
+
     public void setMaximumLifetime(int maximumLifetime) {
         this.maximumLifetime = maximumLifetime;
+    }
+
+    public int getConnectionTimeout() {
+        return this.connectionTimeout;
     }
 
     public void setConnectionTimeout(int connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
     }
 
+    public Map<String, String> getProperties() {
+        return this.properties;
+    }
+
     public void setProperties(Map<String, String> properties) {
         this.properties = properties;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

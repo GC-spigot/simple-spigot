@@ -20,13 +20,6 @@ public enum NbtType {
     }
 
     /**
-     * @return Id used by Minecraft internally
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
      * @param id Internal Minecraft id
      * @return Enum representing the id, NBTTagEnd for invalid ids
      */
@@ -37,5 +30,12 @@ public enum NbtType {
             }
         }
         return NbtType.NBTTagEnd;
+    }
+
+    /**
+     * @return Id used by Minecraft internally
+     */
+    public int getId() {
+        return id;
     }
 }

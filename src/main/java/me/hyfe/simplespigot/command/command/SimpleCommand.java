@@ -35,16 +35,16 @@ public abstract class SimpleCommand<T extends CommandSender> extends Command<T> 
         return this.command;
     }
 
+    public Set<SubCommand<? extends CommandSender>> getSubCommands() {
+        return this.subCommands;
+    }
+
     public void setSubCommands(Set<SubCommand<? extends CommandSender>> subCommands) {
         this.subCommands = subCommands;
     }
 
     protected void setSubCommands(SubCommand<? extends CommandSender>... subCommands) {
         this.subCommands.addAll(Arrays.asList(subCommands));
-    }
-
-    public Set<SubCommand<? extends CommandSender>> getSubCommands() {
-        return this.subCommands;
     }
 
     public void sendHelpMessage(Plugin plugin, CommandSender sendTo) {

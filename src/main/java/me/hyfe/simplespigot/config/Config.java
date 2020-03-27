@@ -3,7 +3,6 @@ package me.hyfe.simplespigot.config;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import lombok.SneakyThrows;
 import me.hyfe.simplespigot.text.Text;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;

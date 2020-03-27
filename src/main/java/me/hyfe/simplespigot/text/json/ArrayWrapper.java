@@ -13,29 +13,6 @@ public class ArrayWrapper<E> {
         this.setArray(elements);
     }
 
-    public E[] getArray() {
-        return this.elements;
-    }
-
-    public void setArray(E[] array) {
-        Validate.notNull(array, "The array must not be null.");
-        this.elements = array;
-    }
-
-    @SuppressWarnings("rawtypes")
-    @Override
-    public boolean equals(Object other) {
-        if (!(other instanceof ArrayWrapper)) {
-            return false;
-        }
-        return Arrays.equals(this.elements, ((ArrayWrapper) other).elements);
-    }
-
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(this.elements);
-    }
-
     @SuppressWarnings("unchecked")
     public static <T> T[] toArray(Iterable<? extends T> list, Class<T> c) {
         int size = -1;
@@ -58,5 +35,28 @@ public class ArrayWrapper<E> {
             result[i++] = element;
         }
         return result;
+    }
+
+    public E[] getArray() {
+        return this.elements;
+    }
+
+    public void setArray(E[] array) {
+        Validate.notNull(array, "The array must not be null.");
+        this.elements = array;
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof ArrayWrapper)) {
+            return false;
+        }
+        return Arrays.equals(this.elements, ((ArrayWrapper) other).elements);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(this.elements);
     }
 }

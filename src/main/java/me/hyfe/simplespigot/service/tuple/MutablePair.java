@@ -9,23 +9,23 @@ public class MutablePair<K, V> {
         this.value = value;
     }
 
-    public K getKey() {
-        return this.key;
+    public static <S, U> MutablePair<S, U> of(S key, U value) {
+        return new MutablePair<>(key, value);
     }
 
-    public V getValue() {
-        return this.value;
+    public K getKey() {
+        return this.key;
     }
 
     public void setKey(K key) {
         this.key = key;
     }
 
-    public void setValue(V value) {
-        this.value = value;
+    public V getValue() {
+        return this.value;
     }
 
-    public static <S, U> MutablePair<S, U> of(S key, U value) {
-        return new MutablePair<>(key, value);
+    public void setValue(V value) {
+        this.value = value;
     }
 }

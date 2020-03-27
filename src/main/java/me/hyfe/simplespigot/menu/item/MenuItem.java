@@ -21,6 +21,24 @@ public class MenuItem {
         this.clickAction = clickAction;
     }
 
+    public static MenuItem of(ItemStack itemStack) {
+        return new MenuItem(itemStack, 1, 1, (menuItem, clickType) -> {
+        });
+    }
+
+    public static Builder builderOf(ItemStack itemStack) {
+        return new Builder(new MenuItem(itemStack, 1, 1, (menuItem, clickType) -> {
+        }));
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static Builder builderOf(MenuItem menuItem) {
+        return new Builder(menuItem);
+    }
+
     public ItemStack getItemStack() {
         return this.itemStack;
     }
@@ -35,22 +53,6 @@ public class MenuItem {
 
     public ClickAction getClickAction() {
         return this.clickAction;
-    }
-
-    public static MenuItem of(ItemStack itemStack) {
-        return new MenuItem(itemStack, 1, 1, (menuItem, clickType) -> {});
-    }
-
-    public static Builder builderOf(ItemStack itemStack) {
-        return new Builder(new MenuItem(itemStack, 1, 1, (menuItem, clickType) -> {}));
-    }
-
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public static Builder builderOf(MenuItem menuItem) {
-        return new Builder(menuItem);
     }
 
     public static class Builder {

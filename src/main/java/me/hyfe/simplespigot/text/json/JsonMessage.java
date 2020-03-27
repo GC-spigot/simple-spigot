@@ -22,6 +22,8 @@ import static me.hyfe.simplespigot.text.json.TextualComponent.rawText;
 
 public class JsonMessage implements JsonRepresentedObject, Cloneable, Iterable<MessagePart>, ConfigurationSerializable {
 
+    private static JsonParser _stringParser = new JsonParser();
+
     static {
         ConfigurationSerialization.registerClass(JsonMessage.class);
     }
@@ -29,18 +31,6 @@ public class JsonMessage implements JsonRepresentedObject, Cloneable, Iterable<M
     private List<MessagePart> messageParts;
     private String jsonString;
     private boolean dirty;
-
-    @Override
-    public JsonMessage clone() throws CloneNotSupportedException {
-        JsonMessage instance = (JsonMessage) super.clone();
-        instance.messageParts = new ArrayList<>(messageParts.size());
-        for (int i = 0; i < messageParts.size(); i++) {
-            instance.messageParts.add(i, messageParts.get(i).clone());
-        }
-        instance.dirty = false;
-        instance.jsonString = null;
-        return instance;
-    }
 
     public JsonMessage(String firstPartText) {
         this(rawText(firstPartText));
@@ -55,6 +45,82 @@ public class JsonMessage implements JsonRepresentedObject, Cloneable, Iterable<M
 
     public JsonMessage() {
         this((TextualComponent) null);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static JsonMessage deserialize(Map<String, Object> serialized) {
+        JsonMessage msg = new JsonMessage();
+        msg.messageParts = (List<MessagePart>) serialized.get("messageParts");
+        msg.jsonString = serialized.containsKey("JSON") ? serialized.get("JSON").toString() : null;
+        msg.dirty = !serialized.containsKey("JSON");
+        return msg;
+    }
+
+    public static JsonMessage deserialize(String json) {
+        JsonObject serialized = _stringParser.parse(json).getAsJsonObject();
+        JsonArray extra = serialized.getAsJsonArray("extra"); // Get the extra component
+        JsonMessage returnVal = new JsonMessage();
+        returnVal.messageParts.clear();
+        for (JsonElement mPrt : extra) {
+            MessagePart component = new MessagePart();
+            JsonObject messagePart = mPrt.getAsJsonObject();
+            for (Map.Entry<String, JsonElement> entry : messagePart.entrySet()) {
+                if (TextualComponent.isTextKey(entry.getKey())) {
+                    Map<String, Object> serializedMapForm = Maps.newHashMap();
+                    serializedMapForm.put("key", entry.getKey());
+                    if (entry.getValue().isJsonPrimitive()) {
+                        serializedMapForm.put("value", entry.getValue().getAsString());
+                    } else {
+                        for (Map.Entry<String, JsonElement> compositeNestedElement : entry.getValue().getAsJsonObject().entrySet()) {
+                            serializedMapForm.put("value." + compositeNestedElement.getKey(), compositeNestedElement.getValue().getAsString());
+                        }
+                    }
+                    component.setText(TextualComponent.deserialize(serializedMapForm));
+                } else if (MessagePart.stylesToNames.inverse().containsKey(entry.getKey())) {
+                    if (entry.getValue().getAsBoolean()) {
+                        component.getStyles().add(MessagePart.stylesToNames.inverse().get(entry.getKey()));
+                    }
+                } else if (entry.getKey().equals("color")) {
+                    component.setColor(ChatColor.valueOf(entry.getValue().getAsString().toUpperCase()));
+                } else if (entry.getKey().equals("clickEvent")) {
+                    JsonObject object = entry.getValue().getAsJsonObject();
+                    component.setClickActionName(object.get("action").getAsString());
+                    component.setClickActionData(object.get("value").getAsString());
+                } else if (entry.getKey().equals("hoverEvent")) {
+                    JsonObject object = entry.getValue().getAsJsonObject();
+                    component.setHoverActionName(object.get("action").getAsString());
+                    if (object.get("value").isJsonPrimitive()) {
+                        component.setHoverActionData(new JsonString(object.get("value").getAsString()));
+                    } else {
+                        component.setHoverActionData(deserialize(object.get("value").toString()));
+                    }
+                } else if (entry.getKey().equals("insertion")) {
+                    component.setInsertionData(entry.getValue().getAsString());
+                } else if (entry.getKey().equals("with")) {
+                    for (JsonElement object : entry.getValue().getAsJsonArray()) {
+                        if (object.isJsonPrimitive()) {
+                            component.getTranslationReplacements().add(new JsonString(object.getAsString()));
+                        } else {
+                            component.getTranslationReplacements().add(deserialize(object.toString()));
+                        }
+                    }
+                }
+            }
+            returnVal.messageParts.add(component);
+        }
+        return returnVal;
+    }
+
+    @Override
+    public JsonMessage clone() throws CloneNotSupportedException {
+        JsonMessage instance = (JsonMessage) super.clone();
+        instance.messageParts = new ArrayList<>(messageParts.size());
+        for (int i = 0; i < messageParts.size(); i++) {
+            instance.messageParts.add(i, messageParts.get(i).clone());
+        }
+        instance.dirty = false;
+        instance.jsonString = null;
+        return instance;
     }
 
     public JsonMessage text(String text) {
@@ -320,74 +386,8 @@ public class JsonMessage implements JsonRepresentedObject, Cloneable, Iterable<M
         return map;
     }
 
-    @SuppressWarnings("unchecked")
-    public static JsonMessage deserialize(Map<String, Object> serialized) {
-        JsonMessage msg = new JsonMessage();
-        msg.messageParts = (List<MessagePart>) serialized.get("messageParts");
-        msg.jsonString = serialized.containsKey("JSON") ? serialized.get("JSON").toString() : null;
-        msg.dirty = !serialized.containsKey("JSON");
-        return msg;
-    }
-
     public Iterator<MessagePart> iterator() {
         return messageParts.iterator();
-    }
-
-    private static JsonParser _stringParser = new JsonParser();
-
-    public static JsonMessage deserialize(String json) {
-        JsonObject serialized = _stringParser.parse(json).getAsJsonObject();
-        JsonArray extra = serialized.getAsJsonArray("extra"); // Get the extra component
-        JsonMessage returnVal = new JsonMessage();
-        returnVal.messageParts.clear();
-        for (JsonElement mPrt : extra) {
-            MessagePart component = new MessagePart();
-            JsonObject messagePart = mPrt.getAsJsonObject();
-            for (Map.Entry<String, JsonElement> entry : messagePart.entrySet()) {
-                if (TextualComponent.isTextKey(entry.getKey())) {
-                    Map<String, Object> serializedMapForm = Maps.newHashMap();
-                    serializedMapForm.put("key", entry.getKey());
-                    if (entry.getValue().isJsonPrimitive()) {
-                        serializedMapForm.put("value", entry.getValue().getAsString());
-                    } else {
-                        for (Map.Entry<String, JsonElement> compositeNestedElement : entry.getValue().getAsJsonObject().entrySet()) {
-                            serializedMapForm.put("value." + compositeNestedElement.getKey(), compositeNestedElement.getValue().getAsString());
-                        }
-                    }
-                    component.setText(TextualComponent.deserialize(serializedMapForm));
-                } else if (MessagePart.stylesToNames.inverse().containsKey(entry.getKey())) {
-                    if (entry.getValue().getAsBoolean()) {
-                        component.getStyles().add(MessagePart.stylesToNames.inverse().get(entry.getKey()));
-                    }
-                } else if (entry.getKey().equals("color")) {
-                    component.setColor(ChatColor.valueOf(entry.getValue().getAsString().toUpperCase()));
-                } else if (entry.getKey().equals("clickEvent")) {
-                    JsonObject object = entry.getValue().getAsJsonObject();
-                    component.setClickActionName(object.get("action").getAsString());
-                    component.setClickActionData(object.get("value").getAsString());
-                } else if (entry.getKey().equals("hoverEvent")) {
-                    JsonObject object = entry.getValue().getAsJsonObject();
-                    component.setHoverActionName(object.get("action").getAsString());
-                    if (object.get("value").isJsonPrimitive()) {
-                        component.setHoverActionData(new JsonString(object.get("value").getAsString()));
-                    } else {
-                        component.setHoverActionData(deserialize(object.get("value").toString()));
-                    }
-                } else if (entry.getKey().equals("insertion")) {
-                    component.setInsertionData(entry.getValue().getAsString());
-                } else if (entry.getKey().equals("with")) {
-                    for (JsonElement object : entry.getValue().getAsJsonArray()) {
-                        if (object.isJsonPrimitive()) {
-                            component.getTranslationReplacements().add(new JsonString(object.getAsString()));
-                        } else {
-                            component.getTranslationReplacements().add(deserialize(object.toString()));
-                        }
-                    }
-                }
-            }
-            returnVal.messageParts.add(component);
-        }
-        return returnVal;
     }
 
 }
