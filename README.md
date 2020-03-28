@@ -23,10 +23,13 @@
 allprojects {
     repositories {
         ...
-	maven { url 'https://jitpack.io' }
+	maven { 
+	    name 'jitpack-repo'
+	    url 'https://jitpack.io' 
+	}
     }
 }
 dependencies {
-    implementation 'com.github.Hyfe-JavaDebug:simple-spigot:1.0.1'
+    compile 'com.github.Hyfe-JavaDebug:simple-spigot:1.0.1'
 }
 ```
