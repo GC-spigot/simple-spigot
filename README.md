@@ -17,3 +17,16 @@
     </dependency>
 </dependencies>
 ```
+
+> How do I include the library with Gradle?
+```gradle
+allprojects {
+    repositories {
+        ...
+	maven { url 'https://jitpack.io' }
+    }
+}
+dependencies {
+    implementation 'com.github.Hyfe-JavaDebug:simple-spigot:Tag'
+}
+```
