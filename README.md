@@ -27,6 +27,6 @@ allprojects {
     }
 }
 dependencies {
-    implementation 'com.github.Hyfe-JavaDebug:simple-spigot:Tag'
+    implementation 'com.github.Hyfe-JavaDebug:simple-spigot:1.0.1'
 }
 ```
