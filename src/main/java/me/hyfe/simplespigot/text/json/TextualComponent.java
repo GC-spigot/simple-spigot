@@ -18,20 +18,6 @@ public abstract class TextualComponent implements Cloneable {
         ConfigurationSerialization.registerClass(TextualComponent.ComplexTextTypeComponent.class);
     }
 
-    @Override
-    public String toString() {
-        return this.getReadableString();
-    }
-
-    public abstract String getKey();
-
-    public abstract String getReadableString();
-
-    @Override
-    public abstract TextualComponent clone() throws CloneNotSupportedException;
-
-    public abstract void writeJson(JsonWriter writer) throws IOException;
-
     static TextualComponent deserialize(Map<String, Object> map) {
         if (map.containsKey("key") && map.size() == 2 && map.containsKey("value")) {
             return ArbitraryTextTypeComponent.deserialize(map);
@@ -49,6 +35,49 @@ public abstract class TextualComponent implements Cloneable {
         return component instanceof ComplexTextTypeComponent && component.getKey().equals("translate");
     }
 
+    public static TextualComponent rawText(String textValue) {
+        return new ArbitraryTextTypeComponent("text", textValue);
+    }
+
+    public static TextualComponent localizedText(String translateKey) {
+        return new ArbitraryTextTypeComponent("translate", translateKey);
+    }
+
+    private static void throwUnsupportedSnapshot() {
+        throw new UnsupportedOperationException("This feature is only supported in snapshot releases.");
+    }
+
+    public static TextualComponent objectiveScore(String scoreboardObjective) {
+        return objectiveScore("*", scoreboardObjective);
+    }
+
+    public static TextualComponent objectiveScore(String playerName, String scoreboardObjective) {
+        throwUnsupportedSnapshot();
+        return new ComplexTextTypeComponent("score", ImmutableMap.<String, String>builder()
+                .put("name", playerName)
+                .put("objective", scoreboardObjective)
+                .build());
+    }
+
+    public static TextualComponent selector(String selector) {
+        throwUnsupportedSnapshot();
+        return new ArbitraryTextTypeComponent("selector", selector);
+    }
+
+    @Override
+    public String toString() {
+        return this.getReadableString();
+    }
+
+    public abstract String getKey();
+
+    public abstract String getReadableString();
+
+    @Override
+    public abstract TextualComponent clone() throws CloneNotSupportedException;
+
+    public abstract void writeJson(JsonWriter writer) throws IOException;
+
     private static class ArbitraryTextTypeComponent extends TextualComponent implements ConfigurationSerializable {
         private String key;
         private String value;
@@ -56,6 +85,10 @@ public abstract class TextualComponent implements Cloneable {
         public ArbitraryTextTypeComponent(String key, String value) {
             this.setKey(key);
             this.setValue(value);
+        }
+
+        public static ArbitraryTextTypeComponent deserialize(Map<String, Object> map) {
+            return new ArbitraryTextTypeComponent(map.get("key").toString(), map.get("value").toString());
         }
 
         @Override
@@ -94,10 +127,6 @@ public abstract class TextualComponent implements Cloneable {
             }};
         }
 
-        public static ArbitraryTextTypeComponent deserialize(Map<String, Object> map) {
-            return new ArbitraryTextTypeComponent(map.get("key").toString(), map.get("value").toString());
-        }
-
         @Override
         public String getReadableString() {
             return this.getValue();
@@ -111,6 +140,19 @@ public abstract class TextualComponent implements Cloneable {
         public ComplexTextTypeComponent(String key, Map<String, String> values) {
             this.setKey(key);
             this.setValue(values);
+        }
+
+        public static ComplexTextTypeComponent deserialize(Map<String, Object> map) {
+            String key = null;
+            Map<String, String> value = Maps.newHashMap();
+            for (Map.Entry<String, Object> valEntry : map.entrySet()) {
+                if (valEntry.getKey().equals("key")) {
+                    key = (String) valEntry.getValue();
+                } else if (valEntry.getKey().startsWith("value.")) {
+                    value.put(valEntry.getKey().substring(6), valEntry.getValue().toString());
+                }
+            }
+            return new ComplexTextTypeComponent(key, value);
         }
 
         @Override
@@ -157,51 +199,9 @@ public abstract class TextualComponent implements Cloneable {
             }};
         }
 
-        public static ComplexTextTypeComponent deserialize(Map<String, Object> map) {
-            String key = null;
-            Map<String, String> value = Maps.newHashMap();
-            for (Map.Entry<String, Object> valEntry : map.entrySet()) {
-                if (valEntry.getKey().equals("key")) {
-                    key = (String) valEntry.getValue();
-                } else if (valEntry.getKey().startsWith("value.")) {
-                    value.put(valEntry.getKey().substring(6), valEntry.getValue().toString());
-                }
-            }
-            return new ComplexTextTypeComponent(key, value);
-        }
-
         @Override
         public String getReadableString() {
             return this.getKey();
         }
-    }
-
-    public static TextualComponent rawText(String textValue) {
-        return new ArbitraryTextTypeComponent("text", textValue);
-    }
-
-    public static TextualComponent localizedText(String translateKey) {
-        return new ArbitraryTextTypeComponent("translate", translateKey);
-    }
-
-    private static void throwUnsupportedSnapshot() {
-        throw new UnsupportedOperationException("This feature is only supported in snapshot releases.");
-    }
-
-    public static TextualComponent objectiveScore(String scoreboardObjective) {
-        return objectiveScore("*", scoreboardObjective);
-    }
-
-    public static TextualComponent objectiveScore(String playerName, String scoreboardObjective) {
-        throwUnsupportedSnapshot();
-        return new ComplexTextTypeComponent("score", ImmutableMap.<String, String>builder()
-                .put("name", playerName)
-                .put("objective", scoreboardObjective)
-                .build());
-    }
-
-    public static TextualComponent selector(String selector) {
-        throwUnsupportedSnapshot();
-        return new ArbitraryTextTypeComponent("selector", selector);
     }
 }

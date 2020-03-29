@@ -1010,44 +1010,6 @@ public enum MultiMaterial {
         this.oldData = (byte) oldData;
     }
 
-    public String getOldMaterial() {
-        return oldMaterial;
-    }
-
-    public Material getMaterial() {
-        Material material = Material.getMaterial(this.version.equals(MaterialVersion.v1_14) ? this.toString() : this.version.equals(MaterialVersion.v1_13) ? this.newMaterial : this.oldMaterial);
-        if (material == null) {
-            material = Material.getMaterial(this.toString());
-        }
-        if (material == null) {
-            material = Material.getMaterial(this.oldMaterial);
-        }
-        if (material == null) {
-            material = Material.getMaterial(this.newMaterial);
-        }
-        if (material == null) {
-            material = Material.DIRT;
-        }
-        return material;
-    }
-
-    public int getData() {
-        return this.oldData;
-    }
-
-    public ItemStack getItem() {
-        return this.getItem(1);
-    }
-
-    public ItemStack getItem(int amount) {
-        return this.getItem(amount, 0);
-    }
-
-    public ItemStack getItem(int amount, int data) {
-        Material material = this.getMaterial();
-        return this.version.equals(MaterialVersion.v1_12) ? new ItemStack(material, amount, data == 0 ? oldData : (byte) data) : new ItemStack(material);
-    }
-
     public static ItemStack itemFrom(String item) {
         if (item == null) {
             return null;
@@ -1096,6 +1058,44 @@ public enum MultiMaterial {
 
     public static String toSplittableString(ItemStack itemStack) {
         return toSplittableString(itemStack.getType(), itemStack.getData().getData());
+    }
+
+    public String getOldMaterial() {
+        return oldMaterial;
+    }
+
+    public Material getMaterial() {
+        Material material = Material.getMaterial(this.version.equals(MaterialVersion.v1_14) ? this.toString() : this.version.equals(MaterialVersion.v1_13) ? this.newMaterial : this.oldMaterial);
+        if (material == null) {
+            material = Material.getMaterial(this.toString());
+        }
+        if (material == null) {
+            material = Material.getMaterial(this.oldMaterial);
+        }
+        if (material == null) {
+            material = Material.getMaterial(this.newMaterial);
+        }
+        if (material == null) {
+            material = Material.DIRT;
+        }
+        return material;
+    }
+
+    public int getData() {
+        return this.oldData;
+    }
+
+    public ItemStack getItem() {
+        return this.getItem(1);
+    }
+
+    public ItemStack getItem(int amount) {
+        return this.getItem(amount, 0);
+    }
+
+    public ItemStack getItem(int amount, int data) {
+        Material material = this.getMaterial();
+        return this.version.equals(MaterialVersion.v1_12) ? new ItemStack(material, amount, data == 0 ? oldData : (byte) data) : new ItemStack(material);
     }
 
     private enum MaterialVersion {

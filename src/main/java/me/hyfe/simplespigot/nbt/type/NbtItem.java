@@ -10,13 +10,21 @@ import java.util.Objects;
 public class NbtItem extends NbtCompound {
     private ItemStack itemStack;
 
+    public NbtItem(ItemStack itemStack) {
+        super(null, null);
+        this.itemStack = itemStack.clone();
+    }
+
     public static NbtItem of(ItemStack itemStack) {
         return new NbtItem(itemStack);
     }
 
-    public NbtItem(ItemStack itemStack) {
-        super(null, null);
-        this.itemStack = itemStack.clone();
+    public static NbtContainer convertItemToNbt(ItemStack item) {
+        return NbtReflector.convertNmsItemToNbtCompound(ReflectionMethod.ITEMSTACK_NMSCOPY.run(null, item));
+    }
+
+    public static ItemStack convertNbtToItem(NbtCompound compound) {
+        return (ItemStack) ReflectionMethod.ITEMSTACK_BUKKITMIRROR.run(null, NbtReflector.convertNbtCompoundToNmsItem(compound));
     }
 
     @Override
@@ -37,13 +45,5 @@ public class NbtItem extends NbtCompound {
 
     public boolean hasNBTData() {
         return Objects.nonNull(this.getCompound());
-    }
-
-    public static NbtContainer convertItemToNbt(ItemStack item) {
-        return NbtReflector.convertNmsItemToNbtCompound(ReflectionMethod.ITEMSTACK_NMSCOPY.run(null, item));
-    }
-
-    public static ItemStack convertNbtToItem(NbtCompound compound) {
-        return (ItemStack) ReflectionMethod.ITEMSTACK_BUKKITMIRROR.run(null, NbtReflector.convertNbtCompoundToNmsItem(compound));
     }
 }

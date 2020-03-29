@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class SubCommand<T extends CommandSender> extends Command<T> {
-    private List<Argument<?>> arguments = Lists.newArrayList();
     private final boolean endless;
+    private List<Argument<?>> arguments = Lists.newArrayList();
     private boolean inheritPermission;
 
     public SubCommand(SimplePlugin plugin, String permission, boolean isConsole) {

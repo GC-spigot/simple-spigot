@@ -11,15 +11,15 @@ public class SendableString {
         this.string = string;
     }
 
+    public static SendableString from(String string) {
+        return new SendableString(string);
+    }
+
     public void to(CommandSender recipient) {
         Text.sendMessage(recipient, this.string);
     }
 
     public void to(Collection<CommandSender> recipients) {
         Text.sendMessage(recipients, this.string);
-    }
-
-    public static SendableString from(String string) {
-        return new SendableString(string);
     }
 }

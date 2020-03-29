@@ -9,6 +9,10 @@ import java.util.function.UnaryOperator;
 public class Replacer {
     private Map<String, Object> variables = Maps.newHashMap();
 
+    public static String to(String string, UnaryOperator<Replacer> replacer) {
+        return replacer.apply(new Replacer()).applyTo(string);
+    }
+
     public Replacer set(String variable, Object value) {
         this.variables.put("%" + variable + "%", value);
         return this;
@@ -20,9 +24,5 @@ public class Replacer {
             result = result.replace(entry.getKey(), Objects.toString(entry.getValue()));
         }
         return result;
-    }
-
-    public static String to(String string, UnaryOperator<Replacer> replacer) {
-        return replacer.apply(new Replacer()).applyTo(string);
     }
 }

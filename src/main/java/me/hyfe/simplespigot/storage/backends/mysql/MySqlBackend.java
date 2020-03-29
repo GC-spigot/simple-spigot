@@ -16,16 +16,14 @@ import java.util.Set;
 import java.util.function.UnaryOperator;
 
 public class MySqlBackend implements Backend {
-    private final StorageSettings storageSettings; // getters can return null values
-    private final MySqlConnectionFactory connectionFactory;
-
-    private final UnaryOperator<String> processor;
-
     private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS `%where%` ( id VARCHAR(36) NOT NULL, json MEDIUMBLOB NOT NULL, PRIMARY KEY (id) )";
     private static final String DELETE = "DELETE FROM `%where%` WHERE id=?";
     private static final String INSERT = "INSERT INTO `%where%` (id, json) VALUES(?, ?)";
     private static final String SELECT = "SELECT id, json FROM `%where%` WHERE id=?";
     private static final String SELECT_ALL = "SELECT * FROM `%where%`";
+    private final StorageSettings storageSettings; // getters can return null values
+    private final MySqlConnectionFactory connectionFactory;
+    private final UnaryOperator<String> processor;
 
     public MySqlBackend(SimplePlugin plugin, String tableName) {
         this.storageSettings = plugin.getStorageSettings();

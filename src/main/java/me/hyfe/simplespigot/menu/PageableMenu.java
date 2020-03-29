@@ -13,11 +13,10 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class PageableMenu<T> extends Menu {
+    protected int page = 1;
     private List<T> elements;
     private List<Integer> elementSlots;
     private Map<Integer, Set<Integer>> cachedPageIndexes = Maps.newHashMap();
-
-    protected int page = 1;
 
     public PageableMenu(Player player, String title, int rows) {
         super(player, title, rows);
@@ -38,7 +37,8 @@ public abstract class PageableMenu<T> extends Menu {
     }
 
     public void drawPageableItems() {
-        this.drawPageableItems(() -> {});
+        this.drawPageableItems(() -> {
+        });
     }
 
     public void drawPageableItems(Runnable runBeforeSet) {

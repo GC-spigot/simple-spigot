@@ -16,14 +16,13 @@ import java.util.function.UnaryOperator;
 
 public abstract class Menu implements InventoryHolder {
     protected final Player player;
+    private final String title;
+    private final int rows;
     private Inventory inventory;
     private MenuState menuState;
     private Runnable closeAction;
     private Map<Integer, MenuItem> menuItems = Maps.newHashMap();
     private BukkitTask updater;
-
-    private final String title;
-    private final int rows;
 
     public Menu(Player player, String title, int rows) {
         this.player = player;
@@ -89,7 +88,7 @@ public abstract class Menu implements InventoryHolder {
 
     public void flush() {
         for (int slot : this.menuItems.keySet()) {
-           this.inventory.setItem(slot, null);
+            this.inventory.setItem(slot, null);
         }
         this.menuItems.clear();
     }

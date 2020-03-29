@@ -19,6 +19,8 @@ import java.util.function.Consumer;
 
 public class MessagePart implements JsonRepresentedObject, ConfigurationSerializable, Cloneable {
 
+    static final BiMap<ChatColor, String> stylesToNames;
+
     static {
         ConfigurationSerialization.registerClass(MessagePart.class);
         ImmutableBiMap.Builder<ChatColor, String> builder = ImmutableBiMap.builder();
@@ -51,8 +53,6 @@ public class MessagePart implements JsonRepresentedObject, ConfigurationSerializ
     private JsonRepresentedObject hoverActionData;
     private List<JsonRepresentedObject> translationReplacements;
 
-    static final BiMap<ChatColor, String> stylesToNames;
-
     MessagePart(TextualComponent text) {
         this.text = text;
         this.color = ChatColor.WHITE;
@@ -64,80 +64,94 @@ public class MessagePart implements JsonRepresentedObject, ConfigurationSerializ
         this(null);
     }
 
+    @SuppressWarnings("unchecked")
+    public static MessagePart deserialize(Map<String, Object> serialized) {
+        MessagePart part = new MessagePart((TextualComponent) serialized.get("text"));
+        part.setStyles((List<ChatColor>) serialized.get("styles"));
+        part.setColor(ChatColor.getByChar(serialized.get("color").toString()));
+        part.setHoverActionName((String) serialized.get("hoverActionName"));
+        part.setHoverActionData((JsonRepresentedObject) serialized.get("hoverActionData"));
+        part.setClickActionName((String) serialized.get("clickActionName"));
+        part.setClickActionData((String) serialized.get("clickActionData"));
+        part.setInsertionData((String) serialized.get("insertion"));
+        part.setTranslationReplacements((List<JsonRepresentedObject>) serialized.get("translationReplacements"));
+        return part;
+    }
+
     public ChatColor getColor() {
         return this.color;
-    }
-
-    public String getInsertionData() {
-        return this.insertionData;
-    }
-
-    public List<ChatColor> getStyles() {
-        return this.styles;
-    }
-
-    public String getClickActionName() {
-        return this.clickActionName;
-    }
-
-    public String getClickActionData() {
-        return this.clickActionData;
-    }
-
-    public String getHoverActionName() {
-        return this.hoverActionName;
-    }
-
-    public TextualComponent getText() {
-        return this.text;
-    }
-
-    public JsonRepresentedObject getHoverActionData() {
-        return this.hoverActionData;
-    }
-
-    public List<JsonRepresentedObject> getTranslationReplacements() {
-        return this.translationReplacements;
-    }
-
-    public boolean hasText() {
-        return Objects.nonNull(this.text);
     }
 
     public void setColor(ChatColor color) {
         this.color = color;
     }
 
+    public String getInsertionData() {
+        return this.insertionData;
+    }
+
     public void setInsertionData(String insertionData) {
         this.insertionData = insertionData;
+    }
+
+    public List<ChatColor> getStyles() {
+        return this.styles;
     }
 
     public void setStyles(List<ChatColor> styles) {
         this.styles = styles;
     }
 
+    public String getClickActionName() {
+        return this.clickActionName;
+    }
+
     public void setClickActionName(String clickActionName) {
         this.clickActionName = clickActionName;
+    }
+
+    public String getClickActionData() {
+        return this.clickActionData;
     }
 
     public void setClickActionData(String clickActionData) {
         this.clickActionData = clickActionData;
     }
 
+    public String getHoverActionName() {
+        return this.hoverActionName;
+    }
+
     public void setHoverActionName(String hoverActionName) {
         this.hoverActionName = hoverActionName;
+    }
+
+    public TextualComponent getText() {
+        return this.text;
     }
 
     public void setText(TextualComponent text) {
         this.text = text;
     }
 
+    public JsonRepresentedObject getHoverActionData() {
+        return this.hoverActionData;
+    }
+
     public void setHoverActionData(JsonRepresentedObject hoverActionData) {
         this.hoverActionData = hoverActionData;
     }
 
+    public List<JsonRepresentedObject> getTranslationReplacements() {
+        return this.translationReplacements;
+    }
+
     public void setTranslationReplacements(List<JsonRepresentedObject> translationReplacements) {
         this.translationReplacements = translationReplacements;
+    }
+
+    public boolean hasText() {
+        return Objects.nonNull(this.text);
     }
 
     @Override
@@ -202,19 +216,5 @@ public class MessagePart implements JsonRepresentedObject, ConfigurationSerializ
         map.put("insertion", this.insertionData);
         map.put("translationReplacements", this.translationReplacements);
         return map;
-    }
-
-    @SuppressWarnings("unchecked")
-    public static MessagePart deserialize(Map<String, Object> serialized) {
-        MessagePart part = new MessagePart((TextualComponent) serialized.get("text"));
-        part.setStyles((List<ChatColor>) serialized.get("styles"));
-        part.setColor(ChatColor.getByChar(serialized.get("color").toString()));
-        part.setHoverActionName((String) serialized.get("hoverActionName"));
-        part.setHoverActionData((JsonRepresentedObject) serialized.get("hoverActionData"));
-        part.setClickActionName((String) serialized.get("clickActionName"));
-        part.setClickActionData((String) serialized.get("clickActionData"));
-        part.setInsertionData((String) serialized.get("insertion"));
-        part.setTranslationReplacements((List<JsonRepresentedObject>) serialized.get("translationReplacements"));
-        return part;
     }
 }

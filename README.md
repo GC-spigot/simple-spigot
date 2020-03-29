@@ -4,16 +4,32 @@
 ```xml
 <repositories>
     <repository>
-	<id>raw-git</id>
-	<url>https://rawgit.com/Hyfe-JavaDebug/artifacts/master</url>
+	<id>jitpack.io</id>
+	<url>https://jitpack.io</url>
     </repository>
 </repositories>
 <dependencies>
     <dependency>
-        <groupId>me.javadebug</groupId>
-        <artifactId>simplespigot</artifactId>
-        <version>1.0</version>
-        <scope>provided</scope>
+        <groupId>com.github.Hyfe-JavaDebug</groupId>
+        <artifactId>simple-spigot</artifactId>
+        <version>1.0.1</version>
+        <scope>compile</scope>
     </dependency>
 </dependencies>
+```
+
+> How do I include the library with Gradle?
+```gradle
+allprojects {
+    repositories {
+        ...
+	maven { 
+	    name 'jitpack-repo'
+	    url 'https://jitpack.io' 
+	}
+    }
+}
+dependencies {
+    implementation 'com.github.Hyfe-JavaDebug:simple-spigot:1.0.1'
+}
 ```

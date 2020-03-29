@@ -9,15 +9,15 @@ public class ImmutablePair<K, V> {
         this.value = value;
     }
 
+    public static <S, U> ImmutablePair<S, U> of(S key, U value) {
+        return new ImmutablePair<>(key, value);
+    }
+
     public K getKey() {
         return this.key;
     }
 
     public V getValue() {
         return this.value;
-    }
-
-    public static <S, U> ImmutablePair<S, U> of(S key, U value) {
-        return new ImmutablePair<>(key, value);
     }
 }
