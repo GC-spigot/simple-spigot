@@ -30,6 +30,6 @@ allprojects {
     }
 }
 dependencies {
-    compile 'com.github.Hyfe-JavaDebug:simple-spigot:1.0.1'
+    implementation 'com.github.Hyfe-JavaDebug:simple-spigot:1.0.1'
 }
 ```
