@@ -35,6 +35,15 @@ public class Config {
         this.load();
     }
 
+    public Config(Plugin plugin, File file, boolean reloadable, String... enduringKeys) {
+        this.plugin = plugin;
+        this.file = file;
+        this.reloadable = reloadable;
+        this.enduringKeys = Sets.newHashSet(enduringKeys);
+        this.reload();
+        this.load();
+    }
+
     public YamlConfiguration getConfiguration() {
         return this.configuration;
     }
