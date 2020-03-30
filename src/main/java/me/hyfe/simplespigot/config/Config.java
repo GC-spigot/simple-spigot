@@ -3,6 +3,7 @@ package me.hyfe.simplespigot.config;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.sun.corba.se.impl.ior.ObjectAdapterIdNumber;
 import me.hyfe.simplespigot.text.Text;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -60,7 +61,7 @@ public class Config {
     }
 
     public boolean bool(String key) {
-        return Boolean.parseBoolean(this.get(key, "false"));
+        return this.get(key, false);
     }
 
     public boolean conditionalBool(String key, Runnable falseRun, Runnable trueRun) {
