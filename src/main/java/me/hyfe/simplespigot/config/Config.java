@@ -3,7 +3,6 @@ package me.hyfe.simplespigot.config;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.sun.corba.se.impl.ior.ObjectAdapterIdNumber;
 import me.hyfe.simplespigot.text.Text;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -60,36 +59,31 @@ public class Config {
         return Text.modify((String) this.get(key));
     }
 
-    public boolean bool(String key) {
-        return this.get(key, false);
-    }
-
-    public boolean conditionalBool(String key, Runnable falseRun, Runnable trueRun) {
-        boolean bool = this.bool(key);
-        if (bool) {
-            trueRun.run();
-        } else {
-            falseRun.run();
-        }
-        return bool;
+    public Boolean bool(String key) {
+        Object object = this.get(key);
+        return (object instanceof Boolean) ? (Boolean) object : false;
     }
 
     public int integer(String key) {
-        return this.get(key, -1);
+        Object object = this.get(key);
+        return object instanceof Number ? ((Number) object).intValue() : -1;
     }
 
-    public double doubl(String key) {
-        return Double.parseDouble(this.get(key, "0.0"));
+    public Double doubl(String key) {
+        Object object = this.get(key);
+        return object instanceof Number ? ((Number) object).doubleValue() : -1;
     }
 
+    @SuppressWarnings("unchecked")
     public List<String> stringList(String key) {
-        List<String> list = this.get(key);
-        return list == null ? Lists.newArrayList() : list;
+        Object object = this.get(key);
+        return object instanceof List ? (List<String>) object : Lists.newArrayList();
     }
 
+    @SuppressWarnings("unchecked")
     public <T> List<T> list(String key) {
-        List<T> list = this.get(key);
-        return list == null ? Lists.newArrayList() : list;
+        Object object = this.get(key);
+        return object instanceof List ? (List<T>) object : Lists.newArrayList();
     }
 
     public Set<String> keys(String key, boolean deep) {
@@ -101,22 +95,8 @@ public class Config {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T get(String key) {
-        if (this.valueMap.containsKey(key)) {
-            return (T) this.valueMap.get(key);
-        } else {
-            return null;
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> T get(String key, T def) {
-        if (this.valueMap.containsKey(key)) {
-            return (T) this.valueMap.get(key);
-        } else {
-            return def;
-        }
+    public Object get(String key) {
+        return this.valueMap.getOrDefault(key, null);
     }
 
     public synchronized void load() {
