@@ -29,7 +29,7 @@ public class SpigotItem {
 
     public static ItemStack toItem(Config config, String path, Replace replace) {
         UnaryOperator<String> pathBuilder = string -> String.format("%s.%s", path, string);
-        ItemStack itemStack = MultiMaterial.itemFrom(config.get(pathBuilder.apply("material")));
+        ItemStack itemStack = MultiMaterial.itemFrom(config.string(pathBuilder.apply("material")));
         if (itemStack == null) {
             return null;
         }
