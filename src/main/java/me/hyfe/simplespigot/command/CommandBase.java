@@ -64,7 +64,7 @@ public class CommandBase implements CommandExecutor {
             }
             SubCommand<? extends CommandSender> subResult = null;
             for (SubCommand<? extends CommandSender> subCommand : simpleCommand.getSubCommands()) {
-                if (subCommand.getArgumentsSize() == args.length && subCommand.isMatch(args)) {
+                if ((args.length > subCommand.getArgumentsSize() && subCommand.isEndless()) || (subCommand.getArgumentsSize() == args.length && subCommand.isMatch(args))) {
                     subResult = subCommand;
                     break;
                 }

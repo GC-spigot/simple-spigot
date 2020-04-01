@@ -7,6 +7,7 @@ import me.hyfe.simplespigot.command.argument.ArgumentHandler;
 import me.hyfe.simplespigot.plugin.SimplePlugin;
 import org.bukkit.command.CommandSender;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -42,6 +43,10 @@ public abstract class SubCommand<T extends CommandSender> extends Command<T> {
 
     public boolean doesInheritPermission() {
         return this.inheritPermission;
+    }
+
+    public boolean isEndless() {
+        return this.endless;
     }
 
     public void setArguments(List<Argument<?>> arguments) {
@@ -87,7 +92,7 @@ public abstract class SubCommand<T extends CommandSender> extends Command<T> {
     public String[] getEnd(String[] arguments) {
         Set<String> newSet = Sets.newLinkedHashSet();
         for (int i = 0; i < arguments.length; i++) {
-            if (i <= this.arguments.size()) {
+            if (i < this.arguments.size() - 1) {
                 continue;
             }
             newSet.add(arguments[i]);
