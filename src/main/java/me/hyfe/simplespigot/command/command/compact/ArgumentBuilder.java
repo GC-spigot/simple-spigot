@@ -30,7 +30,7 @@ public class ArgumentBuilder {
         return this;
     }
 
-    protected <T> ArgumentBuilder addArgument(Class<T> clazz, String argument) {
+    public <T> ArgumentBuilder addArgument(Class<T> clazz, String argument) {
         this.arguments.add(new Argument<T>(ArgumentHandler.getArgumentType(clazz), argument));
         return this;
     }
