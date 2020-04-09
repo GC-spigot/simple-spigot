@@ -1,7 +1,6 @@
 package me.hyfe.simplespigot.service;
 
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -25,18 +24,5 @@ public class GeneralSpigot {
 
     public static void giveItem(Player player, ItemStack itemStack) {
         giveItem(player, Sets.newHashSet(itemStack));
-    }
-
-    public boolean isPluginEnabled(String name, String classPath) {
-        if (Bukkit.getPluginManager().isPluginEnabled(name)) {
-            try {
-                if (Class.forName(classPath) != null) {
-                    return true;
-                }
-            } catch (ClassNotFoundException e) {
-                return false;
-            }
-        }
-        return false;
     }
 }
