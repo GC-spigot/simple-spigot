@@ -7,7 +7,6 @@ import me.hyfe.simplespigot.command.argument.ArgumentHandler;
 import me.hyfe.simplespigot.plugin.SimplePlugin;
 import org.bukkit.command.CommandSender;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 

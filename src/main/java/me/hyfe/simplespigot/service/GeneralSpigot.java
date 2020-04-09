@@ -27,7 +27,7 @@ public class GeneralSpigot {
         giveItem(player, Sets.newHashSet(itemStack));
     }
 
-    public boolean isPluginEnabled(String name, String classPath) {
+    public static boolean isPluginEnabled(String name, String classPath) {
         if (Bukkit.getPluginManager().isPluginEnabled(name)) {
             try {
                 if (Class.forName(classPath) != null) {
