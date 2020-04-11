@@ -86,6 +86,10 @@ public class CommandBase implements CommandExecutor {
         return false;
     }
 
+    public Set<SimpleCommand<? extends CommandSender>> getCommands() {
+        return this.commands;
+    }
+
     private void registerArgumentTypes() {
         this.registerArgumentType(String.class, string -> string)
                 .registerArgumentType(Player.class, Bukkit::getPlayerExact)
