@@ -115,6 +115,7 @@ public class Config {
 
     public void reload() {
         this.configuration = YamlConfiguration.loadConfiguration(this.file);
+        this.load();
     }
 
     private void createIfAbsent(String file) {
