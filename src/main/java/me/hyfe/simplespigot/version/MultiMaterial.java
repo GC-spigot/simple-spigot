@@ -1094,7 +1094,7 @@ public enum MultiMaterial {
     public ImmutablePair<Material, Boolean> getItemMaterial() {
         boolean changed = false;
         Material material = Material.getMaterial(version.equals(MaterialVersion.v1_14) ? this.toString() : version.equals(MaterialVersion.v1_13) ? this.newMaterial : this.oldMaterial);
-        if (material != null && material.isBlock()) {
+        if (material != null && material.isBlock() && this.oldMaterial2 != null) {
             material = Material.getMaterial(this.oldMaterial2);
             changed = true;
         }
@@ -1103,7 +1103,7 @@ public enum MultiMaterial {
         }
         if (material == null) {
             material = Material.getMaterial(this.oldMaterial);
-            if (material != null && material.isBlock()) {
+            if (material != null && material.isBlock() && this.oldMaterial2 != null) {
                 material = Material.getMaterial(this.oldMaterial2);
                 changed = true;
             }
