@@ -1,5 +1,7 @@
 # simple-spigot (library)
 
+Simple-spigot is a library for Spigot which aims to make a lot of general tasks such as data storage, saving, menus much easier and efficient whilst not limiting the array of features available. Read the wiki if you need help with certain parts of the simple-spigot library.
+
 > How do I include the library with Maven?
 ```xml
 <repositories>
