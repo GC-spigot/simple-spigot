@@ -1,4 +1,4 @@
-package me.hyfe.simplespigot.service.tuple;
+package me.hyfe.simplespigot.tuple;
 
 public class MutablePair<K, V> {
     private K key;

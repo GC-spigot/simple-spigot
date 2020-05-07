@@ -1,15 +1,19 @@
-package me.hyfe.simplespigot.service;
+package me.hyfe.simplespigot.service.simple.services;
 
-public class General {
+import java.util.concurrent.TimeUnit;
 
-    public static String formatSeconds(long initialSeconds) {
-        long years = initialSeconds / 31536000;
-        long months = initialSeconds % 31536000 / 2592000; // Months calculated with 30 days.
-        long weeks = initialSeconds % 2592000 / 604800;
-        long days = initialSeconds % 604800 / 86400;
-        long hours = initialSeconds % 86400 / 3600;
-        long minutes = initialSeconds % 3600 / 60;
-        long seconds = initialSeconds % 60;
+public class TimeService {
+
+    public static String format(TimeUnit timeUnit, long duration) {
+        long origin = timeUnit.toSeconds(duration);
+        long years = origin / 31536000;
+        long months = origin % 31536000 / 2592000; // Months calculated with 30 days.
+        long weeks = origin % 2592000 / 604800;
+        long days = origin % 604800 / 86400;
+        long hours = origin % 86400 / 3600;
+        long minutes = origin % 3600 / 60;
+        long seconds = origin % 60;
+
         if (minutes < 1) {
             return String.format("%ds", seconds);
         }

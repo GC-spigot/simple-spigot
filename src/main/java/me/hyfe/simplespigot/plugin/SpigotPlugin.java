@@ -15,11 +15,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 public abstract class SpigotPlugin extends JavaPlugin implements SimplePlugin {
-    private final BackendFactory storageFactory = new BackendFactory(this);
-    private final StorageSettings storageSettings = new StorageSettings();
-    private final CommandBase commandBase = new CommandBase(this);
-    private final ConfigStore configStore = new ConfigStore(this);
-    private final SavingController savingController = new SavingController(this);
+    protected final BackendFactory storageFactory = new BackendFactory(this);
+    protected final StorageSettings storageSettings = new StorageSettings();
+    protected final CommandBase commandBase = new CommandBase(this);
+    protected final ConfigStore configStore = new ConfigStore(this);
+    protected final SavingController savingController = new SavingController(this);
 
     @Override
     public void runAsync(Runnable runnable) {

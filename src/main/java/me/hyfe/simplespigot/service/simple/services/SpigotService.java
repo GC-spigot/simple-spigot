@@ -1,4 +1,4 @@
-package me.hyfe.simplespigot.service;
+package me.hyfe.simplespigot.service.simple.services;
 
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
@@ -10,16 +10,17 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Collection;
 import java.util.Map;
 
-public class GeneralSpigot {
+public class SpigotService {
 
     public static void giveItem(Player player, Collection<ItemStack> collection) {
         Map<Integer, ItemStack> result = player.getInventory().addItem(collection.toArray(new ItemStack[0]));
-        if (!result.isEmpty()) {
-            Location location = player.getLocation();
-            World world = location.getWorld();
-            for (Map.Entry<Integer, ItemStack> entry : result.entrySet()) {
-                world.dropItemNaturally(location, entry.getValue());
-            }
+        if (result.isEmpty()) {
+            return;
+        }
+        Location location = player.getLocation();
+        World world = location.getWorld();
+        for (ItemStack itemStack : result.values()) {
+            world.dropItemNaturally(location, itemStack);
         }
     }
 
@@ -30,9 +31,8 @@ public class GeneralSpigot {
     public static boolean isPluginEnabled(String name, String classPath) {
         if (Bukkit.getPluginManager().isPluginEnabled(name)) {
             try {
-                if (Class.forName(classPath) != null) {
-                    return true;
-                }
+                Class.forName(classPath);
+                return true;
             } catch (ClassNotFoundException e) {
                 return false;
             }

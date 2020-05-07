@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import me.hyfe.simplespigot.menu.item.MenuItem;
-import me.hyfe.simplespigot.service.tuple.ImmutablePair;
+import me.hyfe.simplespigot.tuple.ImmutablePair;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;

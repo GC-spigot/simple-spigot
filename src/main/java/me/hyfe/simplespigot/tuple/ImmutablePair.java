@@ -1,4 +1,4 @@
-package me.hyfe.simplespigot.service.tuple;
+package me.hyfe.simplespigot.tuple;
 
 public class ImmutablePair<K, V> {
     private final K key;

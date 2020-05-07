@@ -1,6 +1,6 @@
 package me.hyfe.simplespigot.version;
 
-import me.hyfe.simplespigot.service.tuple.ImmutablePair;
+import me.hyfe.simplespigot.tuple.ImmutablePair;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -891,7 +891,7 @@ public enum MultiMaterial {
     STRUCTURE_BLOCK,
     STRUCTURE_VOID,
     SUGAR,
-    SUGAR_CANE,
+    SUGAR_CANE("SUGAR_CANE_BLOCK"),
     SUNFLOWER("DOUBLE_PLANT"),
     SUSPICIOUS_STEW,
     SWEET_BERRIES,
