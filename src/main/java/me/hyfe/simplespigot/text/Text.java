@@ -19,6 +19,12 @@ public class Text {
     private static final String COLOR_CODES = "0123456789AaBbCcDdEeFfKkLlMmNnOoRr";
     private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + SECTION_CHAR + "[0-9A-FK-OR]");
 
+    /**
+     * Sends a message to a player, inserts placeholders and replaces colours.
+     *
+     * @param recipient The CommandSender to send the message to.
+     * @param message   The message to send to the CommandSender.
+     */
     public static void sendMessage(CommandSender recipient, String message) {
         Supplier<String> processor = () -> {
             if (recipient instanceof Player && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
@@ -29,8 +35,14 @@ public class Text {
         recipient.sendMessage(modify(processor.get()));
     }
 
-    public static void sendMessage(Collection<CommandSender> recipient, String message) {
-        for (CommandSender commandSender : recipient) {
+    /**
+     * Sends a message to multiple players, inserts placeholders and replaces colours.
+     *
+     * @param recipients The CommandSenders to send the message to
+     * @param message    The message to send to all the CommandSenders
+     */
+    public static void sendMessage(Collection<CommandSender> recipients, String message) {
+        for (CommandSender commandSender : recipients) {
             String[] lines = message.split("\n");
             for (String line : lines) {
                 sendMessage(commandSender, line);
@@ -38,18 +50,44 @@ public class Text {
         }
     }
 
+    /**
+     * Applies colours
+     *
+     * @param string The string to modify
+     * @return A string which has been modified replacing colours ("&") for use in Minecraft
+     */
     public static String modify(String string) {
         return modify(string, null);
     }
 
+    /**
+     * Applies colours and replaces certain internally set placeholders
+     *
+     * @param string   The string to modify
+     * @param replacer The replacer to apply to the string.
+     * @return A string which has been modified replacing colours ("&") for use in Minecraft
+     */
     public static String modify(String string, Replace replacer) {
         return string == null ? null : renderColorCodes(replacer == null ? string : replacer.apply(new Replacer()).applyTo(string));
     }
 
+    /**
+     * Applies colours
+     *
+     * @param list The strings to modify
+     * @return A string list which has been modified replacing colours ("&") for use in Minecraft
+     */
     public static List<String> modify(List<String> list) {
         return modify(list, null);
     }
 
+    /**
+     * Applies colours and replaces certain internally set placeholders
+     *
+     * @param list     The strings to modify
+     * @param replacer The replacer to apply to the string.
+     * @return A string which has been modified replacing colours ("&") for use in Minecraft
+     */
     public static List<String> modify(List<String> list, Replace replacer) {
         if (list == null) {
             return null;
@@ -61,6 +99,13 @@ public class Text {
         return middleList;
     }
 
+    /**
+     * Applies colours and replaces certain internally set placeholders on an item.
+     *
+     * @param itemStack The item to modify
+     * @param replacer  The replacer to apply to the string.
+     * @return An item which has been modified
+     */
     public static ItemStack modify(ItemStack itemStack, Replace replacer) {
         ItemStack mutableItem = itemStack.clone();
         ItemMeta itemMeta = mutableItem.getItemMeta();
@@ -73,10 +118,22 @@ public class Text {
         return mutableItem;
     }
 
+    /**
+     * Removes colour codes from a string.
+     *
+     * @param string The string to remove colours from.
+     * @return The string with colours removed.
+     */
     public static String decolorize(String string) {
         return string == null ? null : unrenderColorCodes(string);
     }
 
+    /**
+     * Removes colour codes from a string.
+     *
+     * @param input The string to remove colours from.
+     * @return The string with colours removed.
+     */
     private static String unrenderColorCodes(String input) {
         return input == null ? null : STRIP_COLOR_PATTERN.matcher(input).replaceAll("");
     }

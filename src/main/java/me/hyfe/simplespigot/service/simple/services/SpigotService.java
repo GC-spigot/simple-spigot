@@ -28,10 +28,18 @@ public class SpigotService {
         giveItem(player, Sets.newHashSet(itemStack));
     }
 
-    public static boolean isPluginEnabled(String name, String classPath) {
+    public static boolean isPluginEnabledByAuthor(String name, String author) {
+        if (Bukkit.getPluginManager().isPluginEnabled(name)) {
+            return Bukkit.getPluginManager().getPlugin(name).getDescription().getAuthors().contains(author);
+        }
+        return false;
+    }
+
+    // Recommend against this method for now.
+    public static boolean isPluginEnabled(String name, String mainClassPath) {
         if (Bukkit.getPluginManager().isPluginEnabled(name)) {
             try {
-                Class.forName(classPath);
+                Class.forName(mainClassPath);
                 return true;
             } catch (ClassNotFoundException e) {
                 return false;

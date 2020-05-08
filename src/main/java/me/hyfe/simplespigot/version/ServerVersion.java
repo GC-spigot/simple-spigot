@@ -26,6 +26,11 @@ public enum ServerVersion {
         this.versionId = versionId;
     }
 
+    /**
+     * Gets the version the server is running.
+     *
+     * @return The ServerVersion of the server
+     */
     public static ServerVersion getVersion() {
         if (serverVersion != null) {
             return serverVersion;
@@ -44,10 +49,20 @@ public enum ServerVersion {
         return serverVersion;
     }
 
+    /**
+     * Identifies if the server is above or below 1.12.2.
+     *
+     * @return A boolean of whether the server is over 1.12.2.
+     */
     public static boolean isOver_V1_12() {
         return getVersion().getVersionId() > 1121;
     }
 
+    /**
+     * Gets the specific version number of the server.
+     *
+     * @return An integer of the specific version number of the server.
+     */
     public int getVersionId() {
         return versionId;
     }
