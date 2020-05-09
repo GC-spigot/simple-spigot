@@ -23,10 +23,23 @@ import java.util.function.UnaryOperator;
 
 public class SpigotItem {
 
+    /**
+     * Gets a item builder.
+     *
+     * @return A Builder.
+     */
     public static Builder builder() {
         return new Builder();
     }
 
+    /**
+     * Converts a section from a config into an ItemStack (must use specific format).
+     *
+     * @param config  The config to get the item from.
+     * @param path    The path inside the config to get the item from (e.g 1.item)
+     * @param replace A replacer to replace certain parts of the configurable options necessary (name, lore).
+     * @return The ItemStack built from the config path - nullable.
+     */
     public static ItemStack toItem(Config config, String path, Replace replace) {
         UnaryOperator<String> pathBuilder = string -> String.format("%s.%s", path, string);
         ItemStack itemStack = MultiMaterial.itemFrom(config.string(pathBuilder.apply("material")));
@@ -42,10 +55,24 @@ public class SpigotItem {
         return builder.build();
     }
 
+    /**
+     * Converts a section from a config into an ItemStack (must use specific format).
+     *
+     * @param config The config to get the item from.
+     * @param path   The path inside the config to get the item from (e.g 1.item)
+     * @return The ItemStack built from the config path - nullable.
+     */
     public static ItemStack toItem(Config config, String path) {
         return toItem(config, path, null);
     }
 
+    /**
+     * Runs the specified consumer if the path inside the Config is present.
+     *
+     * @param config    The config to perform on.
+     * @param path      The path inside the config to perform on.
+     * @param localPath The code to run if the path inside the config is present.
+     */
     private static void validatePath(Config config, String path, Consumer<String> localPath) {
         if (config.get(path) != null) {
             localPath.accept(path);
@@ -63,62 +90,129 @@ public class SpigotItem {
         private Map<Enchantment, Integer> enchants = Maps.newHashMap();
         private boolean doesGlow = false;
 
+        /**
+         * Specifies the ItemStack of the builder.
+         *
+         * @param itemStack The ItemStack for the builder.
+         * @return The builder.
+         */
         public Builder itemStack(ItemStack itemStack) {
             this.itemStack = itemStack;
             return this;
         }
 
+        /**
+         * Specifies the material and data of the builder.
+         *
+         * @param material The material of the item in the builder.
+         * @param data     The data of the material.
+         * @return The builder.
+         */
         public Builder item(Material material, int data) {
             this.material = material;
             this.data = (byte) data;
             return this;
         }
 
+        /**
+         * Specifies the material of the builder.
+         *
+         * @param material The material of the item in the builder.
+         * @return The builder.
+         */
         public Builder item(Material material) {
             this.material = material;
             return this;
         }
 
+        /**
+         * Specifies the amount of the item in the builder.
+         *
+         * @param amount The amount of the item.
+         * @return The builder.
+         */
         public Builder amount(int amount) {
             this.amount = amount;
             return this;
         }
 
+        /**
+         * Specifies the name of the item in the builder (converts colour codes).
+         *
+         * @param name The name of the item.
+         * @return The builder.
+         */
         public Builder name(String name) {
             this.name = Text.modify(name);
             return this;
         }
 
+        /**
+         * Specifies the lore of the item in the builder (converts colour codes).
+         *
+         * @param lore The lore of the item.
+         * @return The builder.
+         */
         public Builder lore(List<String> lore) {
             this.lore = Text.modify(lore);
             return this;
         }
 
+        /**
+         * Specifies the lore of the item in the builder (converts colour codes).
+         *
+         * @param lore The lore of the item.
+         * @return The builder.
+         */
         public Builder lore(String... lore) {
             this.lore = Text.modify(Arrays.asList(lore));
             return this;
         }
 
+        /**
+         * Adds an item flag to the item in the builder.
+         *
+         * @param flag The flag to add to the item.
+         * @return The builder.
+         */
         public Builder flag(ItemFlag flag) {
             this.itemFlags.add(flag);
             return this;
         }
 
+        /**
+         * Adds an item flag to the item in the builder using its name.
+         *
+         * @param flagString The name of the item flag.
+         * @return The builder.
+         */
         public Builder flag(String flagString) {
-            ItemFlag flag;
             try {
-                flag = ItemFlag.valueOf(flagString.toUpperCase());
-            } catch (Exception e) {
-                return this;
+                ItemFlag flag = ItemFlag.valueOf(flagString.toUpperCase());
+                this.itemFlags.add(flag);
+            } catch (Exception ignored) {
             }
             return this;
         }
 
+        /**
+         * Adds an enchant to the item in the builder.
+         *
+         * @param enchant The enchant to add.
+         * @param level   The level of the enchant to add.
+         * @return The builder.
+         */
         public Builder enchant(Enchantment enchant, int level) {
             this.enchants.put(enchant, level);
             return this;
         }
 
+        /**
+         * Adds an enchant to the item in the builder using its name.
+         *
+         * @param enchant The name of the enchant (could be :level as well).
+         * @return The builder.
+         */
         public Builder enchant(String enchant) {
             String[] enchantSplit = enchant.split(":");
             if (enchantSplit.length == 2) {
@@ -132,15 +226,31 @@ public class SpigotItem {
             return this;
         }
 
+        /**
+         * Sets the item to glow without displaying an enchant.
+         *
+         * @return The builder
+         */
         public Builder glow() {
             this.doesGlow = true;
             return this;
         }
 
+        /**
+         * Builds the item using all set values.
+         *
+         * @return The ItemStack
+         */
         public ItemStack build() {
             return this.build(null);
         }
 
+        /**
+         * Builds the item using all set values and applies NBT changes.
+         *
+         * @param function The changes to apply to the item's NBT (through an NBT item)
+         * @return The ItemStack
+         */
         public ItemStack build(UnaryOperator<NbtItem> function) {
             if (this.material != null) {
                 this.itemStack = new ItemStack(this.material, this.amount, this.data);

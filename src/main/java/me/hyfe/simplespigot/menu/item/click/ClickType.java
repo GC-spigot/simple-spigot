@@ -11,6 +11,11 @@ public enum ClickType {
     MIDDLE_MB,
     OTHER;
 
+    /**
+     * Makes actions more generic and removes useless detail most of the time.
+     * @param inventoryAction The item that was performed.
+     * @return A ClickType of the action.
+     */
     public static ClickType parse(InventoryAction inventoryAction) {
         switch (inventoryAction) {
             case PICKUP_ALL:

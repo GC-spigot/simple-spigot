@@ -54,7 +54,7 @@ public class Text {
      * Applies colours
      *
      * @param string The string to modify
-     * @return A string which has been modified replacing colours ("&") for use in Minecraft
+     * @return A string which has been modified replacing colours ("&amp;") for use in Minecraft
      */
     public static String modify(String string) {
         return modify(string, null);
@@ -65,7 +65,7 @@ public class Text {
      *
      * @param string   The string to modify
      * @param replacer The replacer to apply to the string.
-     * @return A string which has been modified replacing colours ("&") for use in Minecraft
+     * @return A string which has been modified replacing colours ("&amp;") for use in Minecraft
      */
     public static String modify(String string, Replace replacer) {
         return string == null ? null : renderColorCodes(replacer == null ? string : replacer.apply(new Replacer()).applyTo(string));
@@ -75,7 +75,7 @@ public class Text {
      * Applies colours
      *
      * @param list The strings to modify
-     * @return A string list which has been modified replacing colours ("&") for use in Minecraft
+     * @return A string list which has been modified replacing colours ("&amp;") for use in Minecraft
      */
     public static List<String> modify(List<String> list) {
         return modify(list, null);
@@ -86,7 +86,7 @@ public class Text {
      *
      * @param list     The strings to modify
      * @param replacer The replacer to apply to the string.
-     * @return A string which has been modified replacing colours ("&") for use in Minecraft
+     * @return A string which has been modified replacing colours ("&amp;") for use in Minecraft
      */
     public static List<String> modify(List<String> list, Replace replacer) {
         if (list == null) {

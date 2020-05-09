@@ -26,6 +26,15 @@ public class MenuService {
         return parseSlots(menu, config, "", id);
     }
 
+    /**
+     * Parses the slots a user has specified in a single string (slot,slot,slot,slot)
+     *
+     * @param menu   The menu to get slots for.
+     * @param config The config to get the slots from.
+     * @param prefix The location before the "slots" section, e.g menu.items.
+     * @param id     The ID of the specific item, e.g menu-item (from example resulting in menu.items.menu-item.slots after code).
+     * @return The slots specified after parsing is done.
+     */
     public static Set<Integer> parseSlots(Menu menu, Config config, String prefix, String id) {
         Stack<Integer> slots = new Stack<>();
         if (StringUtils.isNumeric(id)) {
@@ -52,6 +61,13 @@ public class MenuService {
         return Sets.newHashSet(slots);
     }
 
+    /**
+     * Parses slots from other formats other than slot, slot, slot and can take slot...slot or fill
+     *
+     * @param menu    The menu to get slots from.
+     * @param toParse The string to parse the slots from.
+     * @return The slots specified after parsing is done.
+     */
     public static Set<Integer> parseSlots(Menu menu, String toParse) {
         BiFunction<Menu, String, String> converter = (fMenu, entry) -> entry.equalsIgnoreCase("end") || entry.equalsIgnoreCase("start") ? Integer.toString(entry.equalsIgnoreCase("end") ? menu.getRows() * 9 - 1 : 0) : entry;
         BiFunction<Menu, Integer, Integer> slotLimiter = (fMenu, slot) -> slot < 0 ? 0 : Math.min(slot, menu.getRows() * 9 - 1);

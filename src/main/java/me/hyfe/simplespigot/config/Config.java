@@ -24,6 +24,14 @@ public class Config {
     private Map<String, Object> valueMap;
     private Set<String> enduringKeys;
 
+    /**
+     * Used for creating a new instance using a Path.
+     *
+     * @param plugin       The instance of the main class (it extends Plugin).
+     * @param path         The path to the file.
+     * @param reloadable   Whether the config file can be reloaded.
+     * @param enduringKeys Keys in the file that will not be reloaded.
+     */
     public Config(Plugin plugin, UnaryOperator<Path> path, boolean reloadable, String... enduringKeys) {
         this.plugin = plugin;
         this.file = path.apply(plugin.getDataFolder().toPath()).toFile();
@@ -34,6 +42,14 @@ public class Config {
         this.load();
     }
 
+    /**
+     * Used for creating a new instance using a File.
+     *
+     * @param plugin       The instance of the main class (it extends Plugin).
+     * @param file         The file to load into the Config.
+     * @param reloadable   Whether the config file can be reloaded.
+     * @param enduringKeys Keys in the file that will not be reloaded.
+     */
     public Config(Plugin plugin, File file, boolean reloadable, String... enduringKeys) {
         this.plugin = plugin;
         this.file = file;
@@ -43,49 +59,108 @@ public class Config {
         this.load();
     }
 
+    /**
+     * Gets the YAML configuration of the file.
+     *
+     * @return A YamlConfiguration of the inner config file.
+     */
     public YamlConfiguration getConfiguration() {
         return this.configuration;
     }
 
+    /**
+     * Gets whether the config file is set to be reloadable.
+     *
+     * @return A boolean of whether the config file will be reloaded.
+     */
     public boolean isReloadable() {
         return this.reloadable;
     }
 
+    /**
+     * Checks if a key is contained in the configuration, e.g this.key
+     *
+     * @param key The key to be checked if the config contains.
+     * @return A boolean of whether the file contained the key.
+     */
     public boolean has(String key) {
         return this.configuration.contains(key);
     }
 
+    /**
+     * Gets a string from the config file.
+     *
+     * @param key The key of where the string can be found in the file.
+     * @return The string that was found at the key specified in the config file.
+     */
     public String string(String key) {
         return Text.modify((String) this.get(key));
     }
 
+    /**
+     * Gets a boolean from the config file.
+     *
+     * @param key The key of where the boolean can be found in the file.
+     * @return The boolean that was found at the key specified in the config file.
+     */
     public Boolean bool(String key) {
         Object object = this.get(key);
         return (object instanceof Boolean) ? (Boolean) object : false;
     }
 
+    /**
+     * Gets a integer from the config file.
+     *
+     * @param key The key of where the integer can be found in the file.
+     * @return The integer that was found at the key specified in the config file.
+     */
     public int integer(String key) {
         Object object = this.get(key);
         return object instanceof Number ? ((Number) object).intValue() : -1;
     }
 
+    /**
+     * Gets a double from the config file.
+     *
+     * @param key The key of where the double can be found in the file.
+     * @return The double that was found at the key specified in the config file.
+     */
     public Double doubl(String key) {
         Object object = this.get(key);
         return object instanceof Number ? ((Number) object).doubleValue() : -1;
     }
 
+    /**
+     * Gets a list of strings from the config file.
+     *
+     * @param key The key of where the list of strings can be found in the file.
+     * @return The list of strings that was found at the key specified in the config file.
+     */
     @SuppressWarnings("unchecked")
     public List<String> stringList(String key) {
         Object object = this.get(key);
         return object instanceof List ? (List<String>) object : Lists.newArrayList();
     }
 
+    /**
+     * Gets a list of generic types from the config file.
+     *
+     * @param key The key of where the list can be found in the file.
+     * @return The list that was found at the key specified in the config file.
+     */
     @SuppressWarnings("unchecked")
     public <T> List<T> list(String key) {
         Object object = this.get(key);
         return object instanceof List ? (List<T>) object : Lists.newArrayList();
     }
 
+    /**
+     * Gets the keys of the config file.
+     *
+     * @param key  The key of where to check for all the keys. Can be empty.
+     * @param deep Whether the keys will be of the select layer or deeper (see Spigot YamlConfig docs)
+     * @return A set of all the keys
+     */
     public Set<String> keys(String key, boolean deep) {
         ConfigurationSection configurationSection = this.configuration.getConfigurationSection(key);
         if (configurationSection == null) {
@@ -95,10 +170,19 @@ public class Config {
         }
     }
 
+    /**
+     * Gets a value without a set type from the value map.
+     *
+     * @param key The key of the location for the value.
+     * @return The value located at the specified key in the map.
+     */
     public Object get(String key) {
         return this.valueMap.getOrDefault(key, null);
     }
 
+    /**
+     * Loads the configuration file.
+     */
     public synchronized void load() {
         boolean isReload = true;
         if (this.valueMap == null) {
@@ -113,11 +197,19 @@ public class Config {
         }
     }
 
+    /**
+     * Updates the configuration file from the disk.
+     */
     public void reload() {
         this.configuration = YamlConfiguration.loadConfiguration(this.file);
         this.load();
     }
 
+    /**
+     * Creates necessary files if they are not present.
+     *
+     * @param file The name of the file that needs to be saved - done from resources.
+     */
     private void createIfAbsent(String file) {
         if (!this.file.exists()) {
             this.plugin.getDataFolder().mkdirs();
