@@ -23,6 +23,7 @@ public class MySqlConnectionFactory {
             this.dataSource = new HikariDataSource(this.configurate(this.config));
         } catch (Exception ex) {
             Bukkit.getLogger().severe("Could not setup mysql, please check your credentials.");
+            ex.printStackTrace();
         }
         if (this.getConnection() != null) {
             Bukkit.getLogger().info("Successfully connected to MySQL.");
