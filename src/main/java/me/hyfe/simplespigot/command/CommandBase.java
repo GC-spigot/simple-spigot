@@ -1,5 +1,6 @@
 package me.hyfe.simplespigot.command;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import me.hyfe.simplespigot.command.argument.ArgumentHandler;
 import me.hyfe.simplespigot.command.argument.ArgumentType;
@@ -9,17 +10,15 @@ import me.hyfe.simplespigot.text.Text;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.command.PluginCommand;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
-public class CommandBase implements CommandExecutor {
+public class CommandBase implements CommandExecutor, TabCompleter {
     private final JavaPlugin plugin;
     private Set<SimpleCommand<? extends CommandSender>> commands = Sets.newHashSet();
 
@@ -44,7 +43,7 @@ public class CommandBase implements CommandExecutor {
     }
 
     @Override
-    public synchronized boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
+    public synchronized boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String commandName = command.getName();
         for (SimpleCommand<? extends CommandSender> simpleCommand : this.commands) {
             if (!simpleCommand.getCommand().equalsIgnoreCase(commandName)) {
@@ -84,6 +83,45 @@ public class CommandBase implements CommandExecutor {
             subResult.middleMan(sender, args);
         }
         return false;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> tabCompleteSuggestions = Lists.newArrayList();
+        String commandName = command.getName();
+        for (SimpleCommand<? extends CommandSender> simpleCommand : this.commands) {
+            if (!simpleCommand.getCommand().equalsIgnoreCase(commandName)) {
+                continue;
+            }
+            if (simpleCommand.getPermission() != null && !simpleCommand.getPermission().isEmpty() && !sender.hasPermission(simpleCommand.getPermission())) {
+                continue;
+            }
+            if (!simpleCommand.isConsole() && sender instanceof ConsoleCommandSender) {
+                continue;
+            }
+            if (args.length == 0) {
+                continue;
+            }
+            Set<SubCommand<? extends CommandSender>> subResults = Sets.newHashSet();
+            for (SubCommand<? extends CommandSender> subCommand : simpleCommand.getSubCommands()) {
+                if (subCommand.isMatchUntilIndex(args, args.length - 1)) {
+                    subResults.add(subCommand);
+                }
+            }
+            if (subResults.isEmpty()) {
+                continue;
+            }
+            for (SubCommand<? extends CommandSender> subResult : subResults) {
+                if (!subResult.doesInheritPermission() && subResult.getPermission() != null && !sender.hasPermission(subResult.getPermission()) && !simpleCommand.getPermission().isEmpty()) {
+                    continue;
+                }
+                if (!subResult.isConsole() && sender instanceof ConsoleCommandSender) {
+                    continue;
+                }
+                tabCompleteSuggestions.addAll(subResult.tabCompletionSuggestion(sender, args.length - 1));
+            }
+        }
+        return tabCompleteSuggestions;
     }
 
     public Set<SimpleCommand<? extends CommandSender>> getCommands() {

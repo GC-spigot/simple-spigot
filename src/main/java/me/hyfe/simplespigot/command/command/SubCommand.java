@@ -7,8 +7,10 @@ import me.hyfe.simplespigot.command.argument.ArgumentHandler;
 import me.hyfe.simplespigot.plugin.SimplePlugin;
 import org.bukkit.command.CommandSender;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 public abstract class SubCommand<T extends CommandSender> extends Command<T> {
     private final boolean endless;
@@ -66,8 +68,12 @@ public abstract class SubCommand<T extends CommandSender> extends Command<T> {
         }
     }
 
-    protected <S> void addArgument(Class<S> clazz, String argument) {
-        this.arguments.add(new Argument<S>(ArgumentHandler.getArgumentType(clazz), argument));
+    protected <S> void addArgument(Class<S> clazz, String argument, String... aliases) {
+        this.arguments.add(new Argument<S>(ArgumentHandler.getArgumentType(clazz), argument, aliases));
+    }
+
+    protected <S> void addArgument(Class<S> clazz, String argument, Function<CommandSender, List<String>> onTabComplete, String... aliases) {
+        this.arguments.add(new Argument<S>(ArgumentHandler.getArgumentType(clazz), argument, onTabComplete, aliases));
     }
 
     public int getArgumentsSize() {
@@ -79,13 +85,8 @@ public abstract class SubCommand<T extends CommandSender> extends Command<T> {
         return ((Argument<U>) this.arguments.get(index)).getType().parse(args[index]);
     }
 
-    public boolean isMatch(String[] arguments) {
-        for (int i = 0; i < arguments.length; i++) {
-            if (!this.isArgumentValid(arguments, i)) {
-                return false;
-            }
-        }
-        return true;
+    public boolean isMatch(String[] args) {
+        return this.isMatchUntilIndex(args, args.length);
     }
 
     public String[] getEnd(String[] arguments) {
@@ -97,6 +98,19 @@ public abstract class SubCommand<T extends CommandSender> extends Command<T> {
             newSet.add(arguments[i]);
         }
         return newSet.toArray(new String[]{});
+    }
+
+    public boolean isMatchUntilIndex(String[] args, int index) {
+        for (int i = 0; i < index; i++) {
+            if (!this.isArgumentValid(args, i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public List<String> tabCompletionSuggestion(CommandSender commandSender, int index) {
+        return this.arguments.get(index).getOnTabComplete().apply(commandSender);
     }
 
     private boolean isArgumentValid(String[] arguments, int index) {
