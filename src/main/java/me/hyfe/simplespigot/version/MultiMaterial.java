@@ -991,7 +991,7 @@ public enum MultiMaterial {
 
     private String newMaterial;
     private final String oldMaterial;
-    private Set<Byte> oldDatas = Sets.newHashSet((byte) 0);
+    private Set<Integer> oldDatas = Sets.newHashSet(0);
     private String oldMaterial2;
 
     MultiMaterial() {
@@ -1006,7 +1006,7 @@ public enum MultiMaterial {
         this.oldMaterial = oldMaterial;
         this.oldDatas = Sets.newHashSet();
         for (int oldData : oldDatas) {
-            this.oldDatas.add((byte) oldData);
+            this.oldDatas.add(oldData);
         }
     }
 
@@ -1020,13 +1020,13 @@ public enum MultiMaterial {
         this.oldMaterial = oldMaterial;
         this.oldDatas = Sets.newHashSet();
         for (int oldData : oldDatas) {
-            this.oldDatas.add((byte) oldData);
+            this.oldDatas.add(oldData);
         }
     }
 
     MultiMaterial(String oldMaterial, int oldData, String oldMaterial2) {
         this.oldMaterial = oldMaterial;
-        this.oldDatas = Sets.newHashSet((byte) oldData);
+        this.oldDatas = Sets.newHashSet(oldData);
         this.oldMaterial2 = oldMaterial2;
     }
 
@@ -1056,29 +1056,12 @@ public enum MultiMaterial {
     }
 
     private static MultiMaterial search(String string, int data) {
-        //try {
-            //AtomicInteger atomicInteger = new AtomicInteger();
             for (MultiMaterial multiMaterial : values()) {
-                /* atomicInteger.getAndIncrement();
-                 System.out.println(" ");
-                System.out.println("1: ".concat(multiMaterial.getOldMaterial()));
-                System.out.println("2: ".concat(string));
-                System.out.println("3: ".concat(Arrays.toString(multiMaterial.oldDatas.toArray())));
-                System.out.println("4: ".concat(String.valueOf(data)));
-                System.out.println("5: ".concat(String.valueOf(multiMaterial.getOldMaterial2())));*/
                 if ((multiMaterial.getOldMaterial().equalsIgnoreCase(string) && multiMaterial.oldDatas.contains(data)) || (multiMaterial.getOldMaterial2() != null && multiMaterial.getOldMaterial2().equalsIgnoreCase(string))) {
-                    // System.out.println("RETURN");
                     return multiMaterial;
                 }
             }
-            //System.out.println("Well: ".concat(String.valueOf(atomicInteger.get())));
-            //System.out.println("Len".concat(String.valueOf(values().length)));
             return null;
-       /* } catch (Exception e) {
-            System.out.println("ahhhh fuckkkkkkkkkk");
-            e.printStackTrace();
-        }
-        return null;*/
     }
 
     public static ImmutablePair<MultiMaterial, Byte> splitString(String string) {
@@ -1148,7 +1131,7 @@ public enum MultiMaterial {
     }
 
     public int getData() {
-        return Byte.toUnsignedInt(((byte) this.oldDatas.toArray()[0]));
+        return (int) this.oldDatas.toArray()[0];
     }
 
     public ItemStack getItem() {
