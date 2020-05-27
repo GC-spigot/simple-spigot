@@ -793,6 +793,7 @@ public enum MultiMaterial {
     REPEATER("DIODE"),
     REPEATING_COMMAND_BLOCK("COMMAND_REPEATING"),
     ROSE_BUSH("DOUBLE_PLANT", 4),
+    STONE,
     ROTTEN_FLESH,
     SADDLE,
     SALMON("RAW_FISH", 1),
@@ -866,7 +867,6 @@ public enum MultiMaterial {
     SQUID_SPAWN_EGG("MONSTER_EGG", 94),
     STICK,
     STICKY_PISTON("PISTON_STICKY_BASE"),
-    STONE,
     STONECUTTER("STONE"),
     STONE_AXE,
     STONE_BRICKS("SMOOTH_BRICK"),
@@ -1046,12 +1046,12 @@ public enum MultiMaterial {
 
     public static MultiMaterial fromString(String string, int data) {
         if (data != 0) {
-            return search(string, data);
+            return search(string.toUpperCase(), data);
         }
         try {
-            return valueOf(string);
+            return valueOf(string.toUpperCase());
         } catch (Exception e) {
-            return search(string, data);
+            return search(string.toUpperCase(), data);
         }
     }
 
