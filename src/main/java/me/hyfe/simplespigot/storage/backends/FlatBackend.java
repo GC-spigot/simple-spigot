@@ -41,7 +41,7 @@ public class FlatBackend implements Backend {
     public void save(String id, JsonObject json) {
         if (Files.exists(this.path)) {
             Path userPath = this.path.resolve(id + ".json");
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            Gson gson = new GsonBuilder().create();
             Writer writer = Files.newBufferedWriter(userPath);
             gson.toJson(json, writer);
             writer.close();
