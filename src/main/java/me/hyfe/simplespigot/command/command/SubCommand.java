@@ -110,6 +110,9 @@ public abstract class SubCommand<T extends CommandSender> extends Command<T> {
     }
 
     public List<String> tabCompletionSuggestion(CommandSender commandSender, int index) {
+        if (index > this.arguments.size() - 1) {
+            return Lists.newArrayList();
+        }
         return this.arguments.get(index).getOnTabComplete().apply(commandSender);
     }
 
