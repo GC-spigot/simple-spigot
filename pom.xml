@@ -6,7 +6,7 @@
 
     <groupId>me.hyfe</groupId>
     <artifactId>simple-spigot</artifactId>
-    <version>1.0.7.6.3</version>
+    <version>1.0.7.6.8</version>
     <packaging>jar</packaging>
 
     <name>simple-spigot</name>

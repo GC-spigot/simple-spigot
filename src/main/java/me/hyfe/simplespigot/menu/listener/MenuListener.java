@@ -14,7 +14,7 @@ import org.bukkit.inventory.Inventory;
 
 public class MenuListener implements Listener {
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
     public void onInventoryClick(InventoryClickEvent event) {
         Inventory inventory = event.getInventory();
         InventoryAction action = event.getAction();
