@@ -166,11 +166,11 @@ public abstract class Menu implements InventoryHolder {
      * @param slot The slot to remove the item from.
      */
     public void flush(int slot) {
-        this.menuItems.computeIfPresent(slot, (key, value) -> {
-            this.menuItems.remove(slot);
-            this.inventory.setItem(slot, null);
-            return value;
-        });
+        if (!this.menuItems.containsKey(slot)) {
+            return;
+        }
+        this.menuItems.remove(slot);
+        this.inventory.setItem(slot, null);
     }
 
     /**
