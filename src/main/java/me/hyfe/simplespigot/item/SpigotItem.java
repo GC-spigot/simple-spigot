@@ -273,7 +273,11 @@ public class SpigotItem {
                     itemMeta.addItemFlags(itemFlag);
                 }
             }
-
+            if (!this.enchants.isEmpty()) {
+                for (Map.Entry<Enchantment, Integer> entry : this.enchants.entrySet()) {
+                    itemMeta.addEnchant(entry.getKey(), entry.getValue(), true);
+                }
+            }
             if (this.doesGlow) {
                 itemMeta.addEnchant(Enchantment.DURABILITY, 0, true);
                 itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
