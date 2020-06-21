@@ -103,7 +103,7 @@ public class Config {
      * @param key The key of where the boolean can be found in the file.
      * @return The boolean that was found at the key specified in the config file.
      */
-    public Boolean bool(String key) {
+    public boolean bool(String key) {
         Object object = this.get(key);
         return (object instanceof Boolean) ? (Boolean) object : false;
     }
@@ -125,7 +125,7 @@ public class Config {
      * @param key The key of where the double can be found in the file.
      * @return The double that was found at the key specified in the config file.
      */
-    public Double doubl(String key) {
+    public double doubl(String key) {
         Object object = this.get(key);
         return object instanceof Number ? ((Number) object).doubleValue() : -1;
     }
