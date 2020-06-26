@@ -16,8 +16,8 @@ import java.util.function.UnaryOperator;
 
 public abstract class Menu implements InventoryHolder {
     protected final Player player;
-    private final String title;
-    private final int rows;
+    private String title;
+    private int rows;
     private Inventory inventory;
     private MenuState menuState;
     private Runnable closeAction;
@@ -70,6 +70,24 @@ public abstract class Menu implements InventoryHolder {
      */
     public void close() {
         this.player.closeInventory();
+    }
+
+    /**
+     * Set the title before the inventory is created
+     *
+     * @param title the title
+     */
+    public void preTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * Set the rows before the inventory is created
+     *
+     * @param rows the rows
+     */
+    public void preRows(int rows) {
+        this.rows = rows;
     }
 
     /**
