@@ -1,52 +1,54 @@
 package me.hyfe.simplespigot.version;
 
 import com.google.common.collect.Sets;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Set;
 
 public enum MultiMaterialNew {
 
-    ACACIA_BOAT(),
-    ACACIA_BUTTON(),
+    ACACIA_BOAT(Entry.of("BOAT_ACACIA")),
+    ACACIA_BUTTON(Entry.of("WOOD_BUTTON")),
     ACACIA_DOOR(),
     ACACIA_FENCE(),
     ACACIA_FENCE_GATE(),
-    ACACIA_LEAVES(),
-    ACACIA_LOG(),
-    ACACIA_PLANKS(),
-    ACACIA_PRESSURE_PLATE(),
-    ACACIA_SAPLING(),
-    ACACIA_SIGN(),
-    ACACIA_SLAB(),
+    ACACIA_LEAVES(Entry.of("LEAVES_2")),
+    ACACIA_LOG(Entry.of("LOG_2")),
+    ACACIA_PLANKS(Entry.of("WOOD", 4)),
+    ACACIA_PRESSURE_PLATE(Entry.of("WOOD_PLATE")),
+    ACACIA_SAPLING(Entry.of("SAPLING", 4)),
+    ACACIA_SIGN(Entry.of("SIGN")),
+    ACACIA_SLAB(Entry.of("WOOD_STEP", 4)),
     ACACIA_STAIRS(),
-    ACACIA_TRAPDOOR(),
-    ACACIA_WALL_SIGN(),
-    ACACIA_WOOD(),
+    ACACIA_TRAPDOOR(Entry.of("TRAP_DOOR")),
+    ACACIA_WALL_SIGN(Entry.of("WALL_SIGN")),
+    ACACIA_WOOD(Entry.of("LOG_2")),
     ACTIVATOR_RAIL(),
     AIR(),
     ALLIUM(),
     ANCIENT_DEBRIS(),
-    ANDESITE(),
-    ANDESITE_SLAB(),
-    ANDESITE_STAIRS(),
-    ANDESITE_WALL(),
+    ANDESITE(Entry.of("STONE", 5)),
+    ANDESITE_SLAB(Entry.of("STONE")),
+    ANDESITE_STAIRS(Entry.of("STONE")),
+    ANDESITE_WALL(Entry.of("COBBLESTONE_WALL"), Entry.of("COBBLE_WALL")),
     ANVIL(),
     APPLE(),
     ARMOR_STAND(),
     ARROW(),
-    ATTACHED_MELON_STEM(),
-    ATTACHED_PUMPKIN_STEM(),
-    AZURE_BLUET(),
+    ATTACHED_MELON_STEM(Entry.of("MELON_STEM", 7)),
+    ATTACHED_PUMPKIN_STEM(Entry.of("PUMPKIN_STEM", 7)),
+    AZURE_BLUET(Entry.of("RED_ROSE", 3)),
     BAKED_POTATO(),
     BAMBOO(),
     BAMBOO_SAPLING(),
     BARREL(),
     BARRIER(),
     BASALT(),
-    BAT_SPAWN_EGG(),
+    BAT_SPAWN_EGG(Entry.of("MONSTER_EGG", 65)),
     BEACON(),
     BEDROCK(),
-    BEEF(),
+    BEEF(Entry.of("RAW_BEEF")),
     BEEHIVE(),
     BEETROOT(),
     BEETROOTS(),
@@ -56,53 +58,53 @@ public enum MultiMaterialNew {
     BEE_SPAWN_EGG(),
     BELL(),
     BIRCH_BOAT(),
-    BIRCH_BUTTON(),
+    BIRCH_BUTTON(Entry.of("WOOD_BUTTON")),
     BIRCH_DOOR(),
     BIRCH_FENCE(),
     BIRCH_FENCE_GATE(),
-    BIRCH_LEAVES(),
-    BIRCH_LOG(),
-    BIRCH_PLANKS(),
-    BIRCH_PRESSURE_PLATE(),
-    BIRCH_SAPLING(),
-    BIRCH_SIGN(),
-    BIRCH_SLAB(),
-    BIRCH_STAIRS(),
-    BIRCH_TRAPDOOR(),
-    BIRCH_WALL_SIGN(),
-    BIRCH_WOOD(),
+    BIRCH_LEAVES(Entry.of("LEAVES", 2)),
+    BIRCH_LOG(Entry.of("LOG", 2)),
+    BIRCH_PLANKS(Entry.of("WOOD", 2)),
+    BIRCH_PRESSURE_PLATE(Entry.of("WOOD_PLATE")),
+    BIRCH_SAPLING(Entry.of("SAPLING", 2)),
+    BIRCH_SIGN(Entry.of("SIGN")),
+    BIRCH_SLAB(Entry.of("WOOD_STEP", 2)),
+    BIRCH_STAIRS(Entry.of("BIRCH_WOOD_STAIRS")),
+    BIRCH_TRAPDOOR(Entry.of("TRAP_DOOR")),
+    BIRCH_WALL_SIGN(Entry.of("WALL_SIGN")),
+    BIRCH_WOOD(Entry.of("WOOD", 2)),
     BLACKSTONE(),
     BLACKSTONE_SLAB(),
     BLACKSTONE_STAIRS(),
     BLACKSTONE_WALL(),
-    BLACK_BANNER(),
-    BLACK_BED(),
-    BLACK_CARPET(),
-    BLACK_CONCRETE(),
+    BLACK_BANNER(Entry.of("BANNER")),
+    BLACK_BED(Entry.of("BED")),
+    BLACK_CARPET(Entry.of("CARPET", 15)),
+    BLACK_CONCRETE(Entry.of("CONCRETE", 15)),
     BLACK_CONCRETE_POWDER(),
-    BLACK_DYE(),
+    BLACK_DYE(Entry.of("INK_SACK")),
     BLACK_GLAZED_TERRACOTTA(),
     BLACK_SHULKER_BOX(),
-    BLACK_STAINED_GLASS(),
-    BLACK_STAINED_GLASS_PANE(),
-    BLACK_TERRACOTTA(),
-    BLACK_WALL_BANNER(),
-    BLACK_WOOL(),
-    BLAST_FURNACE(),
+    BLACK_STAINED_GLASS(Entry.of("STAINED_GLASS", 15)),
+    BLACK_STAINED_GLASS_PANE(Entry.of("STAINED_GLASS_PANE", 15)),
+    BLACK_TERRACOTTA(Entry.of("STAINED_CLAY", 15)),
+    BLACK_WALL_BANNER(Entry.of("WALL_BANNER")),
+    BLACK_WOOL(Entry.of("WOOL", 15)),
+    BLAST_FURNACE(Entry.of("FURNACE")),
     BLAZE_POWDER(),
     BLAZE_ROD(),
-    BLAZE_SPAWN_EGG(),
-    BLUE_BANNER(),
-    BLUE_BED(),
-    BLUE_CARPET(),
-    BLUE_CONCRETE(),
-    BLUE_CONCRETE_POWDER(),
+    BLAZE_SPAWN_EGG(Entry.of("MOSNTER_EGG", 61)),
+    BLUE_BANNER(Entry.of("BANNER", 11)),
+    BLUE_BED(Entry.of("BED")),
+    BLUE_CARPET(Entry.of("CARPET", 11)),
+    BLUE_CONCRETE(Entry.of("CONCRETE", 11)),
+    BLUE_CONCRETE_POWDER(Entry.of("CONCRETE_POWDER", 11)),
     BLUE_DYE(),
     BLUE_GLAZED_TERRACOTTA(),
-    BLUE_ICE(),
-    BLUE_ORCHID(),
+    BLUE_ICE(Entry.of("PACKED_ICE")),
+    BLUE_ORCHID(Entry.of("RED_ROSE", 1)),
     BLUE_SHULKER_BOX(),
-    BLUE_STAINED_GLASS(),
+    BLUE_STAINED_GLASS(Entry.of("STAINED_GLASS", 11)),
     BLUE_STAINED_GLASS_PANE(),
     BLUE_TERRACOTTA(),
     BLUE_WALL_BANNER(),
@@ -1033,7 +1035,7 @@ public enum MultiMaterialNew {
     WEEPING_VINES(),
     WEEPING_VINES_PLANT(),
     WET_SPONGE(),
-    WHEAT(),
+    WHEAT(Entry.of("CROPS", 1, 2, 3, 4, 5, 6, 7), Entry.of("WHEAT")),
     WHEAT_SEEDS(),
     WHITE_BANNER(),
     WHITE_BED(),
@@ -1081,9 +1083,7 @@ public enum MultiMaterialNew {
     ZOMBIE_SPAWN_EGG(),
     ZOMBIE_VILLAGER_SPAWN_EGG(),
     ZOMBIE_WALL_HEAD(),
-    ZOMBIFIED_PIGLIN_SPAWN_EGG(),
-
-    WHEAT(Entry.of("CROPS", 1, 2, 3, 4, 5, 6, 7), Entry.of("WHEAT"));
+    ZOMBIFIED_PIGLIN_SPAWN_EGG();
 
     private final Set<Entry> entries;
 
@@ -1091,8 +1091,8 @@ public enum MultiMaterialNew {
         this.entries = Sets.newHashSet(entries);
     }
 
-    public static MultiMaterialNew parseString(String string) {
-        return null;
+    public static MultiMaterialNew parse(String name) {
+        return parse(name, 0);
     }
 
     public static MultiMaterialNew parse(String name, int data) {
@@ -1115,6 +1115,33 @@ public enum MultiMaterialNew {
             }
         }
         return null;
+    }
+
+    public static ItemStack parseItem(String field) {
+        if (field == null) {
+            return null;
+        }
+        String[] splitField = field.split(":");
+        int data = splitField.length > 1 ? Integer.parseInt(splitField[1]) : 0;
+        MultiMaterialNew multiMaterial = parse(splitField[0].toUpperCase(), data);
+        return multiMaterial == null ? DIRT.getItem(1, 0) : multiMaterial.getItem(1, data);
+    }
+
+    public Material getMaterial() {
+        Material material = Material.getMaterial(this.toString());
+        if (material == null) {
+            for (Entry entry : this.entries) {
+                Material wrappedMaterial = Material.getMaterial(entry.name);
+                if (wrappedMaterial != null) {
+                    return wrappedMaterial;
+                }
+            }
+        }
+        return material == null ? Material.DIRT : material;
+    }
+
+    public ItemStack getItem(int amount, int data) {
+        return new ItemStack(this.getMaterial(), amount, (byte) data);
     }
 
     public static class Entry {
