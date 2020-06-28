@@ -67,8 +67,13 @@ public class Text {
      * @param replacer The replacer to apply to the string.
      * @return A string which has been modified replacing colours ("&amp;") for use in Minecraft
      */
+    @Deprecated
     public static String modify(String string, Replace replacer) {
-        return string == null ? null : renderColorCodes(replacer == null ? string : replacer.apply(new Replacer()).applyTo(string));
+        return modifyText(string, replacer.apply(new Replacer()));
+    }
+
+    public static String modifyText(String string, Replacer replacer) {
+        return string == null ? null : renderColorCodes(replacer == null ? string : replacer.applyTo(string));
     }
 
     /**

@@ -8,6 +8,7 @@ import me.hyfe.simplespigot.nbt.type.NbtItem;
 import me.hyfe.simplespigot.text.Replace;
 import me.hyfe.simplespigot.text.Text;
 import me.hyfe.simplespigot.version.MultiMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -20,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
+import java.util.logging.Level;
 
 public class SpigotItem {
 
@@ -50,6 +52,9 @@ public class SpigotItem {
         validatePath(config, pathBuilder.apply("name"), localPath -> builder.name(Text.modify(config.string(pathBuilder.apply("name")), replace)));
         validatePath(config, pathBuilder.apply("lore"), localPath -> builder.lore(Text.modify(config.list(localPath), replace)));
         validatePath(config, pathBuilder.apply("amount"), localPath -> builder.amount(config.integer(localPath)));
+        if (config.bool(pathBuilder.apply("glow"))) {
+            builder.glow();
+        }
         config.stringList(pathBuilder.apply("item-flags")).forEach(builder::flag);
         config.stringList(pathBuilder.apply("enchants")).forEach(builder::enchant);
         return builder.build();
