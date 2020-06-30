@@ -14,7 +14,7 @@ Simple-spigot is a library for Spigot which aims to make a lot of general tasks 
     <dependency>
         <groupId>com.github.Hyfe-JavaDebug</groupId>
         <artifactId>simple-spigot</artifactId>
-        <version>1.0.8.1</version>
+        <version>1.0.8.1.1</version>
         <scope>compile</scope>
     </dependency>
 </dependencies>
