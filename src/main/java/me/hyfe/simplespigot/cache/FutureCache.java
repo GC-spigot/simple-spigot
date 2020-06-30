@@ -4,7 +4,9 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import me.hyfe.simplespigot.plugin.SimplePlugin;
 
+import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
@@ -92,5 +94,23 @@ public class FutureCache<K, V> {
      */
     public void invalidateAll() {
         this.subCache.invalidateAll();
+    }
+
+    /**
+     * Gets all of the keys in the cache.
+     *
+     * @return A set of all the keys in the cache.
+     */
+    public Set<K> keySet() {
+        return this.subCache.asMap().keySet();
+    }
+
+    /**
+     * Gets all of the values in the cache.
+     *
+     * @return A set of all the values in the cache.
+     */
+    public Collection<V> values() {
+        return this.subCache.asMap().values();
     }
 }
