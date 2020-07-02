@@ -1127,6 +1127,23 @@ public enum MultiMaterialNew {
         return multiMaterial == null ? DIRT.getItem(1, 0) : multiMaterial.getItem(1, data);
     }
 
+    public Material getSafeMaterial(String material) {
+        Material safeMaterial = Material.getMaterial(material);
+        if (safeMaterial != null) {
+            return safeMaterial;
+        }
+        Material unsafeMaterial = Material.getMaterial(this.toString());
+        if (unsafeMaterial == null) {
+            for (Entry entry : this.entries) {
+                Material wrappedMaterial = Material.getMaterial(entry.name);
+                if (wrappedMaterial != null) {
+                    return wrappedMaterial;
+                }
+            }
+        }
+        return unsafeMaterial == null ? Material.DIRT : unsafeMaterial;
+    }
+
     public Material getMaterial() {
         Material material = Material.getMaterial(this.toString());
         if (material == null) {
@@ -1138,6 +1155,10 @@ public enum MultiMaterialNew {
             }
         }
         return material == null ? Material.DIRT : material;
+    }
+
+    public ItemStack getSafeItem(String material, int amount, int data) {
+        return new ItemStack(this.getSafeMaterial(material), amount, (byte) data);
     }
 
     public ItemStack getItem(int amount, int data) {
