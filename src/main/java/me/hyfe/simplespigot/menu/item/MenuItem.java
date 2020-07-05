@@ -2,6 +2,7 @@ package me.hyfe.simplespigot.menu.item;
 
 import me.hyfe.simplespigot.config.Config;
 import me.hyfe.simplespigot.item.SpigotItem;
+import me.hyfe.simplespigot.menu.Menu;
 import me.hyfe.simplespigot.menu.item.click.ClickAction;
 import me.hyfe.simplespigot.text.Replace;
 import org.bukkit.inventory.ItemStack;
@@ -133,11 +134,11 @@ public class MenuItem {
         /**
          * Sets the item using a SpigotItem Builder.
          *
-         * @param itemBuilder The creator for the SpigotItem.
+         * @param builder The item builder
          * @return The menu item builder.
          */
-        public Builder item(UnaryOperator<SpigotItem.Builder> itemBuilder) {
-            this.itemStack = itemBuilder.apply(new SpigotItem.Builder()).build();
+        public Builder item(SpigotItem.Builder builder) {
+            this.itemStack = builder.build();
             return this;
         }
 
@@ -231,6 +232,10 @@ public class MenuItem {
          */
         public MenuItem build() {
             return new MenuItem(this.itemStack, this.row, this.slot, this.clickAction);
+        }
+
+        public void buildTo(Menu menu) {
+            menu.item(this.build());
         }
     }
 }

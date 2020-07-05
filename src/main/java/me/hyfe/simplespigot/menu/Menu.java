@@ -227,6 +227,16 @@ public abstract class Menu implements InventoryHolder {
         this.inventory.setItem(slot, menuItem.getItemStack());
     }
 
+
+    /**
+     * Provides an item builder
+     *
+     * @return The item builder
+     */
+    public MenuItem.Builder item() {
+        return MenuItem.builder();
+    }
+
     /**
      * Sets a slot to the specified menu item using a builder.
      *

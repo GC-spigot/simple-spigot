@@ -5,6 +5,8 @@ import me.hyfe.simplespigot.command.command.SimpleCommand;
 import me.hyfe.simplespigot.config.ConfigStore;
 import me.hyfe.simplespigot.registry.Registry;
 import me.hyfe.simplespigot.save.SavingController;
+import me.hyfe.simplespigot.scheduler.BukkitSchedulerWrapper;
+import me.hyfe.simplespigot.scheduler.ThreadContext;
 import me.hyfe.simplespigot.storage.BackendFactory;
 import me.hyfe.simplespigot.storage.StorageSettings;
 import org.bukkit.Bukkit;
@@ -15,6 +17,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 public abstract class SpigotPlugin extends JavaPlugin implements SimplePlugin {
+    protected final BukkitSchedulerWrapper bukkitSchedulerWrapper = new BukkitSchedulerWrapper(this);
     protected final BackendFactory storageFactory = new BackendFactory(this);
     protected final StorageSettings storageSettings = new StorageSettings();
     protected final CommandBase commandBase = new CommandBase(this);
@@ -60,6 +63,11 @@ public abstract class SpigotPlugin extends JavaPlugin implements SimplePlugin {
         for (SimpleCommand command : commands) {
             this.commandBase.registerCommand(command);
         }
+    }
+
+    @Override
+    public BukkitSchedulerWrapper wrappedScheduler() {
+        return this.bukkitSchedulerWrapper;
     }
 
     @Override

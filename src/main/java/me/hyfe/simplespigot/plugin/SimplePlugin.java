@@ -5,6 +5,7 @@ import me.hyfe.simplespigot.command.command.SimpleCommand;
 import me.hyfe.simplespigot.config.ConfigStore;
 import me.hyfe.simplespigot.registry.Registry;
 import me.hyfe.simplespigot.save.SavingController;
+import me.hyfe.simplespigot.scheduler.BukkitSchedulerWrapper;
 import me.hyfe.simplespigot.storage.BackendFactory;
 import me.hyfe.simplespigot.storage.StorageSettings;
 import org.bukkit.event.Listener;
@@ -28,6 +29,8 @@ public interface SimplePlugin extends Plugin {
     void registerListeners(Listener... listeners);
 
     void registerCommands(SimpleCommand... commands);
+
+    BukkitSchedulerWrapper wrappedScheduler();
 
     BackendFactory getStorageFactory();
 
