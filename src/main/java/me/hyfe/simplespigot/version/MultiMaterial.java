@@ -1115,7 +1115,7 @@ public enum MultiMaterial {
                 }
             }
         }
-        return null;
+        return NULL;
     }
 
     public static ItemStack parseItem(String field) {
@@ -1124,11 +1124,8 @@ public enum MultiMaterial {
         }
         String[] splitField = field.split(":");
         MultiMaterial multiMaterial = parse(splitField[0].toUpperCase(), splitField.length > 1 ? Integer.parseInt(splitField[1]) : 0);
-        String material = multiMaterial == null ? splitField[0].toUpperCase() : multiMaterial.getMaterial().toString();
-        int data = multiMaterial == null ? 0 : multiMaterial.getData(material);
-        if (multiMaterial == null) {
-            multiMaterial = NULL;
-        }
+        String material = multiMaterial.equals(NULL) ? splitField[0].toUpperCase() : multiMaterial.getMaterial().toString();
+        int data = multiMaterial.equals(NULL) ? 0 : multiMaterial.getData(material);
         return multiMaterial.getSafeItem(material, 1, data);
     }
 
