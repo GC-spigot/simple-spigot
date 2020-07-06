@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TimeService {
 
-    public static String format(TimeUnit timeUnit, long duration) {
+    public String format(TimeUnit timeUnit, long duration) {
         long origin = timeUnit.toSeconds(duration);
         long years = origin / 31536000;
         long months = origin % 31536000 / 2592000; // Months calculated with 30 days.

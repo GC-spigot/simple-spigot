@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class SpigotService {
 
-    public static void giveItem(Player player, Collection<ItemStack> collection) {
+    public void giveItem(Player player, Collection<ItemStack> collection) {
         Map<Integer, ItemStack> result = player.getInventory().addItem(collection.toArray(new ItemStack[0]));
         if (result.isEmpty()) {
             return;
@@ -24,11 +24,11 @@ public class SpigotService {
         }
     }
 
-    public static void giveItem(Player player, ItemStack itemStack) {
+    public void giveItem(Player player, ItemStack itemStack) {
         giveItem(player, Sets.newHashSet(itemStack));
     }
 
-    public static boolean isPluginEnabledByAuthor(String name, String author) {
+    public boolean isPluginEnabledByAuthor(String name, String author) {
         if (Bukkit.getPluginManager().isPluginEnabled(name)) {
             return Bukkit.getPluginManager().getPlugin(name).getDescription().getAuthors().contains(author);
         }
@@ -36,7 +36,7 @@ public class SpigotService {
     }
 
     // Recommend against this method for now.
-    public static boolean isPluginEnabled(String name, String mainClassPath) {
+    public boolean isPluginEnabled(String name, String mainClassPath) {
         if (Bukkit.getPluginManager().isPluginEnabled(name)) {
             try {
                 Class.forName(mainClassPath);

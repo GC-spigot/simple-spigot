@@ -11,8 +11,8 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
 
 public abstract class Menu implements InventoryHolder {
     protected final Player player;
@@ -227,36 +227,6 @@ public abstract class Menu implements InventoryHolder {
         this.inventory.setItem(slot, menuItem.getItemStack());
     }
 
-
-    /**
-     * Provides an item builder
-     *
-     * @return The item builder
-     */
-    public MenuItem.Builder item() {
-        return MenuItem.builder();
-    }
-
-    /**
-     * Sets a slot to the specified menu item using a builder.
-     *
-     * @param builder The builder to build the item and set the slot to.
-     */
-    public void item(UnaryOperator<MenuItem.Builder> builder) {
-        this.item(builder.apply(MenuItem.builder()).build());
-    }
-
-    /**
-     * Sets multiple slots to the specified items using builders.
-     *
-     * @param builders The builders to build the item and set the slots to.
-     */
-    public void items(UnaryOperator<MenuItem.Builder>... builders) {
-        for (UnaryOperator<MenuItem.Builder> builder : builders) {
-            this.item(builder);
-        }
-    }
-
     /**
      * Gets the first empty slot in the menu.
      *
@@ -265,6 +235,17 @@ public abstract class Menu implements InventoryHolder {
     public Optional<Integer> firstEmpty() {
         int firstEmpty = this.inventory.firstEmpty();
         return firstEmpty < 0 ? Optional.empty() : Optional.of(firstEmpty);
+    }
+
+    /**
+     * Iterates through all empty slots
+     *
+     * @param rawSlot The slot consumer
+     */
+    public void loopEmptyRawSlots(Consumer<Integer> rawSlot) {
+        while (this.firstEmpty().isPresent()) {
+            rawSlot.accept(this.firstEmpty().get());
+        }
     }
 
     /**

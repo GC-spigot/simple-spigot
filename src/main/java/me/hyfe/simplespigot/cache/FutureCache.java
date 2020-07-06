@@ -10,25 +10,14 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
-public class FutureCache<K, V> {
+public class FutureCache<K, V> extends CacheWrapper<K, V> {
     protected final SimplePlugin plugin;
-    private final Cache<K, V> subCache;
 
     /**
      * @param plugin Your instance of SimplePlugin - should be the main class.
      */
     public FutureCache(SimplePlugin plugin) {
         this.plugin = plugin;
-        this.subCache = CacheBuilder.newBuilder().build();
-    }
-
-    /**
-     * Gets the cache inside the future cache.
-     *
-     * @return The contained cache
-     */
-    public Cache<K, V> getSubCache() {
-        return this.subCache;
     }
 
     /**
@@ -66,51 +55,5 @@ public class FutureCache<K, V> {
      */
     public Optional<V> getSync(K key) {
         return Optional.ofNullable(this.subCache.getIfPresent(key));
-    }
-
-    /**
-     * Sets a value in the cache.
-     *
-     * @param key   The key used to identify the value.
-     * @param value The value associated with the key.
-     * @return The value inserted in the parameters.
-     */
-    public V set(K key, V value) {
-        this.subCache.put(key, value);
-        return value;
-    }
-
-    /**
-     * Removes a key and value from the cache if present.
-     *
-     * @param key The key to remove from the cache if present.
-     */
-    public void invalidate(K key) {
-        this.subCache.invalidate(key);
-    }
-
-    /**
-     * Invalidates all entries in the cache.
-     */
-    public void invalidateAll() {
-        this.subCache.invalidateAll();
-    }
-
-    /**
-     * Gets all of the keys in the cache.
-     *
-     * @return A set of all the keys in the cache.
-     */
-    public Set<K> keySet() {
-        return this.subCache.asMap().keySet();
-    }
-
-    /**
-     * Gets all of the values in the cache.
-     *
-     * @return A set of all the values in the cache.
-     */
-    public Collection<V> values() {
-        return this.subCache.asMap().values();
     }
 }

@@ -7,8 +7,7 @@ import me.hyfe.simplespigot.config.Config;
 import me.hyfe.simplespigot.nbt.type.NbtItem;
 import me.hyfe.simplespigot.text.Replace;
 import me.hyfe.simplespigot.text.Text;
-import me.hyfe.simplespigot.version.MultiMaterial;
-import org.bukkit.Bukkit;
+import me.hyfe.simplespigot.version.MultiMaterialOld;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -21,7 +20,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
-import java.util.logging.Level;
 
 public class SpigotItem {
 
@@ -44,7 +42,7 @@ public class SpigotItem {
      */
     public static ItemStack toItem(Config config, String path, Replace replace) {
         UnaryOperator<String> pathBuilder = string -> String.format("%s.%s", path, string);
-        ItemStack itemStack = MultiMaterial.itemFrom(config.string(pathBuilder.apply("material")));
+        ItemStack itemStack = MultiMaterialOld.itemFrom(config.string(pathBuilder.apply("material")));
         if (itemStack == null) {
             return null;
         }

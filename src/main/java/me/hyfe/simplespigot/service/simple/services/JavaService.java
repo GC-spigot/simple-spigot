@@ -5,7 +5,7 @@ import java.util.Locale;
 
 public class JavaService {
 
-    public static String format(double number) {
-        return NumberFormat.getNumberInstance(Locale.US).format(number);
+    public String formatNumber(Locale locale, double number) {
+        return NumberFormat.getNumberInstance(locale).format(number);
     }
 }

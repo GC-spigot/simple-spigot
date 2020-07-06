@@ -6,7 +6,6 @@ import me.hyfe.simplespigot.config.ConfigStore;
 import me.hyfe.simplespigot.registry.Registry;
 import me.hyfe.simplespigot.save.SavingController;
 import me.hyfe.simplespigot.scheduler.BukkitSchedulerWrapper;
-import me.hyfe.simplespigot.scheduler.ThreadContext;
 import me.hyfe.simplespigot.storage.BackendFactory;
 import me.hyfe.simplespigot.storage.StorageSettings;
 import org.bukkit.Bukkit;
