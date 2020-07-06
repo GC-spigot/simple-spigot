@@ -1035,7 +1035,7 @@ public enum MultiMaterial {
     WEEPING_VINES(),
     WEEPING_VINES_PLANT(),
     WET_SPONGE(),
-    WHEAT(Entry.of("CROPS", 1, 2, 3, 4, 5, 6, 7), Entry.of("WHEAT")),
+    WHEAT(),
     WHEAT_SEEDS(),
     WHITE_BANNER(),
     WHITE_BED(),
