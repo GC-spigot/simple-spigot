@@ -1083,7 +1083,8 @@ public enum MultiMaterial {
     ZOMBIE_SPAWN_EGG(Entry.of("MONSTER_EGG", 54)),
     ZOMBIE_VILLAGER_SPAWN_EGG(),
     ZOMBIE_WALL_HEAD(),
-    ZOMBIFIED_PIGLIN_SPAWN_EGG();
+    ZOMBIFIED_PIGLIN_SPAWN_EGG(),
+    NULL();
 
     private final Set<Entry> entries;
 
@@ -1125,7 +1126,10 @@ public enum MultiMaterial {
         int data = splitField.length > 1 ? Integer.parseInt(splitField[1]) : 0;
         String material = splitField[0].toUpperCase();
         MultiMaterial multiMaterial = parse(material, data);
-        return multiMaterial == null ? DIRT.getItem(1, 0) : multiMaterial.getSafeItem(material, 1, data);
+        if (multiMaterial == null) {
+            multiMaterial = NULL;
+        }
+        return multiMaterial.getSafeItem(material, 1, data);
     }
 
     public Material getSafeMaterial(String material) {
