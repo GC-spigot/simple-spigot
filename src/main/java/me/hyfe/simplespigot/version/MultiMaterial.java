@@ -1123,9 +1123,9 @@ public enum MultiMaterial {
             return null;
         }
         String[] splitField = field.split(":");
-        int data = splitField.length > 1 ? Integer.parseInt(splitField[1]) : 0;
-        String material = splitField[0].toUpperCase();
-        MultiMaterial multiMaterial = parse(material, data);
+        MultiMaterial multiMaterial = parse(splitField[0].toUpperCase(), splitField.length > 1 ? Integer.parseInt(splitField[1]) : 0);
+        String material = multiMaterial == null ? splitField[0].toUpperCase() : multiMaterial.getMaterial().toString();
+        int data = multiMaterial == null ? 0 : multiMaterial.getData(material);
         if (multiMaterial == null) {
             multiMaterial = NULL;
         }
@@ -1160,6 +1160,15 @@ public enum MultiMaterial {
             }
         }
         return material == null ? Material.DIRT : material;
+    }
+
+    public int getData(String material) {
+        for (Entry entry : this.entries) {
+            if (entry.name.equalsIgnoreCase(material)) {
+                return entry.data.toArray(new Integer[0])[0];
+            }
+        }
+        return 0;
     }
 
     public ItemStack getSafeItem(String material, int amount, int data) {
