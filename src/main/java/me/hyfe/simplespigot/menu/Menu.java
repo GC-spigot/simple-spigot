@@ -126,6 +126,16 @@ public abstract class Menu implements InventoryHolder {
     }
 
     /**
+     * Sets the title of the menu.
+     * This should only be used before the menu is shown to the player (show method called)
+     *
+     * @param title The title of the menu
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
      * @return The rows in the menu.
      */
     public int getRows() {
