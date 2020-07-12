@@ -5,12 +5,17 @@ import com.google.common.cache.CacheBuilder;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.function.UnaryOperator;
 
 public class CacheWrapper<K, V> {
     protected final Cache<K, V> subCache;
 
     public CacheWrapper() {
         this.subCache = CacheBuilder.newBuilder().build();
+    }
+
+    public CacheWrapper(UnaryOperator<CacheBuilder<Object, Object>> builder) {
+        this.subCache = builder.apply(CacheBuilder.newBuilder()).build();
     }
 
     /**

@@ -1,12 +1,8 @@
 package me.hyfe.simplespigot.cache;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import me.hyfe.simplespigot.plugin.SimplePlugin;
 
-import java.util.Collection;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
