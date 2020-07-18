@@ -82,7 +82,7 @@ public class CommandBase implements CommandExecutor, TabCompleter {
             }
             subResult.middleMan(sender, args);
         }
-        return false;
+        return true;
     }
 
     @Override
