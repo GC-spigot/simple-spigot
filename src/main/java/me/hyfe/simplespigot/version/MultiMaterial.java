@@ -1125,7 +1125,7 @@ public enum MultiMaterial {
         String[] splitField = field.split(":");
         MultiMaterial multiMaterial = parse(splitField[0].toUpperCase(), splitField.length > 1 ? Integer.parseInt(splitField[1]) : 0);
         String material = multiMaterial.equals(NULL) ? splitField[0].toUpperCase() : multiMaterial.getMaterial().toString();
-        int data = multiMaterial.equals(NULL) ? 0 : multiMaterial.getData(material);
+        int data = multiMaterial.equals(NULL) ? splitField.length > 1 ? Integer.parseInt(splitField[1]) : 0 : multiMaterial.getData(material);
         return multiMaterial.getSafeItem(material, 1, data);
     }
 
