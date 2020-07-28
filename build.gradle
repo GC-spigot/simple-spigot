@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group = 'me.hyfe'
+version = '1.0.10.0'
+description = 'simple-spigot'
+
+repositories {
+    mavenLocal()
+    maven { url 'https://papermc.io/repo/repository/maven-public/' }
+    maven { url 'https://oss.sonatype.org/content/groups/public/' }
+    maven { url 'http://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven { url 'http://repo.maven.apache.org/maven2' }
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT'
+    compileOnly 'com.mojang:authlib:1.5.25'
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    compileOnly 'me.clip:placeholderapi:2.9.2'
+    implementation 'com.zaxxer:HikariCP:3.4.1'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
