@@ -1,5 +1,8 @@
 package me.hyfe.simplespigot.tuple;
 
+import javax.annotation.concurrent.NotThreadSafe;
+
+@NotThreadSafe
 public class MutablePair<K, V> {
     private K key;
     private V value;

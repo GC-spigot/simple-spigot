@@ -1,5 +1,10 @@
 package me.hyfe.simplespigot.tuple;
 
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
+
+@Immutable
+@ThreadSafe
 public class ImmutablePair<K, V> {
     private final K key;
     private final V value;
