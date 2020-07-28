@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public enum ReflectionMethod {
@@ -98,7 +99,6 @@ public enum ReflectionMethod {
     private boolean compatible = false;
     private String methodName = null;
 
-    @SneakyThrows
     ReflectionMethod(Class<?> targetClass, Class<?>[] args, ServerVersion addedSince, ServerVersion removedAfter, Since... methodNames) {
         ServerVersion server = ServerVersion.getVersion();
         if (server.compareTo(addedSince) < 0 || (removedAfter != null && server.getVersionId() > removedAfter.getVersionId())) {
@@ -111,7 +111,11 @@ public enum ReflectionMethod {
                 target = since;
         }
         Since targetVersion = target;
-        this.method = targetClass.getMethod(targetVersion.name, args);
+        try {
+            this.method = targetClass.getMethod(targetVersion.name, args);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
         this.method.setAccessible(true);
         this.loaded = true;
         this.methodName = targetVersion.name;
@@ -121,9 +125,13 @@ public enum ReflectionMethod {
         this(targetClass, args, addedSince, null, methodNames);
     }
 
-    @SneakyThrows
     public Object run(Object target, Object... args) {
-        return this.method == null ? null : this.method.invoke(target, args);
+        try {
+            return this.method == null ? null : this.method.invoke(target, args);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public String getMethodName() {

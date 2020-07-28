@@ -1,6 +1,10 @@
+ /build
+.idea/
 *.idea
-*.iml
-
-target/
 .idea
-dependency-reduced-pom.xml
+
+*.bin
+*.lock
+.gradle
+
+*.iml

@@ -36,13 +36,16 @@ public enum ClassWrapper {
         this(packageId, suffix, null, null);
     }
 
-    @SneakyThrows
     ClassWrapper(PackageWrapper packageId, String suffix, ServerVersion from, ServerVersion to) {
         if ((from != null && ServerVersion.getVersion().getVersionId() < from.getVersionId()) || to != null && ServerVersion.getVersion().getVersionId() > to.getVersionId()) {
             return;
         }
         this.enabled = true;
-        this.clazz = Class.forName(packageId.getUri().concat(".").concat(Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3]).concat(".").concat(suffix));
+        try {
+            this.clazz = Class.forName(packageId.getUri().concat(".").concat(Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3]).concat(".").concat(suffix));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public Class<?> getClazz() {
