@@ -7,10 +7,18 @@ import java.util.Objects;
 import java.util.function.UnaryOperator;
 
 public class Replacer {
-    private Map<String, Object> variables = Maps.newHashMap();
+    private final Map<String, Object> variables = Maps.newHashMap();
 
     public static String to(String string, UnaryOperator<Replacer> replacer) {
         return replacer.apply(new Replacer()).applyTo(string);
+    }
+
+    public static Replacer of(Map<String, String> placeholderValues) {
+        Replacer replacer = new Replacer();
+        for (Map.Entry<String, String> entry : placeholderValues.entrySet()) {
+            replacer.set(entry.getKey(), entry.getValue());
+        }
+        return replacer;
     }
 
     public Replacer set(String variable, Object value) {
