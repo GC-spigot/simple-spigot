@@ -1,6 +1,7 @@
 package me.hyfe.simplespigot.version;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 
 import java.util.logging.Level;
 
@@ -44,7 +45,7 @@ public enum ServerVersion {
         } catch (IllegalArgumentException ex) {
             serverVersion = ServerVersion.Unknown;
         }
-        if (serverVersion != Unknown) {
+        if (serverVersion != ServerVersion.Unknown) {
             Bukkit.getLogger().log(Level.INFO, String.format("Successfully connected to version %s'!", serverVersion.name()));
         } else {
             Bukkit.getLogger().log(Level.SEVERE, "Was not able to find the server version, this might result in errors.");

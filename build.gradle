@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.hyfe'
-version = '1.0.10.5'
+version = '1.0.10.6'
 description = 'simple-spigot'
 
 repositories {
@@ -20,7 +20,7 @@ dependencies {
     compileOnly 'com.mojang:authlib:1.5.25'
     compileOnly 'org.projectlombok:lombok:1.18.12'
     compileOnly 'me.clip:placeholderapi:2.9.2'
-    implementation 'com.zaxxer:HikariCP:3.4.1'
+    implementation 'com.zaxxer:HikariCP:3.4.5'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
 }
 
