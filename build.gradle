@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.hyfe'
-version = '1.0.10.6'
+version = '1.0.10.7'
 description = 'simple-spigot'
 
 repositories {

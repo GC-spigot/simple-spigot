@@ -3,21 +3,23 @@ package me.hyfe.simplespigot.item;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import me.hyfe.simplespigot.config.Config;
 import me.hyfe.simplespigot.nbt.type.NbtItem;
 import me.hyfe.simplespigot.text.Replace;
 import me.hyfe.simplespigot.text.Text;
 import me.hyfe.simplespigot.version.MultiMaterial;
+import me.hyfe.simplespigot.version.ServerVersion;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.lang.reflect.Field;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
@@ -42,8 +44,12 @@ public class SpigotItem {
      */
     public static ItemStack toItem(Config config, String path, Replace replace) {
         UnaryOperator<String> pathBuilder = string -> String.format("%s.%s", path, string);
-        ItemStack itemStack = MultiMaterial.parseItem(config.string(pathBuilder.apply("material")));
-        if (itemStack == null) {
+        String entry = config.string(pathBuilder.apply("material"));
+        String[] entryArray = entry.split(":");
+        boolean isHead = entryArray[0].equalsIgnoreCase("head") && entryArray.length == 2;
+
+        ItemStack itemStack = isHead ? null : MultiMaterial.parseItem(entry);
+        if (itemStack == null && !isHead) {
             return null;
         }
         Builder builder = builder().itemStack(itemStack);
@@ -55,6 +61,10 @@ public class SpigotItem {
         }
         config.stringList(pathBuilder.apply("item-flags")).forEach(builder::flag);
         config.stringList(pathBuilder.apply("enchants")).forEach(builder::enchant);
+
+        if (isHead) {
+            builder.head(entryArray[1]);
+        }
         return builder.build();
     }
 
@@ -93,6 +103,10 @@ public class SpigotItem {
         private Map<Enchantment, Integer> enchants = Maps.newHashMap();
         private boolean doesGlow = false;
 
+        private String base64Head = null;
+        private String ownerHead = null;
+        private boolean isHead = false;
+
         /**
          * Specifies the ItemStack of the builder.
          *
@@ -125,6 +139,15 @@ public class SpigotItem {
          */
         public Builder item(Material material) {
             this.material = material;
+            return this;
+        }
+
+        public Builder head(String base64OrUsername) {
+            String materialName = ServerVersion.isOver_V1_12() ? "PLAYER_HEAD" : "SKULL_ITEM";
+            this.itemStack = new ItemStack(Material.valueOf(materialName), 1, (byte) 3);
+            this.isHead = true;
+            this.base64Head = base64OrUsername.length() > 16 ? base64OrUsername : null;
+            this.ownerHead = base64OrUsername.length() < 17 ? base64OrUsername : null;
             return this;
         }
 
@@ -265,6 +288,32 @@ public class SpigotItem {
                 return this.itemStack;
             }
             ItemMeta itemMeta = this.itemStack.getItemMeta();
+            this.itemStack.setItemMeta(createMeta(itemMeta));
+            if (this.isHead) {
+                SkullMeta skullMeta = (SkullMeta) this.itemStack.getItemMeta();
+                if (this.base64Head != null) {
+                    GameProfile profile = new GameProfile(UUID.randomUUID(), "");
+                    profile.getProperties().put("textures", new Property("textures", this.base64Head));
+                    Field profileField = null;
+                    try {
+                        profileField = skullMeta.getClass().getDeclaredField("profile");
+                        profileField.setAccessible(true);
+                        profileField.set(skullMeta, profile);
+                    } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    skullMeta.setOwner(this.ownerHead);
+                }
+                this.itemStack.setItemMeta(skullMeta);
+            }
+            if (function == null) {
+                return this.itemStack;
+            }
+            return function.apply(new NbtItem(this.itemStack)).getItem();
+        }
+
+        public ItemMeta createMeta(ItemMeta itemMeta) {
             if (this.name != null) {
                 itemMeta.setDisplayName(this.name);
             }
@@ -285,11 +334,7 @@ public class SpigotItem {
                 itemMeta.addEnchant(Enchantment.DURABILITY, 0, true);
                 itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
-            this.itemStack.setItemMeta(itemMeta);
-            if (function == null) {
-                return this.itemStack;
-            }
-            return function.apply(new NbtItem(this.itemStack)).getItem();
+            return itemMeta;
         }
     }
 }
