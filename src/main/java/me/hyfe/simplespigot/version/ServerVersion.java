@@ -7,7 +7,7 @@ import java.util.logging.Level;
 
 public enum ServerVersion {
 
-    Unknown(0),
+    Unknown(Integer.MAX_VALUE),
     MC1_7_R4(174),
     MC1_8_R3(183),
     MC1_9_R1(191),
@@ -21,7 +21,8 @@ public enum ServerVersion {
     MC1_15_R1(1151),
     MC1_16_R1(1161),
     MC1_16_R2(1162),
-    MC1_16_R3(1163);
+    MC1_16_R3(1163),
+    MC_1_16_R4(1164);
 
     private static ServerVersion serverVersion;
     private final int versionId;

@@ -23,7 +23,7 @@ cd simple-spigot
     <dependency>
         <groupId>com.github.hyfe-dev</groupId>
         <artifactId>simple-spigot</artifactId>
-        <version>1.0.10.6</version>
+        <version>1.0.10.8</version>
         <scope>compile</scope>
     </dependency>
 </dependencies>
@@ -41,6 +41,6 @@ allprojects {
     }
 }
 dependencies {
-    implementation 'com.github.hyfe-dev:simple-spigot:1.0.10.6'
+    implementation 'com.github.hyfe-dev:simple-spigot:1.0.10.8'
 }
 ```
