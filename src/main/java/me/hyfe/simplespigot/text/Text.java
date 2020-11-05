@@ -3,6 +3,7 @@ package me.hyfe.simplespigot.text;
 import com.google.common.collect.Lists;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -27,8 +28,8 @@ public class Text {
      */
     public static void sendMessage(CommandSender recipient, String message) {
         Supplier<String> processor = () -> {
-            if (recipient instanceof Player && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-                return PlaceholderAPI.setPlaceholders((Player) recipient, message);
+            if (recipient instanceof OfflinePlayer && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+                return PlaceholderAPI.setPlaceholders((OfflinePlayer) recipient, message);
             }
             return message;
         };
