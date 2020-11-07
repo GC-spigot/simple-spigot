@@ -97,6 +97,10 @@ public class Config {
         return Text.modify((String) this.get(key));
     }
 
+    public String forcedString(String key) {
+        return Text.modify(String.valueOf(this.get(key)));
+    }
+
     /**
      * Gets a boolean from the config file.
      *
