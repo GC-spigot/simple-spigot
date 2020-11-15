@@ -9,6 +9,8 @@ public enum ServerVersion {
 
     Unknown(Integer.MAX_VALUE),
     MC1_7_R4(174),
+    MC1_8_R1(181),
+    MC1_8_R2(182),
     MC1_8_R3(183),
     MC1_9_R1(191),
     MC1_9_R2(192),

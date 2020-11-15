@@ -45,6 +45,9 @@ public class SpigotItem {
     public static ItemStack toItem(Config config, String path, Replace replace) {
         UnaryOperator<String> pathBuilder = string -> String.format("%s.%s", path, string);
         String entry = config.string(pathBuilder.apply("material"));
+        if (entry == null) {
+            return null;
+        }
         String[] entryArray = entry.split(":");
         boolean isHead = entryArray[0].equalsIgnoreCase("head") && entryArray.length == 2;
 
