@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import me.hyfe.simplespigot.annotations.Nullable;
 import me.hyfe.simplespigot.config.Config;
 import me.hyfe.simplespigot.nbt.type.NbtItem;
 import me.hyfe.simplespigot.text.Replace;
@@ -40,9 +41,14 @@ public class SpigotItem {
      * @param config  The config to get the item from.
      * @param path    The path inside the config to get the item from (e.g 1.item)
      * @param replace A replacer to replace certain parts of the configurable options necessary (name, lore).
-     * @return The ItemStack built from the config path - nullable.
+     * @param defaultItem If the section is not present, this is the default item.
+     * @return The ItemStack built from the config path.
      */
-    public static ItemStack toItem(Config config, String path, Replace replace) {
+    @Nullable
+    public static ItemStack toItemOrDefault(Config config, String path, Replace replace, ItemStack defaultItem) {
+        if (!config.has(path)) {
+            return defaultItem;
+        }
         UnaryOperator<String> pathBuilder = string -> String.format("%s.%s", path, string);
         String entry = config.string(pathBuilder.apply("material"));
         if (entry == null) {
@@ -72,12 +78,25 @@ public class SpigotItem {
     }
 
     /**
+     *
+     * @param config The config to get the item from.
+     * @param path The path inside the config to get the item from (e.g 1.item)
+     * @param replace A replacer to replace certain parts of the configurable options necessary (name, lore).
+     * @return The ItemStack built from the config path
+     */
+    @Nullable
+    public static ItemStack toItem(Config config, String path, Replace replace) {
+        return toItemOrDefault(config, path, replace, null);
+    }
+
+    /**
      * Converts a section from a config into an ItemStack (must use specific format).
      *
      * @param config The config to get the item from.
      * @param path   The path inside the config to get the item from (e.g 1.item)
-     * @return The ItemStack built from the config path - nullable.
+     * @return The ItemStack built from the config path.
      */
+    @Nullable
     public static ItemStack toItem(Config config, String path) {
         return toItem(config, path, null);
     }

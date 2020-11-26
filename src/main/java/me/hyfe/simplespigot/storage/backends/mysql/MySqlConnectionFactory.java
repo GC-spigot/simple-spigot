@@ -20,7 +20,7 @@ public class MySqlConnectionFactory {
         this.storageSettings = storageSettings;
         this.config = new HikariConfig();
         try {
-            this.dataSource = new HikariDataSource(this.configurate(this.config));
+            this.dataSource = new HikariDataSource(this.configure(this.config));
         } catch (Exception ex) {
             Bukkit.getLogger().severe("Could not setup mysql, please check your credentials.");
             ex.printStackTrace();
@@ -48,7 +48,7 @@ public class MySqlConnectionFactory {
         }
     }
 
-    private HikariConfig configurate(HikariConfig config) {
+    private HikariConfig configure(HikariConfig config) {
         config.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
         this.config.setUsername(this.storageSettings.getUsername());
         this.config.setPassword(this.storageSettings.getPassword());
