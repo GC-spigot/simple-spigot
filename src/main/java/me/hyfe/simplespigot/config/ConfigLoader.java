@@ -1,7 +1,7 @@
 package me.hyfe.simplespigot.config;
 
 import me.hyfe.simplespigot.item.SpigotItem;
-import me.hyfe.simplespigot.text.Replace;
+import me.hyfe.simplespigot.text.replacer.Replace;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;

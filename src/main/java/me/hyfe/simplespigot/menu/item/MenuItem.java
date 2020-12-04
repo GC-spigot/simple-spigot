@@ -4,10 +4,8 @@ import me.hyfe.simplespigot.config.Config;
 import me.hyfe.simplespigot.item.SpigotItem;
 import me.hyfe.simplespigot.menu.Menu;
 import me.hyfe.simplespigot.menu.item.click.ClickAction;
-import me.hyfe.simplespigot.text.Replace;
+import me.hyfe.simplespigot.text.replacer.Replace;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.function.UnaryOperator;
 
 public class MenuItem {
     private final ItemStack itemStack;

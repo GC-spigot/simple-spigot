@@ -4,8 +4,11 @@ plugins {
 }
 
 group = 'me.hyfe'
-version = '1.0.11.0'
+version = '1.0.11.1'
 description = 'simple-spigot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenLocal()

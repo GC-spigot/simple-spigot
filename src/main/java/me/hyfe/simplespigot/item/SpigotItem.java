@@ -8,15 +8,17 @@ import com.mojang.authlib.properties.Property;
 import me.hyfe.simplespigot.annotations.Nullable;
 import me.hyfe.simplespigot.config.Config;
 import me.hyfe.simplespigot.nbt.type.NbtItem;
-import me.hyfe.simplespigot.text.Replace;
+import me.hyfe.simplespigot.text.replacer.Replace;
 import me.hyfe.simplespigot.text.Text;
 import me.hyfe.simplespigot.version.MultiMaterial;
 import me.hyfe.simplespigot.version.ServerVersion;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.lang.reflect.Field;
@@ -38,9 +40,9 @@ public class SpigotItem {
     /**
      * Converts a section from a config into an ItemStack (must use specific format).
      *
-     * @param config  The config to get the item from.
-     * @param path    The path inside the config to get the item from (e.g 1.item)
-     * @param replace A replacer to replace certain parts of the configurable options necessary (name, lore).
+     * @param config      The config to get the item from.
+     * @param path        The path inside the config to get the item from (e.g 1.item)
+     * @param replace     A replacer to replace certain parts of the configurable options necessary (name, lore).
      * @param defaultItem If the section is not present, this is the default item.
      * @return The ItemStack built from the config path.
      */
@@ -65,6 +67,7 @@ public class SpigotItem {
         validatePath(config, pathBuilder.apply("name"), localPath -> builder.name(Text.modify(config.string(pathBuilder.apply("name")), replace)));
         validatePath(config, pathBuilder.apply("lore"), localPath -> builder.lore(Text.modify(config.list(localPath), replace)));
         validatePath(config, pathBuilder.apply("amount"), localPath -> builder.amount(config.integer(localPath)));
+        validatePath(config, pathBuilder.apply("rgb"), localPath -> builder.color(config.string(localPath)));
         if (config.bool(pathBuilder.apply("glow"))) {
             builder.glow();
         }
@@ -78,9 +81,8 @@ public class SpigotItem {
     }
 
     /**
-     *
-     * @param config The config to get the item from.
-     * @param path The path inside the config to get the item from (e.g 1.item)
+     * @param config  The config to get the item from.
+     * @param path    The path inside the config to get the item from (e.g 1.item)
      * @param replace A replacer to replace certain parts of the configurable options necessary (name, lore).
      * @return The ItemStack built from the config path
      */
@@ -124,6 +126,7 @@ public class SpigotItem {
         private Set<ItemFlag> itemFlags = Sets.newHashSet();
         private Map<Enchantment, Integer> enchants = Maps.newHashMap();
         private boolean doesGlow = false;
+        private Color color;
 
         private String base64Head = null;
         private String ownerHead = null;
@@ -284,6 +287,18 @@ public class SpigotItem {
             return this;
         }
 
+        public Builder color(String string) {
+            if (!string.contains(",")) {
+                return this;
+            }
+            String[] elements = string.replace(" ", "").split(",");
+            if (elements.length != 3) {
+                return this;
+            }
+            this.color = Color.fromRGB(Integer.parseInt(elements[0]), Integer.parseInt(elements[1]), Integer.parseInt(elements[2]));
+            return this;
+        }
+
         /**
          * Builds the item using all set values.
          *
@@ -355,6 +370,9 @@ public class SpigotItem {
             if (this.doesGlow) {
                 itemMeta.addEnchant(Enchantment.DURABILITY, 0, true);
                 itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+            if (this.color != null && itemMeta instanceof LeatherArmorMeta) {
+                ((LeatherArmorMeta) itemMeta).setColor(this.color);
             }
             return itemMeta;
         }

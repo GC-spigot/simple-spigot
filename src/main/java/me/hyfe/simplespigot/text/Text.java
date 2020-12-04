@@ -2,10 +2,11 @@ package me.hyfe.simplespigot.text;
 
 import com.google.common.collect.Lists;
 import me.clip.placeholderapi.PlaceholderAPI;
+import me.hyfe.simplespigot.text.replacer.Replace;
+import me.hyfe.simplespigot.text.replacer.Replacer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 

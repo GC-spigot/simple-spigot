@@ -1,4 +1,4 @@
-package me.hyfe.simplespigot.text;
+package me.hyfe.simplespigot.text.replacer;
 
 import java.util.function.UnaryOperator;
 
