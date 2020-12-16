@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import me.hyfe.simplespigot.config.Config;
 import me.hyfe.simplespigot.menu.Menu;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -64,21 +65,26 @@ public class MenuService {
     /**
      * Parses slots from other formats other than slot, slot, slot and can take slot...slot or fill
      *
-     * @param menu    The menu to get slots from.
-     * @param toParse The string to parse the slots from.
+     * @param menu  The menu to get slots from.
+     * @param input The string to parse the slots from.
      * @return The slots specified after parsing is done.
      */
-    public static Set<Integer> parseSlots(Menu menu, String toParse) {
+    public static Set<Integer> parseSlots(Menu menu, String input) {
         BiFunction<Menu, String, String> converter = (fMenu, entry) -> entry.equalsIgnoreCase("end") || entry.equalsIgnoreCase("start") ? Integer.toString(entry.equalsIgnoreCase("end") ? menu.getRows() * 9 - 1 : 0) : entry;
         BiFunction<Menu, Integer, Integer> slotLimiter = (fMenu, slot) -> slot < 0 ? 0 : Math.min(slot, menu.getRows() * 9 - 1);
         Set<Integer> slots = Sets.newLinkedHashSet();
-        if (toParse.replace(" ", "").equalsIgnoreCase("fill")) {
+        String toParse = input.replace(" ", "");
+        if (toParse.equalsIgnoreCase("fill")) {
             for (int slot = 0; slot < menu.getInventory().getSize(); slot++) {
                 ItemStack itemStack = menu.getInventory().getItem(slot);
                 if (itemStack == null || itemStack.getType().equals(Material.AIR)) {
                     slots.add(slot);
                 }
             }
+            return slots;
+        }
+        if (toParse.equalsIgnoreCase("border")) {
+            slots.addAll(getBorderSlots(menu));
             return slots;
         }
         List<String> dotSplit = Splitter.on("...").omitEmptyStrings().splitToList(toParse);
@@ -93,5 +99,38 @@ public class MenuService {
             }
         }
         return null;
+    }
+
+    private static Set<Integer> getBorderSlots(Menu menu) {
+        Set<Integer> slots = Sets.newHashSet();
+        if (menu.getRows() < 3) {
+            Bukkit.getLogger().warning("You cannot use the border slot type with a menu with less than 3 rows.");
+        } else {
+            for (int slot = 0; slot < 9; slot++) {
+                ItemStack itemStack = menu.getInventory().getItem(slot);
+                if (itemStack == null || itemStack.getType().equals(Material.AIR)) {
+                    slots.add(slot);
+                }
+            }
+            for (int slot = (menu.getRows() - 1) * 9; slot < (menu.getRows() * 9) - 1; slot++) {
+                ItemStack itemStack = menu.getInventory().getItem(slot);
+                if (itemStack == null || itemStack.getType().equals(Material.AIR)) {
+                    slots.add(slot);
+                }
+            }
+            for (int left = 9; left < menu.getRows() * 9; left += 9) {
+                ItemStack itemStack = menu.getInventory().getItem(left);
+                if (itemStack == null || itemStack.getType().equals(Material.AIR)) {
+                    slots.add(left);
+                }
+            }
+            for (int right = 8; right < menu.getRows() * 9; right += 9) {
+                ItemStack itemStack = menu.getInventory().getItem(right);
+                if (itemStack == null || itemStack.getType().equals(Material.AIR)) {
+                    slots.add(right);
+                }
+            }
+        }
+        return slots;
     }
 }
