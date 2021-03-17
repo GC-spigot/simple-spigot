@@ -68,6 +68,7 @@ public class SpigotItem {
         validatePath(config, pathBuilder.apply("lore"), localPath -> builder.lore(Text.modify(config.list(localPath), replace)));
         validatePath(config, pathBuilder.apply("amount"), localPath -> builder.amount(config.integer(localPath)));
         validatePath(config, pathBuilder.apply("rgb"), localPath -> builder.color(config.string(localPath)));
+        validatePath(config, pathBuilder.apply("customModelData"), localPath -> builder.customModelData(config.string(localPath)));
         if (config.bool(pathBuilder.apply("glow"))) {
             builder.glow();
         }
@@ -127,6 +128,7 @@ public class SpigotItem {
         private Map<Enchantment, Integer> enchants = Maps.newHashMap();
         private boolean doesGlow = false;
         private Color color;
+        private int customModelData = 0;
 
         private String base64Head = null;
         private String ownerHead = null;
@@ -164,6 +166,11 @@ public class SpigotItem {
          */
         public Builder item(Material material) {
             this.material = material;
+            return this;
+        }
+        
+        public Builder customModelData(int customModelData) {
+            this.customModelData = customModelData;
             return this;
         }
 
@@ -353,6 +360,9 @@ public class SpigotItem {
         public ItemMeta createMeta(ItemMeta itemMeta) {
             if (this.name != null) {
                 itemMeta.setDisplayName(this.name);
+            }
+            if(this.customModelData != 0) {
+                itemMeta.setCustomModelData(customModelData);
             }
             if (!this.lore.isEmpty() && (!this.lore.get(0).isEmpty() || this.lore.size() >= 2)) {
                 itemMeta.setLore(this.lore);
