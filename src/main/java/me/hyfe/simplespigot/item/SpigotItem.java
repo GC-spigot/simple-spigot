@@ -68,7 +68,7 @@ public class SpigotItem {
         validatePath(config, pathBuilder.apply("lore"), localPath -> builder.lore(Text.modify(config.list(localPath), replace)));
         validatePath(config, pathBuilder.apply("amount"), localPath -> builder.amount(config.integer(localPath)));
         validatePath(config, pathBuilder.apply("rgb"), localPath -> builder.color(config.string(localPath)));
-        validatePath(config, pathBuilder.apply("customModelData"), localPath -> builder.customModelData(config.string(localPath)));
+        validatePath(config, pathBuilder.apply("customModelData"), localPath -> builder.customModelData(config.integer(localPath)));
         if (config.bool(pathBuilder.apply("glow"))) {
             builder.glow();
         }
