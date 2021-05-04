@@ -49,7 +49,7 @@ public class MySqlConnectionFactory {
     }
 
     private HikariConfig configure(HikariConfig config) {
-        config.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
+        config.setDataSourceClassName("com.mysql.cj.jdbc.MysqlDataSource");
         this.config.setUsername(this.storageSettings.getUsername());
         this.config.setPassword(this.storageSettings.getPassword());
         this.config.setPoolName(this.storageSettings.getPrefix().concat("hikari"));
