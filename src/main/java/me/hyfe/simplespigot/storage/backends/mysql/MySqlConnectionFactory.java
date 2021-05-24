@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.SneakyThrows;
 import me.hyfe.simplespigot.storage.StorageSettings;
+import me.hyfe.simplespigot.version.ServerVersion;
 import org.bukkit.Bukkit;
 
 import java.sql.Connection;
@@ -49,7 +50,12 @@ public class MySqlConnectionFactory {
     }
 
     private HikariConfig configure(HikariConfig config) {
-        config.setDataSourceClassName("com.mysql.cj.jdbc.MysqlDataSource");
+        if (ServerVersion.getVersion().getVersionId() >= ServerVersion.MC1_16_R1.getVersionId()) {
+            config.setDataSourceClassName("com.mysql.cj.jdbc.MysqlDataSource");
+        } else {
+            config.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
+        }
+        
         this.config.setUsername(this.storageSettings.getUsername());
         this.config.setPassword(this.storageSettings.getPassword());
         this.config.setPoolName(this.storageSettings.getPrefix().concat("hikari"));
