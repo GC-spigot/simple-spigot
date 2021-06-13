@@ -25,7 +25,7 @@ public enum ServerVersion {
     MC1_16_R2(1162),
     MC1_16_R3(1163),
     MC_1_16_R4(1164),
-    MC_1_7_R1(1170);
+    MC_1_17_R1(1170);
 
     private static ServerVersion serverVersion;
     private final int versionId;
