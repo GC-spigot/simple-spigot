@@ -50,9 +50,10 @@ public class MySqlConnectionFactory {
     }
 
     private HikariConfig configure(HikariConfig config) {
-        if (ServerVersion.getVersion().getVersionId() >= ServerVersion.MC1_16_R1.getVersionId()) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.MysqlDataSource");
             config.setDataSourceClassName("com.mysql.cj.jdbc.MysqlDataSource");
-        } else {
+        } catch(Exception ev) {
             config.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
         }
         
