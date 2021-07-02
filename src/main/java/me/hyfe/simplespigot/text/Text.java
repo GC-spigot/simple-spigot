@@ -4,6 +4,9 @@ import com.google.common.collect.Lists;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.hyfe.simplespigot.text.replacer.Replace;
 import me.hyfe.simplespigot.text.replacer.Replacer;
+import me.hyfe.simplespigot.version.ServerVersion;
+import net.md_5.bungee.api.ChatColor;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -13,6 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Text {
@@ -20,6 +24,7 @@ public class Text {
     private static final char AMPERSAND_CHAR = '&';
     private static final String COLOR_CODES = "0123456789AaBbCcDdEeFfKkLlMmNnOoRr";
     private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + SECTION_CHAR + "[0-9A-FK-OR]");
+    private static final Pattern HEX_PATTERN = Pattern.compile("\\{#[a-fA-F0-9]{6}}");
 
     /**
      * Sends a message to a player, inserts placeholders and replaces colours.
@@ -146,6 +151,16 @@ public class Text {
             if (charArray[i] == Text.AMPERSAND_CHAR && COLOR_CODES.indexOf(charArray[i + 1]) > -1) {
                 charArray[i] = Text.SECTION_CHAR;
                 charArray[i + 1] = Character.toLowerCase(charArray[i + 1]);
+            }
+        }
+
+        if (ServerVersion.getVersion().getVersionId() >= 1160) {
+            Matcher match = HEX_PATTERN.matcher(textToRender);
+            while (match.find()) {
+                String hex = textToRender.substring(match.start(), match.end());
+                textToRender = StringUtils.replace(textToRender, hex, ""
+                        + ChatColor.of(hex.replace("{", "").replace("}", "")));
+                match = HEX_PATTERN.matcher(textToRender);
             }
         }
         return new String(charArray);
