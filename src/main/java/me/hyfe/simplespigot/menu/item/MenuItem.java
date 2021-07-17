@@ -5,7 +5,11 @@ import me.hyfe.simplespigot.item.SpigotItem;
 import me.hyfe.simplespigot.menu.Menu;
 import me.hyfe.simplespigot.menu.item.click.ClickAction;
 import me.hyfe.simplespigot.text.replacer.Replace;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.Arrays;
 
 public class MenuItem {
     private final ItemStack itemStack;
@@ -23,9 +27,21 @@ public class MenuItem {
      */
     public MenuItem(ItemStack itemStack, int row, int slot, ClickAction clickAction) {
         this.itemStack = itemStack;
+        hideAttributes();
         this.row = row;
         this.slot = slot;
         this.clickAction = clickAction;
+    }
+
+    /**
+     * Hides attributes of menu itemstack
+     */
+    private void hideAttributes() {
+        ItemMeta im = this.itemStack.getItemMeta();
+        if (im != null) {
+            Arrays.stream(ItemFlag.values()).forEach(im::addItemFlags);
+            this.itemStack.setItemMeta(im);
+        }
     }
 
     /**
