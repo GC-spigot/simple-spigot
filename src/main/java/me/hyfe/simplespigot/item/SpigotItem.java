@@ -504,7 +504,9 @@ public class SpigotItem {
          */
         public ItemStack build(UnaryOperator<NbtItem> function) {
             if (this.material != null) {
-                this.itemStack = new ItemStack(this.material, this.amount, this.data);
+                this.itemStack.setType(this.material);
+                this.itemStack.setAmount(this.amount);
+                this.itemStack.setDurability(this.data);
             }
             if (this.amount > 0) {
                 this.itemStack.setAmount(this.amount);
