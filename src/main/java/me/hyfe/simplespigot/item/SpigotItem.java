@@ -8,8 +8,8 @@ import com.mojang.authlib.properties.Property;
 import me.hyfe.simplespigot.annotations.Nullable;
 import me.hyfe.simplespigot.config.Config;
 import me.hyfe.simplespigot.nbt.type.NbtItem;
-import me.hyfe.simplespigot.text.replacer.Replace;
 import me.hyfe.simplespigot.text.Text;
+import me.hyfe.simplespigot.text.replacer.Replace;
 import me.hyfe.simplespigot.version.MultiMaterial;
 import me.hyfe.simplespigot.version.ServerVersion;
 import org.bukkit.Color;
@@ -168,15 +168,28 @@ public class SpigotItem {
             this.material = material;
             return this;
         }
-        
+
+        /**
+         * Sets the custom model data of the item.
+         *
+         * @param customModelData Custom model data to set.
+         * @return The Builder.
+         */
         public Builder customModelData(int customModelData) {
             this.customModelData = customModelData;
             return this;
         }
 
+        /**
+         * Sets the item to a head and sets it's texture.
+         *
+         * @param base64OrUsername Base64 texture or username to get texture from.
+         * @return The Builder.
+         */
         public Builder head(String base64OrUsername) {
             String materialName = ServerVersion.isOver_V1_12() ? "PLAYER_HEAD" : "SKULL_ITEM";
             this.itemStack = new ItemStack(Material.valueOf(materialName), 1, (byte) 3);
+            this.data = 3;
             this.isHead = true;
             this.base64Head = base64OrUsername.length() > 16 ? base64OrUsername : null;
             this.ownerHead = base64OrUsername.length() < 17 ? base64OrUsername : null;
@@ -307,6 +320,174 @@ public class SpigotItem {
         }
 
         /**
+         * Sets a {@link String} NBT tag.
+         *
+         * @param key   NBT key.
+         * @param value NBT value.
+         * @return The Builder.
+         */
+        public Builder nbt(String key, String value) {
+            NbtItem nbtItem = new NbtItem(this.itemStack);
+            nbtItem.setString(key, value);
+            this.itemStack = nbtItem.getItem();
+            return this;
+        }
+
+        /**
+         * Sets a {@link Boolean} NBT tag.
+         *
+         * @param key   NBT key.
+         * @param value NBT value.
+         * @return The Builder.
+         */
+        public Builder nbt(String key, boolean value) {
+            NbtItem nbtItem = new NbtItem(this.itemStack);
+            nbtItem.setBoolean(key, value);
+            this.itemStack = nbtItem.getItem();
+            return this;
+        }
+
+        /**
+         * Sets a {@link Byte} NBT tag.
+         *
+         * @param key   NBT key.
+         * @param value NBT value.
+         * @return The Builder.
+         */
+        public Builder nbt(String key, byte value) {
+            NbtItem nbtItem = new NbtItem(this.itemStack);
+            nbtItem.setByte(key, value);
+            this.itemStack = nbtItem.getItem();
+            return this;
+        }
+
+        /**
+         * Sets a {@link Byte[]} NBT tag.
+         *
+         * @param key   NBT key.
+         * @param value NBT value.
+         * @return The Builder.
+         */
+        public Builder nbt(String key, byte[] value) {
+            NbtItem nbtItem = new NbtItem(this.itemStack);
+            nbtItem.setByteArray(key, value);
+            this.itemStack = nbtItem.getItem();
+            return this;
+        }
+
+        /**
+         * Sets a {@link Short} NBT tag.
+         *
+         * @param key   NBT key.
+         * @param value NBT value.
+         * @return The Builder.
+         */
+        public Builder nbt(String key, short value) {
+            NbtItem nbtItem = new NbtItem(this.itemStack);
+            nbtItem.setShort(key, value);
+            this.itemStack = nbtItem.getItem();
+            return this;
+        }
+
+        /**
+         * Sets an {@link Integer} NBT tag.
+         *
+         * @param key   NBT key.
+         * @param value NBT value.
+         * @return The Builder.
+         */
+        public Builder nbt(String key, int value) {
+            NbtItem nbtItem = new NbtItem(this.itemStack);
+            nbtItem.setInteger(key, value);
+            this.itemStack = nbtItem.getItem();
+            return this;
+        }
+
+        /**
+         * Sets an {@link Integer[]} NBT tag.
+         *
+         * @param key   NBT key.
+         * @param value NBT value.
+         * @return The Builder.
+         */
+        public Builder nbt(String key, int[] value) {
+            NbtItem nbtItem = new NbtItem(this.itemStack);
+            nbtItem.setIntArray(key, value);
+            this.itemStack = nbtItem.getItem();
+            return this;
+        }
+
+        /**
+         * Sets a {@link Long} NBT tag.
+         *
+         * @param key   NBT key.
+         * @param value NBT value.
+         * @return The Builder.
+         */
+        public Builder nbt(String key, long value) {
+            NbtItem nbtItem = new NbtItem(this.itemStack);
+            nbtItem.setLong(key, value);
+            this.itemStack = nbtItem.getItem();
+            return this;
+        }
+
+        /**
+         * Sets a {@link Float} NBT tag.
+         *
+         * @param key   NBT key.
+         * @param value NBT value.
+         * @return The Builder.
+         */
+        public Builder nbt(String key, float value) {
+            NbtItem nbtItem = new NbtItem(this.itemStack);
+            nbtItem.setFloat(key, value);
+            this.itemStack = nbtItem.getItem();
+            return this;
+        }
+
+        /**
+         * Sets a {@link Double} NBT tag.
+         *
+         * @param key   NBT key.
+         * @param value NBT value.
+         * @return The Builder.
+         */
+        public Builder nbt(String key, double value) {
+            NbtItem nbtItem = new NbtItem(this.itemStack);
+            nbtItem.setDouble(key, value);
+            this.itemStack = nbtItem.getItem();
+            return this;
+        }
+
+        /**
+         * Sets an {@link ItemStack} NBT tag.
+         *
+         * @param key   NBT key.
+         * @param value NBT value.
+         * @return The Builder.
+         */
+        public Builder nbt(String key, ItemStack value) {
+            NbtItem nbtItem = new NbtItem(this.itemStack);
+            nbtItem.setItemStack(key, value);
+            this.itemStack = nbtItem.getItem();
+            return this;
+        }
+
+        /**
+         * Sets an {@link Object} NBT tag.
+         *
+         * @param key   NBT key.
+         * @param value NBT value.
+         * @return The Builder.
+         */
+        public Builder nbt(String key, Object value) {
+            NbtItem nbtItem = new NbtItem(this.itemStack);
+            nbtItem.setObject(key, value);
+            this.itemStack = nbtItem.getItem();
+            return this;
+        }
+
+        /**
          * Builds the item using all set values.
          *
          * @return The ItemStack
@@ -361,7 +542,7 @@ public class SpigotItem {
             if (this.name != null) {
                 itemMeta.setDisplayName(this.name);
             }
-            if(this.customModelData != 0) {
+            if (this.customModelData != 0) {
                 itemMeta.setCustomModelData(customModelData);
             }
             if (!this.lore.isEmpty() && (!this.lore.get(0).isEmpty() || this.lore.size() >= 2)) {
@@ -387,4 +568,5 @@ public class SpigotItem {
             return itemMeta;
         }
     }
+
 }
