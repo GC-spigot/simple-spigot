@@ -1,7 +1,6 @@
 package me.hyfe.simplespigot.nbt.enums;
 
 import com.mojang.authlib.GameProfile;
-import lombok.SneakyThrows;
 import me.hyfe.simplespigot.version.ServerVersion;
 import org.bukkit.inventory.ItemStack;
 
@@ -44,7 +43,7 @@ public enum ReflectionMethod {
 
     COMPOUND_REMOVE_KEY(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), new Class[]{String.class}, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "remove")),
     COMPOUND_HAS_KEY(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), new Class[]{String.class}, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "hasKey")),
-    COMPOUND_GET_TYPE(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), new Class[]{String.class}, ServerVersion.MC1_8_R3, new Since(ServerVersion.MC1_8_R3, "b"), new Since(ServerVersion.MC1_9_R1, "d"), new Since(ServerVersion.MC1_15_R1, "e")), //FIXME: No Spigot mapping!
+    COMPOUND_GET_TYPE(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), new Class[]{String.class}, ServerVersion.MC1_8_R3, new Since(ServerVersion.MC1_8_R3, "b"), new Since(ServerVersion.MC1_9_R1, "d"), new Since(ServerVersion.MC1_15_R1, "e"), new Since(ServerVersion.MC1_16_R1, "d")), //FIXME: No Spigot mapping!
     COMPOUND_GET_KEYS(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), new Class[]{}, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "c"), new Since(ServerVersion.MC1_13_R1, "getKeys")),
 
     LISTCOMPOUND_GET_KEYS(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), new Class[]{}, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "c"), new Since(ServerVersion.MC1_13_R1, "getKeys")),
@@ -63,19 +62,19 @@ public enum ReflectionMethod {
 
     CRAFT_WORLD_GET_HANDLE(ClassWrapper.CRAFT_WORLD.getClazz(), new Class[]{}, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "getHandle")),
     NMS_WORLD_GET_TILEENTITY(ClassWrapper.NMS_WORLDSERVER.getClazz(), new Class[]{ClassWrapper.NMS_BLOCKPOSITION.getClazz()}, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "getTileEntity")),
-    NMS_WORLD_SET_TILEENTITY(ClassWrapper.NMS_WORLDSERVER.getClazz(), new Class[]{ClassWrapper.NMS_BLOCKPOSITION.getClazz(), ClassWrapper.NMS_TILEENTITY.getClazz()}, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "setTileEntity")),
+    NMS_WORLD_SET_TILEENTITY(ClassWrapper.NMS_WORLDSERVER.getClazz(), new SinceArgs[]{new SinceArgs(ServerVersion.MC1_7_R4, new Class[]{ClassWrapper.NMS_BLOCKPOSITION.getClazz(), ClassWrapper.NMS_TILEENTITY.getClazz()} ), new SinceArgs(ServerVersion.MC1_17_R1, new Class[]{ClassWrapper.NMS_TILEENTITY.getClazz()})}, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "setTileEntity")),
     NMS_WORLD_REMOVE_TILEENTITY(ClassWrapper.NMS_WORLDSERVER.getClazz(), new Class[]{ClassWrapper.NMS_BLOCKPOSITION.getClazz()}, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "t"), new Since(ServerVersion.MC1_9_R1, "s"), new Since(ServerVersion.MC1_13_R1, "n"), new Since(ServerVersion.MC1_14_R1, "removeTileEntity")),
 
     TILEENTITY_LOAD_LEGACY191(ClassWrapper.NMS_TILEENTITY.getClazz(), new Class[]{ClassWrapper.NMS_MINECRAFTSERVER.getClazz(), ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()}, ServerVersion.MC1_9_R1, ServerVersion.MC1_9_R1, new Since(ServerVersion.MC1_9_R1, "a")), //FIXME: No Spigot mapping!
     TILEENTITY_LOAD_LEGACY183(ClassWrapper.NMS_TILEENTITY.getClazz(), new Class[]{ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()}, ServerVersion.MC1_8_R3, ServerVersion.MC1_9_R2, new Since(ServerVersion.MC1_8_R3, "c"), new Since(ServerVersion.MC1_9_R1, "a"), new Since(ServerVersion.MC1_9_R2, "c")), //FIXME: No Spigot mapping!
     TILEENTITY_LOAD_LEGACY1121(ClassWrapper.NMS_TILEENTITY.getClazz(), new Class[]{ClassWrapper.NMS_WORLD.getClazz(), ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()}, ServerVersion.MC1_10_R1, ServerVersion.MC1_12_R1, new Since(ServerVersion.MC1_10_R1, "a"), new Since(ServerVersion.MC1_12_R1, "create")),
-    TILEENTITY_LOAD(ClassWrapper.NMS_TILEENTITY.getClazz(), new Class[]{ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()}, ServerVersion.MC1_13_R1, new Since(ServerVersion.MC1_12_R1, "create")),
+    TILEENTITY_LOAD(ClassWrapper.NMS_TILEENTITY.getClazz(), new SinceArgs[]{new SinceArgs(ServerVersion.MC1_12_R1, new Class[]{ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()}), new SinceArgs(ServerVersion.MC1_17_R1, new Class[]{ClassWrapper.NMS_BLOCKPOSITION.getClazz(), ClassWrapper.NMS_IBLOCKDATA.getClazz(), ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()})}, ServerVersion.MC1_13_R1, new Since(ServerVersion.MC1_12_R1, "create")),
 
     TILEENTITY_GET_NBT(ClassWrapper.NMS_TILEENTITY.getClazz(), new Class[]{ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()}, ServerVersion.MC1_8_R3, new Since(ServerVersion.MC1_8_R3, "b"), new Since(ServerVersion.MC1_9_R1, "save")),
     TILEENTITY_SET_NBT(ClassWrapper.NMS_TILEENTITY.getClazz(), new Class[]{ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()}, ServerVersion.MC1_8_R3, new Since(ServerVersion.MC1_8_R3, "a"), new Since(ServerVersion.MC1_12_R1, "load")),
 
     CRAFT_ENTITY_GET_HANDLE(ClassWrapper.CRAFT_ENTITY.getClazz(), new Class[]{}, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "getHandle")),
-    NMS_ENTITY_SET_NBT(ClassWrapper.NMS_ENTITY.getClazz(), new Class[]{ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()}, ServerVersion.MC1_8_R3, new Since(ServerVersion.MC1_8_R3, "f")), //FIXME: No Spigot mapping!
+    NMS_ENTITY_SET_NBT(ClassWrapper.NMS_ENTITY.getClazz(), new Class[]{ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()}, ServerVersion.MC1_8_R3, new Since(ServerVersion.MC1_8_R3, "f"), new Since(ServerVersion.MC1_17_R1, "save")), //FIXME: No Spigot mapping!
     NMS_ENTITY_GET_NBT(ClassWrapper.NMS_ENTITY.getClazz(), new Class[]{ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()}, ServerVersion.MC1_8_R3, new Since(ServerVersion.MC1_8_R3, "e"), new Since(ServerVersion.MC1_12_R1, "save")),
     NMS_ENTITY_GETSAVEID(ClassWrapper.NMS_ENTITY.getClazz(), new Class[]{}, ServerVersion.MC1_14_R1, new Since(ServerVersion.MC1_14_R1, "getSaveID")),
 
@@ -125,6 +124,24 @@ public enum ReflectionMethod {
         this(targetClass, args, addedSince, null, methodNames);
     }
 
+    ReflectionMethod(Class<?> targetClass, SinceArgs[] args, ServerVersion addedSince, Since... methodNames) {
+        this(targetClass, getParams(args), addedSince, null, methodNames);
+    }
+
+    private static Class<?>[] getParams(SinceArgs[] args) {
+        SinceArgs temp = null;
+        for (SinceArgs arg : args) {
+            if (temp != null) {
+                if (arg.version.getVersionId() <= temp.version.getVersionId()) {
+                    continue;
+                }
+            }
+            if (arg.version.getVersionId() <= ServerVersion.getVersion().getVersionId())
+                temp = arg;
+        }
+        return temp.args;
+    }
+
     public Object run(Object target, Object... args) {
         try {
             return this.method == null ? null : this.method.invoke(target, args);
@@ -153,6 +170,16 @@ public enum ReflectionMethod {
         public Since(ServerVersion version, String name) {
             this.version = version;
             this.name = name;
+        }
+    }
+
+    protected static class SinceArgs {
+        private final ServerVersion version;
+        private final Class<?>[] args;
+
+        public SinceArgs(ServerVersion version, Class<?>[] args) {
+            this.version = version;
+            this.args = args;
         }
     }
 
