@@ -146,14 +146,6 @@ public class Text {
     }
 
     private static String renderColorCodes(String textToRender) {
-        char[] charArray = textToRender.toCharArray();
-        for (int i = 0; i < charArray.length - 1; i++) {
-            if (charArray[i] == Text.AMPERSAND_CHAR && COLOR_CODES.indexOf(charArray[i + 1]) > -1) {
-                charArray[i] = Text.SECTION_CHAR;
-                charArray[i + 1] = Character.toLowerCase(charArray[i + 1]);
-            }
-        }
-
         Bukkit.broadcastMessage("Render 1: "+textToRender);
         if (ServerVersion.getVersion().getVersionId() >= 1160) {
             Bukkit.broadcastMessage("Render 2: "+textToRender);
@@ -164,6 +156,14 @@ public class Text {
                 textToRender = StringUtils.replace(textToRender, hex, ""
                         + ChatColor.of(hex.replace("{", "").replace("}", "")));
                 match = HEX_PATTERN.matcher(textToRender);
+            }
+        }
+
+        char[] charArray = textToRender.toCharArray();
+        for (int i = 0; i < charArray.length - 1; i++) {
+            if (charArray[i] == Text.AMPERSAND_CHAR && COLOR_CODES.indexOf(charArray[i + 1]) > -1) {
+                charArray[i] = Text.SECTION_CHAR;
+                charArray[i + 1] = Character.toLowerCase(charArray[i + 1]);
             }
         }
         return new String(charArray);
