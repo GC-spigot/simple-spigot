@@ -154,10 +154,13 @@ public class Text {
             }
         }
 
+        Bukkit.broadcastMessage("Render 1: "+textToRender);
         if (ServerVersion.getVersion().getVersionId() >= 1160) {
+            Bukkit.broadcastMessage("Render 2: "+textToRender);
             Matcher match = HEX_PATTERN.matcher(textToRender);
             while (match.find()) {
                 String hex = textToRender.substring(match.start(), match.end());
+                Bukkit.broadcastMessage("Render 3: "+textToRender+" "+hex);
                 textToRender = StringUtils.replace(textToRender, hex, ""
                         + ChatColor.of(hex.replace("{", "").replace("}", "")));
                 match = HEX_PATTERN.matcher(textToRender);
