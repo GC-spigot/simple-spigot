@@ -1,5 +1,6 @@
 package me.hyfe.simplespigot.version;
 
+import org.apache.logging.log4j.core.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 
@@ -25,7 +26,8 @@ public enum ServerVersion {
     MC1_16_R2(1162),
     MC1_16_R3(1163),
     MC1_16_R4(1164),
-    MC1_17_R1(1170);
+    MC1_17_R1(1170),
+    MC1_17_R2(1171);
 
     private static ServerVersion serverVersion;
     private final int versionId;
@@ -43,16 +45,15 @@ public enum ServerVersion {
         if (serverVersion != null) {
             return serverVersion;
         }
-        String versionOfPackage = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+        final String ver = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+
         try {
-            serverVersion = ServerVersion.valueOf(versionOfPackage.replace("v", "MC"));
+            serverVersion = ServerVersion.valueOf(ver.replace("v", "MC"));
         } catch (IllegalArgumentException ex) {
-            serverVersion = ServerVersion.Unknown;
+            serverVersion = Unknown;
         }
-        if (serverVersion != ServerVersion.Unknown) {
-            Bukkit.getLogger().log(Level.INFO, String.format("Successfully connected to version %s'!", serverVersion.name()));
-        } else {
-            Bukkit.getLogger().log(Level.SEVERE, "Was not able to find the server version, this might result in errors.");
+        if (serverVersion == Unknown) {
+            System.out.println("[BattlePass] You are using invalid version of Minecraft [" + ver + "]!");
         }
         return serverVersion;
     }
