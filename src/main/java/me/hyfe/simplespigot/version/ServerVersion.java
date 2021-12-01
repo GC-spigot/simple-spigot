@@ -27,14 +27,22 @@ public enum ServerVersion {
     MC1_16_R3(1163),
     MC1_16_R4(1164),
     MC1_17_R1(1170),
-    MC1_17_R2(1171);
+    MC1_17_R2(1171),
+    MC1_18_R1(1180, true);
 
-    private static ServerVersion serverVersion;
     private final int versionId;
+    private static ServerVersion serverVersion;
+    public final boolean mojangMapping;
 
     ServerVersion(int versionId) {
-        this.versionId = versionId;
+        this(versionId, false);
     }
+
+    ServerVersion(int versionId, boolean _mojangMapping) {
+        this.versionId = versionId;
+        this.mojangMapping = _mojangMapping;
+    }
+
 
     /**
      * Gets the version the server is running.
@@ -67,16 +75,49 @@ public enum ServerVersion {
         return getVersion().getVersionId() > 1121;
     }
 
+
+    public boolean isThis() {
+        return this.versionId == getVersion().versionId;
+    }
+
     /**
-     * Gets the specific version number of the server.
-     *
-     * @return An integer of the specific version number of the server.
+     * @return True if method names are in Mojang format and need to be remapped internally
+     */
+    public  boolean isMojangMapping() {
+        return mojangMapping;
+    }
+
+    public String getPackageName() {
+        return this.name().replace("MC", "v");
+    }
+
+
+    /**
+     * @return Integer representing the Minecraft version of the specific ServerVersion instance it's called from.
      */
     public int getVersionId() {
         return versionId;
     }
 
-    public boolean isThis() {
-        return this.versionId == getVersion().versionId;
+
+    /**
+     * Returns true if the current versions is at least the given Version
+     *
+     * @param version The minimum version
+     * @return
+     */
+    public static boolean isAtLeastVersion(ServerVersion version) {
+        return getVersion().getVersionId() >= version.getVersionId();
     }
+
+    /**
+     * Returns true if the current versions newer (not equal) than the given version
+     *
+     * @param version The minimum version
+     * @return
+     */
+    public static boolean isNewerThan(ServerVersion version) {
+        return getVersion().getVersionId() > version.getVersionId();
+    }
+
 }
