@@ -3,6 +3,9 @@ package me.hyfe.simplespigot.nbt.enums;
 import me.hyfe.simplespigot.version.ServerVersion;
 import org.bukkit.Bukkit;
 
+/**
+ * Class used to get commonly used NMS & CraftBukkit classes across any Minecraft version.
+ */
 public enum ClassWrapper {
     // Blocks
     CRAFT_BlockData("org.bukkit.craftbukkit", "", "block.data.CraftBlockData", ServerVersion.MC1_13_R1),
@@ -45,6 +48,7 @@ public enum ClassWrapper {
     NMS_IChatBaseComponent$ChatSerializer("net.minecraft", "network.chat", "IChatBaseComponent$ChatSerializer", ServerVersion.MC1_8_R3),
     NMS_EnumHand("net.minecraft", "world", "EnumHand", ServerVersion.MC1_9_R1),
     NMS_Explosion("net.minecraft", "world.level", "Explosion", ServerVersion.MC1_8_R3),
+    NMS_PathEntity("net.minecraft", "world.level.pathfinder", "PathEntity", ServerVersion.MC1_8_R3),
     CRAFT_ITEMSTACK(PackageWrapper.CRAFTBUKKIT, "inventory.CraftItemStack", null, null),
     CRAFT_METAITEM(PackageWrapper.CRAFTBUKKIT, "inventory.CraftMetaItem", null, null),
     CRAFT_ENTITY(PackageWrapper.CRAFTBUKKIT, "entity.CraftEntity", null, null),
@@ -96,7 +100,7 @@ public enum ClassWrapper {
             return;
         }
         try {
-            if (ServerVersion.isAtLeastVersion(ServerVersion.MC1_8_R3) && mojangMap != null) {
+            if (ServerVersion.isAtLeastVersion(ServerVersion.MC1_17_R1) && mojangMap != null) {
                 clazz = Class.forName(mojangMap + "." + clazzName);
             } else if (packageId == PackageWrapper.NONE) {
                 clazz = Class.forName(clazzName);
@@ -115,11 +119,11 @@ public enum ClassWrapper {
      * @param subClass    Whether the class requested is a sub-class or not.
      */
     ClassWrapper(String pre, String mid, String suffix, ServerVersion since, boolean subClass) {
-        if (ServerVersion.getVersion().getVersionId() < since.getVersionId())
+        if (ServerVersion.getCurrentVersion().getVersionId() < since.getVersionId())
             return;
         try {
             String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-            if (ServerVersion.getVersion().getVersionId() < 1_17_0) {
+            if (ServerVersion.getVersionNumber() < 1_17_0) {
                 clazz = Class.forName(pre + (pre.equals("net.minecraft") ? ".server." : ".") + version + ((subClass) ? "$" : ".") + suffix);
             } else {
                 String middle = (pre.equals("org.bukkit.craftbukkit")) ? version : mid;
@@ -147,5 +151,4 @@ public enum ClassWrapper {
     public String getMojangName() {
         return mojangName;
     }
-
 }

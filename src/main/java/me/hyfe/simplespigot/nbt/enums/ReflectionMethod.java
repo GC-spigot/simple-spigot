@@ -3,6 +3,7 @@ package me.hyfe.simplespigot.nbt.enums;
 import com.mojang.authlib.GameProfile;
 import me.hyfe.simplespigot.nbt.MojangToMapping;
 import me.hyfe.simplespigot.version.ServerVersion;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.InputStream;
@@ -109,7 +110,31 @@ public enum ReflectionMethod {
     CRAFT_PERSISTENT_DATA_CONTAINER_TO_TAG (ClassWrapper.CRAFT_PERSISTENTDATACONTAINER, new Class[]{}, ServerVersion.MC1_14_R1, new Since(ServerVersion.MC1_14_R1, "toTagCompound")),
     CRAFT_PERSISTENT_DATA_CONTAINER_GET_MAP (ClassWrapper.CRAFT_PERSISTENTDATACONTAINER, new Class[]{}, ServerVersion.MC1_14_R1, new Since(ServerVersion.MC1_14_R1, "getRaw")),
     CRAFT_PERSISTENT_DATA_CONTAINER_PUT_ALL (ClassWrapper.CRAFT_PERSISTENTDATACONTAINER, new Class[]{ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()}, ServerVersion.MC1_14_R1, new Since(ServerVersion.MC1_14_R1, "putAll")),
+    // Block
+    CRAFT_MagicNumbers_getBlock(ClassWrapper.CRAFT_MagicNumbers.getClazz(), new Class[]{ Material.class }, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "getBlock")),
+    // NMS_World_getTileEntity(ClassWrapper.NMS_World.getClazz(), new Class[]{ ClassWrapper.NMS_BlockPosition.getClazz() }, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "getTileEntity")),
+    NMS_Block_getBlockData(ClassWrapper.NMS_Block.getClazz(), new Class[]{}, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_13_R1, "getBlockData"),
+            new Since(ServerVersion.MC1_18_R1, "n")), // TODO: remove if fixed in new 1.18
 
+    // Item
+    CRAFT_MagicNumbers_getItem(ClassWrapper.CRAFT_MagicNumbers.getClazz(), new Class[]{ Material.class }, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "getItem")),
+    CRAFT_ItemStack_asNMSCopy(ClassWrapper.CRAFT_ItemStack.getClazz(), new Class[]{ ItemStack.class }, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "asNMSCopy")),
+
+    NMS_ItemStack_canDestroySpecialBlock(ClassWrapper.NMS_ItemStack.getClazz(), new SinceArgs[]{ new SinceArgs(ServerVersion.MC1_7_R4, new Class[]{ ClassWrapper.NMS_Block.getClazz() }),
+            new SinceArgs(ServerVersion.MC1_9_R1, new Class[]{ ClassWrapper.NMS_IBlockData.getClazz() }) }, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "b"),
+            new Since(ServerVersion.MC1_15_R1, "canDestroySpecialBlock"),
+            new Since(ServerVersion.MC1_18_R1, "b")), // TODO: remove if fixed in new 1.18),
+
+    // Entities
+    CRAFT_Entity_getHandle(ClassWrapper.CRAFT_Entity.getClazz(), new Class[]{}, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "getHandle")),
+    NMS_Entity_damageEntity(ClassWrapper.NMS_Entity.getClazz(), new Class[]{ ClassWrapper.NMS_DamageSource.getClazz(), float.class }, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "damageEntity"),
+            new Since(ServerVersion.MC1_18_R1, "a")),// TODO: remove if fixed in new 1.18),
+    NMS_EntityPlayer_attack(ClassWrapper.NMS_EntityPlayer.getClazz(), new Class[]{ ClassWrapper.NMS_Entity.getClazz() }, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "attack"),
+            new Since(ServerVersion.MC1_18_R1, "d")),// TODO: remove if fixed in new 1.18),
+
+    // DamageSource
+    NMS_DamageSource_explosion(ClassWrapper.NMS_DamageSource.getClazz(), new Class[]{ ClassWrapper.NMS_Explosion.getClazz() }, ServerVersion.MC1_7_R4, new Since(ServerVersion.MC1_7_R4, "explosion"),
+            new Since(ServerVersion.MC1_18_R1, "a")),// TODO: remove if fixed in new 1.18)
     ;
 
     private ServerVersion removedAfter;
@@ -122,7 +147,7 @@ public enum ReflectionMethod {
 
     ReflectionMethod(Class<?> targetClass, SinceArgs[] args, ServerVersion addedSince, ServerVersion removedAfter, Since... methodNames) {
         this.removedAfter = removedAfter;
-        ServerVersion server = ServerVersion.getVersion();
+        ServerVersion server = ServerVersion.getCurrentVersion();
         if (server.compareTo(addedSince) < 0 || (this.removedAfter != null && server.getVersionId() > this.removedAfter.getVersionId()))
             return;
         compatible = true;
@@ -196,54 +221,68 @@ public enum ReflectionMethod {
         this(targetClass, args, addedSince, null, methodnames);
     }
 
-    private static Class<?>[] getParams(SinceArgs[] args) {
-        SinceArgs temp = null;
-        for (SinceArgs arg : args) {
-            if (temp != null) {
-                if (arg.version.getVersionId() <= temp.version.getVersionId()) {
-                    continue;
-                }
-            }
-            if (arg.version.getVersionId() <= ServerVersion.getVersion().getVersionId())
-                temp = arg;
-        }
-        return temp.args;
-    }
-
-    public Object run(Object target, Object... args) {
-        try {
-            return this.method == null ? null : this.method.invoke(target, args);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+    /**
+     * Runs the method on a given target object using the given args.
+     *
+     * @param target
+     * @param args
+     * @return Value returned by the method
+     */
+    public Object run(Object target, Object... args){
+        if(method == null)
+            throw new NullPointerException("Method not loaded! '" + this + "'");
+        try{
+            return method.invoke(target, args);
+        }catch(Exception ex){
+            ex.printStackTrace();
         }
         return null;
     }
 
+    /**
+     * @return The MethodName, used in this Minecraft Version
+     */
     public String getMethodName() {
-        return this.methodName;
+        return methodName;
     }
 
+    /**
+     * @return Has this method been linked
+     */
     public boolean isLoaded() {
-        return this.loaded;
+        return loaded;
     }
 
+    /**
+     * @return Is this method available in this Minecraft Version
+     */
     public boolean isCompatible() {
-        return this.compatible;
+        return compatible;
     }
 
-    protected static class Since {
-        private final ServerVersion version;
-        private final String name;
+    public Since getSelectedVersionInfo() {
+        return targetVersion;
+    }
 
+    /**
+     * @return Get Wrapper of the parent class
+     */
+    public ClassWrapper getParentClassWrapper() {
+        return parentClassWrapper;
+    }
+
+    public static class Since{
+        public final ServerVersion version;
+        public final String name;
         public Since(ServerVersion version, String name) {
             this.version = version;
             this.name = name;
         }
     }
 
-    protected static class SinceArgs {
-        private final ServerVersion version;
-        private final Class<?>[] args;
+    private static class SinceArgs {
+        public final ServerVersion version;
+        public final Class<?>[] args;
 
         public SinceArgs(ServerVersion version, Class<?>[] args) {
             this.version = version;

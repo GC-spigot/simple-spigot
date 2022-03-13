@@ -28,7 +28,8 @@ public enum ServerVersion {
     MC1_16_R4(1164),
     MC1_17_R1(1170),
     MC1_17_R2(1171),
-    MC1_18_R1(1180, true);
+    MC1_18_R1(1180, true),
+    MC1_18_R2(1182, true);
 
     private final int versionId;
     private static ServerVersion serverVersion;
@@ -73,6 +74,14 @@ public enum ServerVersion {
      */
     public static boolean isOver_V1_12() {
         return getVersion().getVersionId() > 1121;
+    }
+
+    public static ServerVersion getCurrentVersion() {
+        return getVersion();
+    }
+
+    public static int getVersionNumber() {
+        return getVersion().getVersionId();
     }
 
 

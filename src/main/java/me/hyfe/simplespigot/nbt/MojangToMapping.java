@@ -1,4 +1,6 @@
 package me.hyfe.simplespigot.nbt;
+import me.hyfe.simplespigot.version.ServerVersion;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -6,7 +8,6 @@ import java.util.Map;
  * Temporary solution to hold Mojang to unmapped Spigot mappings.
  *
  * @author tr7zw
- *
  */
 public class MojangToMapping {
 
@@ -71,9 +72,26 @@ public class MojangToMapping {
         }
 
     };
+    @SuppressWarnings("serial")
+    private static Map<String, String> MC1_18R2 = new HashMap<String, String>() {
 
-    public static Map<String, String> getMapping(){
-        return MC1_18R1;
+        {
+            putAll(MC1_18R1);
+
+            put("net.minecraft.world.item.ItemStack#getTag()", "t");
+        }
+    };
+
+    public static Map<String, String> getMapping() {
+        switch (ServerVersion.getVersion()) {
+            case MC1_18_R2:
+                return MC1_18R2;
+            case MC1_18_R1:
+                return MC1_18R1;
+            default:
+                return MC1_18R2;//throw new NbtApiException("This version of the NBTAPI is not compatible with this server version!");
+
+        }
     }
 
 }
