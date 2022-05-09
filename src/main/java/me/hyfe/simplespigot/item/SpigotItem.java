@@ -12,6 +12,7 @@ import me.hyfe.simplespigot.text.Text;
 import me.hyfe.simplespigot.text.replacer.Replace;
 import me.hyfe.simplespigot.version.MultiMaterial;
 import me.hyfe.simplespigot.version.ServerVersion;
+import net.advancedplugins.heads.api.AdvancedHeadsAPI;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -58,9 +59,10 @@ public class SpigotItem {
         }
         String[] entryArray = entry.split(":");
         boolean isHead = entryArray[0].equalsIgnoreCase("head") && entryArray.length == 2;
+        boolean isAdvancedHead = config.has(pathBuilder.apply("advanced-heads"));
 
-        ItemStack itemStack = isHead ? null : MultiMaterial.parseItem(entry);
-        if (itemStack == null && !isHead) {
+        ItemStack itemStack = isHead || isAdvancedHead? null : MultiMaterial.parseItem(entry);
+        if (itemStack == null && !(isHead || isAdvancedHead)) {
             return null;
         }
         Builder builder = builder().itemStack(itemStack);
@@ -77,7 +79,10 @@ public class SpigotItem {
 
         if (isHead) {
             builder.head(entryArray[1]);
+        } else if(isAdvancedHead) {
+            builder.itemStack(AdvancedHeadsAPI.getHeadFromId(config.integer(pathBuilder.apply("advanced-heads"))));
         }
+
         return builder.build();
     }
 
